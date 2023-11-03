@@ -1,10 +1,31 @@
 local resourcePath = GetResourcePath(cache.resource):gsub('//', '/')
 local savedMLODir = 'saved_mlos'
-local contentsFileName = 'contents'
 local savedMloDirectoryPath = ('%s/%s'):format(resourcePath, savedMLODir)
 
 local filenames = {}
 local mloFilenameLookup = {}
+
+local function getFilesInDirectory(path, pattern)
+    local files = {}
+    local fileCount = 0
+    local system = os.getenv('OS')
+    local command = system and system:match('Windows') and 'dir "' or 'ls "'
+    local suffix = command == 'dir "' and '/" /b' or '/"'
+    local dir = io.popen(command .. resourcePath .. '/' .. path .. suffix)
+
+    if dir then
+        for line in dir:lines() do
+            if line:match(pattern) then
+                fileCount += 1
+                files[fileCount] = line:gsub(pattern, '')
+            end
+        end
+
+        dir:close()
+    end
+
+    return files, fileCount
+end
 
 local function readFile(source, filepath, filename, filetype)
     local fullPath = ('%s/%s.%s'):format(filepath, filename, filetype)
@@ -61,6 +82,20 @@ local function writeFile(source, filepath, filename, filetype, dataString)
     return writeError == nil
 end
 
+local function LoadMLOData(source, filename, nameHashString, openUI)
+    local data = nil
+
+    if filename ~= nil and nameHashString ~= nil then
+        data = readFile(source, savedMloDirectoryPath, filename, 'json')
+
+        if data then data = json.decode(data) end
+    end
+
+    if data ~= nil and tostring(data.nameHash) == nameHashString then
+        TriggerLatentClientEvent('ht_mloaudio:loadMLOData', source, 100000, data, openUI)
+    end
+end
+
 RegisterNetEvent('ht_mloaudio:outputResultFile', function(filename, ymtData, debug)
     local source = source
     local success = SaveResourceFile(cache.resource, filename, ToXml(ymtData, debug), -1)
@@ -71,6 +106,7 @@ RegisterNetEvent('ht_mloaudio:outputResultFile', function(filename, ymtData, deb
 end)
 
 RegisterNetEvent('ht_mloaudio:saveMLOData', function(mloInfo)
+    local source = source
     local filename = mloInfo.saveName ~= '' and mloInfo.saveName or mloFilenameLookup[tostring(mloInfo.nameHash)] or mloInfo.name:gsub('hash_', '')
     mloFilenameLookup[tostring(mloInfo.nameHash)] = filename
 
@@ -82,14 +118,16 @@ RegisterNetEvent('ht_mloaudio:saveMLOData', function(mloInfo)
             title = 'Successfully saved MLO Info',
             description = ('./%s/%s.json'):format(savedMLODir, filename)
         })
-
-        local contentsString = ''
-        for _, fName in pairs(mloFilenameLookup) do
-            contentsString = ('%s%s\n'):format(contentsString, fName)
-        end
-
-        writeFile(source, savedMloDirectoryPath, contentsFileName, 'txt', contentsString)
     end
+end)
+
+lib.callback.register('ht_mloaudio:requestMLOSaveData', function(source, nameHashString)
+    local filename = mloFilenameLookup[nameHashString]
+
+    -- No known save file
+    if not filename then return false end
+
+    LoadMLOData(source, filename, nameHashString, true)
 end)
 
 lib.addCommand('savemlo', {
@@ -119,21 +157,14 @@ lib.addCommand('loadmlo', {
         }
     }
 }, function(source, args, raw)
-    local data = nil
     local nameHash = lib.callback.await('ht_mloaudio:getMLONameHash', source)
 
     if nameHash ~= nil then
-        local filename = args.name:gsub('.json', '') or mloFilenameLookup[tostring(nameHash)] or tostring(nameHash)
+        local nameHashString = tostring(nameHash)
+        local name = args and args.name
+        local filename = name and name:gsub('.json', '') or mloFilenameLookup[nameHashString] or nameHashString
 
-        if filename then
-            data = readFile(source, savedMloDirectoryPath, filename, 'json')
-
-            if data then data = json.decode(data) end
-        end
-    end
-
-    if data ~= nil and data.nameHash == nameHash then
-        TriggerLatentClientEvent('ht_mloaudio:loadMLOData', source, 100000, data)
+        LoadMLOData(source, filename, nameHashString, false)
     end
 end)
 
@@ -177,25 +208,22 @@ lib.addCommand('openmlo', {
 end)
 
 CreateThread(function()
-    local contentsData = readFile(nil, savedMloDirectoryPath, contentsFileName, 'txt')
+    local files, fileCount = getFilesInDirectory(savedMLODir, '%.json')
 
-    if contentsData then
-        local contentsLines = table.pack(string.strsplit('\n', contentsData))
+    if fileCount > 0 then
+        print(('Found %d saved MLO json files.'):format(fileCount))
+    end
 
-        for i = 1, #contentsLines do
-            local line = contentsLines[i]
+    for i = 1, fileCount do
+        local filename = files[i]
+        local mloDataString = readFile(nil, savedMloDirectoryPath, filename, 'json')
 
-            if line ~= '' then
-                local mloData = readFile(nil, savedMloDirectoryPath, line, 'json')
+        if mloDataString ~= nil then
+            local mloData = json.decode(mloDataString)
 
-                if mloData ~= nil then
-                    mloData = json.decode(mloData)
-
-                    if mloData and mloData.nameHash then
-                        mloFilenameLookup[tostring(mloData.nameHash)] = line
-                        table.insert(filenames, line)
-                    end
-                end
+            if mloData and mloData.nameHash then
+                mloFilenameLookup[tostring(mloData.nameHash)] = filename
+                filenames[#filenames + 1] = filename
             end
         end
     end
