@@ -6,7 +6,7 @@ use_experimental_fxv2_oal 'yes'
 
 --[[ Resource Information ]]--
 name       'ht_mloaudio'
-version    '0.0.1'
+version    '0.0.4'
 license    'MIT'
 author     'Hedgehog Technologies'
 repository 'https://github.com/Hedgehog-Technologies/ht_mloaudio'
