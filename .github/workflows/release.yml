@@ -78,7 +78,7 @@ jobs:
           cd ./temp && zip -r ../ht_mloaudio.zip ./ht_mloaudio
 
       - name: Create Release
-        uses: 'marvinpinto/action-automatic-release@v1.2.1'
+        uses: 'marvinpinto/action-automatic-releases@v1.2.1'
         id: auto_release
         with:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
