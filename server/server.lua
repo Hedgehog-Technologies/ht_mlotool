@@ -5,6 +5,8 @@ local savedMloDirectoryPath = ('%s/%s'):format(resourcePath, savedMLODir)
 local filenames = {}
 local mloFilenameLookup = {}
 
+-- ##### HELPER FUNCTIONS ##### --
+
 local function getFilesInDirectory(path, pattern)
     local files = {}
     local fileCount = 0
@@ -96,6 +98,8 @@ local function LoadMLOData(source, filename, nameHashString, openUI)
     end
 end
 
+-- ##### EVENTS AND CALLBACKS ##### --
+
 RegisterNetEvent('ht_mloaudio:outputResultFile', function(filename, ymtData, debug)
     local source = source
     local success = SaveResourceFile(cache.resource, filename, ToXml(ymtData, debug), -1)
@@ -129,6 +133,8 @@ lib.callback.register('ht_mloaudio:requestMLOSaveData', function(source, nameHas
 
     LoadMLOData(source, filename, nameHashString, true)
 end)
+
+-- ##### COMMANDS ##### --
 
 lib.addCommand('savemlo', {
     help = '[Admin] Save current MLO audio object to file',
@@ -174,7 +180,7 @@ lib.addCommand('openmlo', {
     params = {
         {
             name = 'force',
-            help = '[Optional] 1) Reload from file, 2) Rebuild from scratch, or <leave blank> Use cached value',
+            help = '[Optional] 1) Reload from file, 2) Rebuild from scratch, or <leave blank> Use cached value if available',
             type = 'number',
             optional = true
         }
@@ -206,6 +212,8 @@ lib.addCommand('openmlo', {
 
     TriggerLatentClientEvent('ht_mloaudio:openMLO', source, 100000, data)
 end)
+
+-- ##### INITIALIZATION THREAD ##### --
 
 CreateThread(function()
     local files, fileCount = getFilesInDirectory(savedMLODir, '%.json')
