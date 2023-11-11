@@ -8,6 +8,10 @@ A framework-independent FiveM dev resource that helps to customize and generate 
 
 ## Documentation
 
+### Release Notes
+
+- You can review release notes [here](./docs/release-notes.md)
+
 ### Usage
 
 #### Dependencies
@@ -15,7 +19,7 @@ A framework-independent FiveM dev resource that helps to customize and generate 
 - [ox_lib](https://github.com/overextended/ox_lib)
 - [CodeWalker](https://github.com/dexyfex/CodeWalker)
 
-#### Quick Start Guide
+#### Quick Start Usage Guide
 
 1. Launch into your FiveM server
    - preferably a dev environment, but you do you
@@ -29,3 +33,14 @@ A framework-independent FiveM dev resource that helps to customize and generate 
 6. Use [CodeWalker](https://github.com/dexyfex/CodeWalker) to convert the XML files to the proper GTAV format
 7. Move the converted XML files to a FiveM map resource
 8. Restart your FiveM server and enjoy audio occluded goodness
+
+#### In Depth Usage Guide
+
+- You can view a more in depth guide [here](./docs/usage-guide.md)
+
+### Development Guide
+
+- You can view the development guide [here](./docs/development-guide.md)
+
+### Credits
+- You can view Credits [here](./docs/credits.md)
