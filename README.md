@@ -8,6 +8,14 @@ A framework-independent [FiveM](https://fivem.net) dev resource that helps to cu
 
 ## Documentation
 
+### Preview
+
+<details>
+   <summary>General Tab</summary>
+
+   ![General Tab](./docs/images/general_tab.png 'General Tab')
+</details>
+
 ### Release Notes
 
 - You can review release notes [here](./docs/release-notes.md)
