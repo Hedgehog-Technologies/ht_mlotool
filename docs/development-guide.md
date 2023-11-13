@@ -38,7 +38,7 @@ This resource utilizes [Mantine v5](https://v5.mantine.dev/) as its UI component
 
 #### Style Changes
 
-CSS changes can be made in any number of places, however the three main locations are as follows:
+Style changes can be made in any number of places, however the three main locations are as follows:
 
 - [ht_mloaudio/web/src/index.css](../web/src/index.css)
 - [ht_mloaudio/web/src/App.tsx:useStyles](../web/src/App.tsx#L13)
