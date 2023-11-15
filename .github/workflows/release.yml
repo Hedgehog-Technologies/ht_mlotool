@@ -72,6 +72,7 @@ jobs:
           mkdir -p ./temp/ht_mloaudio
           mkdir -p ./temp/ht_mloaudio/web/
           mkdir -p ./temp/ht_mloaudio/saved_mlos/
+          mkdir -p ./temp/ht_mloaudio/generated_files/
           cp ./{LICENSE,README.md,fxmanifest.lua,utils.lua} ./temp/ht_mloaudio
           cp -r ./{client,server} ./temp/ht_mloaudio
           cp -r ./web/build ./temp/ht_mloaudio/web/

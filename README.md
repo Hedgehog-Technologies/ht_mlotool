@@ -33,7 +33,7 @@ Get the [latest version](https://github.com/hedgehog-technologies/ht_mloaudio/re
 $ git clone https://github.com/hedgehog-technologies/ht_mloaudio
 
 # Navigate to the repo directory
-cd ht_mloaudio
+$ cd ht_mloaudio
 
 # Install the project dependencies
 $ pnpm i
