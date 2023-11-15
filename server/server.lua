@@ -1,6 +1,8 @@
 local resourcePath = GetResourcePath(cache.resource):gsub('//', '/')
 local savedMLODir = 'saved_mlos'
 local savedMloDirectoryPath = ('%s/%s'):format(resourcePath, savedMLODir)
+local generatedFilesDir = 'generated_files'
+local generatedFilesDirectoryPath = ('%s/%s'):format(resourcePath, generatedFilesDir)
 
 local filenames = {}
 local mloFilenameLookup = {}
@@ -100,9 +102,9 @@ end
 
 -- ##### EVENTS AND CALLBACKS ##### --
 
-RegisterNetEvent('ht_mloaudio:outputResultFile', function(filename, ymtData, debug)
+RegisterNetEvent('ht_mloaudio:outputResultFile', function(filename, filetype, ymtData, debug)
     local source = source
-    local success = SaveResourceFile(cache.resource, filename, ToXml(ymtData, debug), -1)
+    local success = writeFile(source, generatedFilesDirectoryPath, filename, filetype, ToXml(ymtData, debug)) --SaveResourceFile(cache.resource, filename, ToXml(ymtData, debug), -1)
 
     local type = success and 'success' or 'error'
     local title = success and 'File finished saving: %s' or 'Failed to save file: %s'
@@ -180,7 +182,7 @@ lib.addCommand('openmlo', {
     params = {
         {
             name = 'force',
-            help = '[Optional] 1) Reload from file, 2) Rebuild from scratch, or <leave blank> Use cached value if available',
+            help = '[Optional] (1) Reload from file, (2) Rebuild from scratch, or <leave blank> Use cached value if available',
             type = 'number',
             optional = true
         }
@@ -206,7 +208,7 @@ lib.addCommand('openmlo', {
                 print('User is not currently standing in an MLO')
             end
         elseif args.force == 2 then
-            data = true
+            data = false
         end
     end
 

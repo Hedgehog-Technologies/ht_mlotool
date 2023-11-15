@@ -3,6 +3,7 @@ local mloCache = {}
 local function openMLOInterface(mloData)
     local currentRoomHash = GetRoomKeyFromEntity(cache.ped)
     local currentRoomIndex = GetInteriorRoomIndexByHash(mloData.interiorId, currentRoomHash)
+    print(currentRoomHash, currentRoomIndex)
 
     OpenMLO(mloData, currentRoomIndex)
 end
@@ -21,9 +22,10 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
     if mlo then
         if generateAO then
             local paths = MLO.generatePaths(mlo)
-            local aoFileName = ('%s.ymt.pso.xml'):format(mlo.uintProxyHash)
+            local aoFileName = tostring(mlo.uintProxyHash)
+            local aoFileType = 'ymt.pso.xml'
             local ymtData = EncodeAudioOcclusion(mlo, paths)
-            TriggerLatentServerEvent('ht_mloaudio:outputResultFile', 100000, aoFileName, ymtData, debug)
+            TriggerLatentServerEvent('ht_mloaudio:outputResultFile', 100000, aoFileName, aoFileType, ymtData, debug)
         end
 
         if generateDat151 then
@@ -37,9 +39,10 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
                 mloName = mloName:gsub('hash_', '', 1)
             end
 
-            local datFileName = ('%s_game.dat151.rel.xml'):format(mloName)
+            local datFileName = ('%s_game'):format(mloName)
+            local datFileType = 'dat151.rel.xml'
             local dat151Data = EncodeDat151(mlo)
-            TriggerLatentServerEvent('ht_mloaudio:outputResultFile', 100000, datFileName, dat151Data, debug)
+            TriggerLatentServerEvent('ht_mloaudio:outputResultFile', 100000, datFileName, datFileType, dat151Data, debug)
         end
 
         TriggerLatentServerEvent('ht_mloaudio:saveMLOData', 100000, mloData)
@@ -83,16 +86,17 @@ RegisterNetEvent('ht_mloaudio:openMLO', function(data)
 
     -- MLO Data was not found in the local cache
     -- Let's query the server to see if we have data saved there
+    local hasData = nil
     if mlo == nil then
         local _, nameHash = GetInteriorLocationAndNamehash(interiorId)
-        local hasData = lib.callback.await('ht_mloaudio:requestMLOSavedData', false, tostring(nameHash))
+        hasData = lib.callback.await('ht_mloaudio:requestMLOSaveData', false, tostring(nameHash))
 
         -- Data was found, we'll end execution here and handle the soon-to-be-incoming latent net event elsewhere
         -- $TODO - Look into a latent callback for ox_lib 
         if hasData then return end
     end
 
-    if mlo == false then
+    if mlo == false or hasData == false then
         mlo = MLO.new(interiorId)
         mloCache[interiorId] = mlo
     end

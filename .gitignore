@@ -1,5 +1,6 @@
 *.xml
 
+/generated_files
 /saved_mlos
 /web/node_modules
 /web/build
