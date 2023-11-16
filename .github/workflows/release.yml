@@ -59,7 +59,7 @@ jobs:
           add: fxmanifest.lua
           push: true
           author_name: Manifest Bumper
-          author-email: 41898282+github-actions[bot]@users.noreply.github.com
+          author_email: 41898282+github-actions[bot]@users.noreply.github.com
           message: 'chore: bump manifest version to ${{ github.ref_name }}'
 
       - name: Update tag ref
