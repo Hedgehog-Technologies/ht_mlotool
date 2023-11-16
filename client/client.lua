@@ -3,7 +3,6 @@ local mloCache = {}
 local function openMLOInterface(mloData)
     local currentRoomHash = GetRoomKeyFromEntity(cache.ped)
     local currentRoomIndex = GetInteriorRoomIndexByHash(mloData.interiorId, currentRoomHash)
-    print(currentRoomHash, currentRoomIndex)
 
     OpenMLO(mloData, currentRoomIndex)
 end
