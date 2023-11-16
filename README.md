@@ -16,6 +16,18 @@ A framework-independent [FiveM](https://fivem.net) dev resource that helps to cu
    ![General Tab](./docs/images/general_tab.png 'General Tab')
 </details>
 
+<details>
+   <summary>Rooms Tab</summary>
+
+   ![Rooms Tab](./docs/images/rooms_tab.png 'Rooms Tab')
+</details>
+
+<details>
+   <summary>Portals Tab</summary>
+
+   ![Portals Tab](./docs/images/portals_tab.png 'Portals Tab')
+</details>
+
 ### Release Notes
 
 - You can review release notes [here](./docs/release-notes.md)
