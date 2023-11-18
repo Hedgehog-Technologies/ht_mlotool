@@ -86,7 +86,7 @@ const Info: React.FC = () => {
           inputType='number'
           value={mlo?.rooms.length ?? 0}
           disabled={true}
-          infoCircle='Number of rooms found for current MLO'
+          infoCircle='Number of rooms found for current MLO, including Limbo'
         />
         <Input
           label='Number of Portals'

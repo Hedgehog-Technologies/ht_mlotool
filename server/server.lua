@@ -150,7 +150,8 @@ lib.addCommand('savemlo', {
         }
     }
 }, function(source, args, raw)
-    TriggerClientEvent('ht_mloaudio:saveCurrentMLO', source, args.name)
+    local name = args and args.name
+    TriggerClientEvent('ht_mloaudio:saveCurrentMLO', source, name)
 end)
 
 lib.addCommand('loadmlo', {
