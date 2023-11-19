@@ -26,7 +26,7 @@ function ToInt32(value)
     end
 end
 
-local function ToXmlInternal(xmlTbl, valueTbl, level, debug)
+local function toXmlInternal(xmlTbl, valueTbl, level, debug)
     local spaces = level > 0 and string.rep(' ', 2 * level) or ''
     for _, value in ipairs(valueTbl) do
         local tag = ''
@@ -44,7 +44,7 @@ local function ToXmlInternal(xmlTbl, valueTbl, level, debug)
         elseif value.content and #value.content > 0 then
             tag = tag .. '>'
             table.insert(xmlTbl, tag)
-            ToXmlInternal(xmlTbl, value.content, level + 1, debug)
+            toXmlInternal(xmlTbl, value.content, level + 1, debug)
             tag = spaces .. '</' .. value.tagName .. '>'
             table.insert(xmlTbl, tag)
         else
@@ -56,6 +56,6 @@ end
 
 function ToXml(tbl, debug)
     local xml = { '<?xml version="1.0" encoding="UTF-8"?>' }
-    ToXmlInternal(xml, tbl, 0, debug)
+    toXmlInternal(xml, tbl, 0, debug)
     return table.concat(xml, '\n')
 end
