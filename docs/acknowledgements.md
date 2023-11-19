@@ -20,7 +20,7 @@
 
 ## Overextended
 
-### [ox_lib](https://github.com/overextended/ox_lib)
+### [ox_lib](https://github.com/overextended/ox_lib) & [ox_doorlock](https://github.com/overextended/ox_doorlock)
 
 - UI inspiration and guidance
 

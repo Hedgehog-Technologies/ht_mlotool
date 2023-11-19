@@ -72,6 +72,17 @@ files {
 -- Here you will include lines for each dat151 file
 -- Cutting off the the line at .dat is intentional
 data_file 'AUDIO_GAMEDATA' 'audio/test_map/DEADBEEF_game.dat'
+
+-- [[
+Example File Structure:
+occlusion_resource/
+|-> audio/
+  |-> test_map/
+    |-> DEADBEEF_game.dat151.rel
+|-> stream/
+  |-> test_map/
+    |-> 3735928559.ymt
+-- ]]
 ```
 12. Make sure that resource is set to be ensured on server start up and restart your server to test your changes
    - Simply ensuring that resource will not guarantee that the audio changes will be picked up properly and may even lead to client crashes
