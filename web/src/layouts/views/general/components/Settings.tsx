@@ -12,30 +12,26 @@ const Settings: React.FC = () => {
 
   return (
     <Box>
-      <Center pt={8} pb={8}>
-        <SimpleGrid cols={2}>
-          <TooltipSwitch
-            label='Generate Audio Occlusion File'
-            infoCircle='Sets whether or not to generate the audio occlusion (.ymt.pso.xml) file'
-            value={enableAudioOcclusion ?? true}
-            toggle={() => toggleSwitch('enableAudioOcclusion')}
-          />
-          <TooltipSwitch
-            label='Generate Dat151 File'
-            infoCircle='Sets whether or not to generate the dat151 (game.dat151.rel.xml) file'
-            value={enableDat151 ?? true}
-            toggle={() => toggleSwitch('enableDat151')}
-          />
-        </SimpleGrid>
-      </Center>
-      <Center pb={8}>
+      <SimpleGrid cols={2}>
+        <TooltipSwitch
+          label='Generate Audio Occlusion File'
+          infoCircle='Sets whether or not to generate the audio occlusion (.ymt.pso.xml) file'
+          value={enableAudioOcclusion ?? true}
+          toggle={() => toggleSwitch('enableAudioOcclusion')}
+        />
         <TooltipSwitch
           label='Enable Debug Output'
           infoCircle='Sets whether or not to include debug comments in output file(s)'
           value={enableDebug ?? false}
           toggle={() => toggleSwitch('enableDebug')}
         />
-      </Center>
+        <TooltipSwitch
+          label='Generate Dat151 File'
+          infoCircle='Sets whether or not to generate the dat151 (game.dat151.rel.xml) file'
+          value={enableDat151 ?? true}
+          toggle={() => toggleSwitch('enableDat151')}
+        />
+      </SimpleGrid>
     </Box>
   );
 };
