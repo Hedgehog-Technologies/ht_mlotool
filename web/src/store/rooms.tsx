@@ -1,6 +1,6 @@
-import create, { GetState, SetState } from 'zustand';
-import { SelectData } from '.';
-import { RoomDef } from '../types/RoomDef';
+import create, { GetState, SetState } from "zustand";
+import { SelectData } from ".";
+import { RoomDef } from "../types/RoomDef";
 
 export interface RoomsStoreState {
   // RoomSelect

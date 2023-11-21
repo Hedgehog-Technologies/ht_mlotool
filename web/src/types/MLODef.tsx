@@ -1,7 +1,7 @@
-import { Vector3 } from '.';
-import { EntityDef } from './EntityDef';
-import { PortalDef } from './PortalDef';
-import { RoomDef } from './RoomDef';
+import { Vector3 } from ".";
+import { EntityDef } from "./EntityDef";
+import { PortalDef } from "./PortalDef";
+import { RoomDef } from "./RoomDef";
 
 interface MLODefConstructor {
   interiorId: number;

@@ -2,7 +2,7 @@ import { Grid } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useRoomsStore } from "../../../../store/rooms";
 import { Dat151Fields } from "../../../../types/RoomDef";
-import Input from "../../shared/Input";
+import { MemoInput } from "../../shared/Input";
 
 const defaultDat151Fields: Dat151Fields = {
   flags: '0xAAAAAAAA',
@@ -64,7 +64,7 @@ const Dat151Info: React.FC = () => {
 
   return (
     <Grid columns={4} gutter='xs' justify='center' sx={{fontSize: 12, overflow: 'auto', maxHeight: 450 }}>
-      <Input
+      <MemoInput
         label='Flags'
         inputType='text'
         value={fieldState.flags}
@@ -72,7 +72,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='No additional information'
       />
-      <Input
+      <MemoInput
         label='Zone'
         inputType='text'
         value={fieldState.zone}
@@ -80,7 +80,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='No additional information. Usually left blank.'
       />
-      <Input
+      <MemoInput
         label='Unk02'
         inputType='number'
         value={fieldState.unk02}
@@ -88,7 +88,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='No additional information. Usually left as 0.'
       />
-      <Input
+      <MemoInput
         label='Unk03'
         inputType='number'
         precision={6}
@@ -97,7 +97,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='No additional information. Usually left as 0.35.'
       />
-      <Input
+      <MemoInput
         label='Reverb'
         inputType='number'
         precision={6}
@@ -108,7 +108,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='Set level of reverb for the current room. Range: 0.0 - 1.0'
       />
-      <Input
+      <MemoInput
         label='Echo'
         inputType='number'
         precision={6}
@@ -119,7 +119,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='Set level of echo for the current room. Range: 0.0 - 1.0'
       />
-      <Input
+      <MemoInput
         label='Sound'
         inputType='text'
         value={fieldState.sound}
@@ -127,7 +127,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='Room sound. Usually left as null_sound'
       />
-      <Input
+      <MemoInput
         label='Unk07'
         inputType='number'
         value={fieldState.unk07}
@@ -135,7 +135,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='No additional information. Usually left as 0.'
       />
-      <Input
+      <MemoInput
         label='Unk08'
         inputType='number'
         value={fieldState.unk08}
@@ -143,7 +143,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='No additional information. Usually left as 0.'
       />
-      <Input
+      <MemoInput
         label='Unk09'
         inputType='number'
         value={fieldState.unk09}
@@ -151,7 +151,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='No additional information. Usually left as 0.'
       />
-      <Input
+      <MemoInput
         label='Unk10'
         inputType='number'
         precision={6}
@@ -162,7 +162,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='No additional information. Usually left as 0.7.'
       />
-      <Input
+      <MemoInput
         label='Unk11'
         inputType='number'
         value={fieldState.unk11}
@@ -170,7 +170,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='No additional information. Usually left as 0.'
       />
-      <Input
+      <MemoInput
         label='Unk12'
         inputType='number'
         value={fieldState.unk12}
@@ -178,7 +178,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='No additional information. Usually left as 50.'
       />
-      <Input
+      <MemoInput
         label='Unk13'
         inputType='text'
         value={fieldState.unk13}
@@ -186,7 +186,7 @@ const Dat151Info: React.FC = () => {
         disabled={activeRoom === null || activeRoom.index === 0}
         infoCircle='Maybe a static emitter hash. Usually left blank.'
       />
-      <Input
+      <MemoInput
         label='SoundSet'
         inputType='text'
         value={fieldState.soundSet}

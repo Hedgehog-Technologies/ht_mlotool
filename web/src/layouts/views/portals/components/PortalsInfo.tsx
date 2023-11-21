@@ -1,6 +1,6 @@
-import { Alert, Stack } from '@mantine/core';
-import { useRoomsStore } from '../../../../store/rooms';
-import RoomPortals from './RoomPortals';
+import { Alert, Stack } from "@mantine/core";
+import { useRoomsStore } from "../../../../store/rooms";
+import RoomPortals from "./RoomPortals";
 
 const PortalsInfo: React.FC = () => {
   const activeRoom = useRoomsStore((state) => state.activeRoom);

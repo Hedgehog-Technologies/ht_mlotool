@@ -2,7 +2,6 @@ import { MantineThemeOverride } from "@mantine/core";
 
 export const customTheme: MantineThemeOverride = {
   colorScheme: 'dark',
-  fontFamily: 'Roboto',
   components: {
     Tooltip: {
       defaultProps: {
@@ -10,4 +9,6 @@ export const customTheme: MantineThemeOverride = {
       },
     },
   },
+  cursorType: 'pointer',
+  fontFamily: 'Roboto'
 };

@@ -1,4 +1,4 @@
-import { EntityDef } from './EntityDef';
+import { EntityDef } from "./EntityDef";
 
 interface PortalDefConstructor {
   isEnabled: boolean[];
