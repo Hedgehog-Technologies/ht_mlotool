@@ -1,13 +1,13 @@
-import './index.css';
-import { MantineProvider } from '@mantine/core';
-import { ModalsProvider } from '@mantine/modals';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { HashRouter } from 'react-router-dom';
-import App from './App';
-import { customTheme } from './theme';
-import { isEnvBrowser } from './utils/misc';
-import { debugData } from './utils/debugData';
+import { MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
+import React from "react";
+import ReactDOM from "react-dom";
+import { HashRouter } from "react-router-dom";
+import App from "./App";
+import "./index.css";
+import { customTheme } from "./theme";
+import { debugData } from "./utils/debugData";
+import { isEnvBrowser } from "./utils/misc";
 
 debugData([
   {

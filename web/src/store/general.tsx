@@ -1,6 +1,6 @@
-import create, { GetState, SetState } from 'zustand';
-import { BooleanField, } from '.';
-import { MLODef } from '../types/MLODef';
+import create, { GetState, SetState } from "zustand";
+import { BooleanField, } from ".";
+import { MLODef } from "../types/MLODef";
 
 export interface GeneralStoreState {
   mlo: MLODef | null;

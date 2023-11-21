@@ -1,5 +1,5 @@
-import { Select, Text } from '@mantine/core';
-import { RoomsStoreState, useRoomsSetters, useRoomsStore } from '../../../store/rooms';
+import { Select } from "@mantine/core";
+import { RoomsStoreState, useRoomsSetters, useRoomsStore } from "../../../store/rooms";
 
 const RoomSelect: React.FC = () => {
   const roomSelectList = useRoomsStore((state) => state.roomSelectList);

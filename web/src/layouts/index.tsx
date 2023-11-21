@@ -1,15 +1,15 @@
-import { Box, Stack, Tabs } from '@mantine/core';
-import { TbBox, TbDoor, TbHome } from 'react-icons/tb';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { useNuiEvent } from '../hooks/useNuiEvent';
-import { useGeneralStore } from '../store/general';
-import { useRoomsStore } from '../store/rooms';
-import { LuaRoom } from '../types';
-import { MLODef } from '../types/MLODef';
-import { RoomDef, RoomDefConstructor } from '../types/RoomDef';
-import General from './views/general';
-import Portals from './views/portals';
-import Rooms from './views/rooms';
+import { Box, Stack, Tabs } from "@mantine/core";
+import { TbBox, TbDoor, TbHome } from "react-icons/tb";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useNuiEvent } from "../hooks/useNuiEvent";
+import { useGeneralStore } from "../store/general";
+import { useRoomsStore } from "../store/rooms";
+import { LuaRoom } from "../types";
+import { MLODef } from "../types/MLODef";
+import { RoomDef, RoomDefConstructor } from "../types/RoomDef";
+import General from "./views/general";
+import Portals from "./views/portals";
+import Rooms from "./views/rooms";
 
 const Occlusion: React.FC = () => {
   const navigate = useNavigate();
