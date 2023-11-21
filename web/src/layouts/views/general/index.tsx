@@ -1,4 +1,4 @@
-import { Box, Divider, Stack } from "@mantine/core";
+import { Divider, Stack } from "@mantine/core";
 import Generate from "./components/Generate";
 import Info from "./components/Info";
 import Settings from "./components/Settings";
