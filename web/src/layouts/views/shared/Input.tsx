@@ -1,4 +1,5 @@
 import { Box, Checkbox, Grid, NumberInput, TextInput, ThemeIcon, Tooltip } from "@mantine/core";
+import React from "react";
 import { BsQuestionCircle } from "react-icons/bs";
 
 interface Props {
@@ -79,3 +80,4 @@ const Input: React.FC<Props> = ({ label, inputType, infoCircle, span, value, set
 };
 
 export default Input;
+export const MemoInput = React.memo(Input);

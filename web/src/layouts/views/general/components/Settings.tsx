@@ -1,9 +1,8 @@
-import { Box, Center, SimpleGrid } from "@mantine/core";
+import { Box, SimpleGrid } from "@mantine/core";
 import { useGeneralSetters, useGeneralStore } from "../../../../store/general";
-import TooltipSwitch from "./TooltipSwitch";
+import { MemoTooltipSwitch } from "./TooltipSwitch";
 
 const Settings: React.FC = () => {
-  // const batchEdit = useGeneralStore((state) => state.batchEdit);
   const enableDebug = useGeneralStore((state) => state.enableDebug);
   const enableAudioOcclusion = useGeneralStore((state) => state.enableAudioOcclusion);
   const enableDat151 = useGeneralStore((state) => state.enableDat151);
@@ -13,19 +12,19 @@ const Settings: React.FC = () => {
   return (
     <Box>
       <SimpleGrid cols={2}>
-        <TooltipSwitch
+        <MemoTooltipSwitch
           label='Generate Audio Occlusion File'
           infoCircle='Sets whether or not to generate the audio occlusion (.ymt.pso.xml) file'
           value={enableAudioOcclusion ?? true}
           toggle={() => toggleSwitch('enableAudioOcclusion')}
         />
-        <TooltipSwitch
+        <MemoTooltipSwitch
           label='Enable Debug Output'
           infoCircle='Sets whether or not to include debug comments in output file(s)'
           value={enableDebug ?? false}
           toggle={() => toggleSwitch('enableDebug')}
         />
-        <TooltipSwitch
+        <MemoTooltipSwitch
           label='Generate Dat151 File'
           infoCircle='Sets whether or not to generate the dat151 (game.dat151.rel.xml) file'
           value={enableDat151 ?? true}

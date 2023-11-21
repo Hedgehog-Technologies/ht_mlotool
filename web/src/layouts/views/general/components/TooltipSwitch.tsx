@@ -1,5 +1,6 @@
 import { Box, Group, Switch, Tooltip } from "@mantine/core";
-import { BsQuestionCircle } from 'react-icons/bs';
+import React from "react";
+import { BsQuestionCircle } from "react-icons/bs";
 
 interface Props {
   infoCircle?: string;
@@ -22,3 +23,4 @@ const TooltipSwitch: React.FC<Props> = ({ infoCircle, label, value, toggle }) =>
 };
 
 export default TooltipSwitch;
+export const MemoTooltipSwitch = React.memo(TooltipSwitch)
