@@ -21,7 +21,7 @@ const useStyles = createStyles((theme) => ({
 
   main: {
     width: 800,
-    height: 650,
+    height: 700,
     backgroundColor: theme.colors.dark[8],
     borderRadius: theme.radius.sm,
   },
@@ -84,7 +84,7 @@ const App: React.FC = () => {
                 onClick={handleExit}
               />
             </Group>
-            <Divider />
+            <Divider size='sm' />
             <Routes>
               <Route path="/occlusion/*" element={<Occlusion />} />
             </Routes>
