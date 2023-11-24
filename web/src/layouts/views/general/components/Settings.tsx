@@ -19,7 +19,7 @@ const Settings: React.FC = () => {
           toggle={() => toggleSwitch('enableAudioOcclusion')}
         />
         <MemoTooltipSwitch
-          label='Enable Debug Output'
+          label='Enable Debug Comments'
           infoCircle='Sets whether or not to include debug comments in output file(s)'
           value={enableDebug ?? false}
           toggle={() => toggleSwitch('enableDebug')}
