@@ -100,7 +100,7 @@ local function LoadMLOData(source, filename, nameHashString, openUI)
     end
 end
 
--- ##### EVENTS AND CALLBACKS ##### --
+-- ##### EVENTS & CALLBACKS ##### --
 
 RegisterNetEvent('ht_mloaudio:outputResultFile', function(filename, filetype, ymtData, debug)
     local source = source

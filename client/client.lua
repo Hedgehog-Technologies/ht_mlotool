@@ -1,5 +1,7 @@
 local mloCache = {}
 
+-- ##### FUNCTIONS ##### --
+
 local function openMLOInterface(mloData)
     local currentRoomHash = GetRoomKeyFromEntity(cache.ped)
     local currentRoomIndex = GetInteriorRoomIndexByHash(mloData.interiorId, currentRoomHash)
@@ -47,6 +49,8 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
         TriggerLatentServerEvent('ht_mloaudio:saveMLOData', 100000, mloData)
     end
 end
+
+-- ##### EVENTS & CALLBACKS ##### --
 
 lib.callback.register('ht_mloaudio:getMLONameHash', function()
     local interiorId = GetInteriorFromEntity(cache.ped)
