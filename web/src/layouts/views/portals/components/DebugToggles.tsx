@@ -1,5 +1,7 @@
 import { Group, Stack, Switch, Text } from "@mantine/core";
 import { usePortalsDebugSetters, usePortalsDebugStore } from "../../../../store/portals";
+import { useEffect } from "react";
+import { fetchNui } from "../../../../utils/fetchNui";
 
 const DebugToggles: React.FC = () => {
   const enableInfo = usePortalsDebugStore((state) => state.enablePortalInfo);
@@ -7,6 +9,10 @@ const DebugToggles: React.FC = () => {
   const enableFill = usePortalsDebugStore((state) => state.enablePortalFill);
 
   const toggleSwitch = usePortalsDebugSetters((setter) => setter.toggleSwitch);
+
+  useEffect(() => {
+    fetchNui('ht_mlotool:debugDrawToggle', { info: enableInfo, outline: enableOutline, fill: enableFill });
+  }, [enableInfo, enableOutline, enableFill])
 
   return (
     <Stack>

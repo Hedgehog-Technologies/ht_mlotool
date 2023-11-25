@@ -46,7 +46,7 @@ const App: React.FC = () => {
     if (data === undefined) return navigate('/occlusion/general');
   });
 
-  useNuiEvent('openMLO', (data) => {
+  useNuiEvent('ht_mlotool:openMLO', (data) => {
     setVisible(true);
 
     const mloData = new MLODef(data.mloData);
@@ -65,7 +65,7 @@ const App: React.FC = () => {
 
   const handleExit = () => {
     setVisible(false);
-    fetchNui('exitMLO', { mloData: mlo });
+    fetchNui('ht_mlotool:exitMLO', { mloData: mlo });
   };
 
   useHotkeys([

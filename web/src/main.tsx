@@ -18,7 +18,7 @@ debugData([
 
 debugData([
   {
-    action: 'openMLO',
+    action: 'ht_mlotool:openMLO',
     data: {
       mloData: {
         interiorId: 9001,

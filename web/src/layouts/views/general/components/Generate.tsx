@@ -25,7 +25,7 @@ const Generate: React.FC = () => {
   const handleSubmit = () => {
     if (data151 || audioOcclusion) {
       let combinedMLO = { ...mlo, rooms: roomList };
-      fetchNui('generateAudioFiles', { mlo: combinedMLO, generateOcclusion: audioOcclusion, generateDat151: data151, debug: debug });
+      fetchNui('ht_mlotool:generateAudioFiles', { mlo: combinedMLO, generateOcclusion: audioOcclusion, generateDat151: data151, debug: debug });
       SetButton('green', 'Audio Occlusion File(s) Generated');
       setTimeout(ResetButton, 5000);
     } else {
