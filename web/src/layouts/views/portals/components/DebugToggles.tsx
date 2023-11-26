@@ -1,17 +1,18 @@
 import { Group, Stack, Switch, Text } from "@mantine/core";
-import { usePortalsDebugSetters, usePortalsDebugStore } from "../../../../store/portals";
 import { useEffect } from "react";
+import { usePortalsSetters, usePortalsStore } from "../../../../store/portals";
 import { fetchNui } from "../../../../utils/fetchNui";
 
 const DebugToggles: React.FC = () => {
-  const enableInfo = usePortalsDebugStore((state) => state.enablePortalInfo);
-  const enableOutline = usePortalsDebugStore((state) => state.enablePortalOutline);
-  const enableFill = usePortalsDebugStore((state) => state.enablePortalFill);
+  const enableInfo = usePortalsStore((state) => state.enablePortalInfo);
+  const enableOutline = usePortalsStore((state) => state.enablePortalOutline);
+  const enableFill = usePortalsStore((state) => state.enablePortalFill);
+  const navigatedPortal = usePortalsStore((state) => state.navigatedPortal);
 
-  const toggleSwitch = usePortalsDebugSetters((setter) => setter.toggleSwitch);
+  const toggleSwitch = usePortalsSetters((setter) => setter.toggleSwitch);
 
   useEffect(() => {
-    fetchNui('ht_mlotool:debugDrawToggle', { info: enableInfo, outline: enableOutline, fill: enableFill });
+    fetchNui('ht_mlotool:debugDrawToggle', { info: enableInfo, outline: enableOutline, fill: enableFill, navigate: navigatedPortal });
   }, [enableInfo, enableOutline, enableFill])
 
   return (

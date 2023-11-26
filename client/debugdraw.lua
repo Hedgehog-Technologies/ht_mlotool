@@ -1,6 +1,7 @@
 local drawPortalInfo = false
 local drawPortalOutline = false
 local drawPortalFill = false
+local drawNavigate = nil
 
 local mloInteriorId = nil
 local mloPosition = nil
@@ -98,17 +99,18 @@ local function updateDebugMLOInfo()
 
             mloPortalConnections[portalId] = { GetInteriorPortalRoomFrom(mloInteriorId, portalId), GetInteriorPortalRoomTo(mloInteriorId, portalId) }
         end
-    else
+    elseif currentInteriorId <= 0 then
         resetMLODebugData()
     end
 end
 
-function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill)
+function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill, navigatedPortal)
     drawPortalInfo = enablePortalInfo
     drawPortalOutline = enablePortalOutline
     drawPortalFill = enablePortalFill
+    drawNavigate = navigatedPortal
 
-    if not drawInterval and (drawPortalInfo or drawPortalOutline or drawPortalFill) then
+    if not drawInterval and (drawPortalInfo or drawPortalOutline or drawPortalFill or drawNavigate) then
         updateDebugMLOInfo()
 
         mloInterval = SetInterval(updateDebugMLOInfo, 1000)
@@ -120,6 +122,7 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
             if not mloInteriorId or not mloPosition or not mloRotation or not mloPortalCount
                 or not mloPortalCorners or not mloPortalCrossVectors or not mloPortalConnections
             then
+                print('waiting...', mloInteriorId, mloPosition, mloRotation, mloPortalCount)
                 Wait(500)
                 return
             end
@@ -156,9 +159,16 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
                         DrawPoly(corners[3].x, corners[3].y, corners[3].z, corners[1].x, corners[1].y, corners[1].z, corners[0].x, corners[0].y, corners[0].z, 0, 0, 180, 150)
                     end
                 end
+
+                if drawNavigate == portalId then
+                    -- local angle = math.atan2(crossVector.x - pedCoords.x, crossVector.y - pedCoords.y) * 180 / math.pi
+                    DrawMarker(26, pedCoords.x, pedCoords.y, pedCoords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0, 0, 255, 175, false, false, 0, false, false, false, false)
+                    -- DrawMarker(2, point.coords.x, point.coords.y, point.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 150, 30, 30, 222, false, false, 0, true, false, false, false)
+                end
             end
         end, 0)
-    elseif drawInterval and not drawPortalInfo and not drawPortalOutline and not drawPortalFill then
+    elseif drawInterval and not drawPortalInfo and not drawPortalOutline and not drawPortalFill and not drawNavigate then
+        print('clearing intervals')
         ClearInterval(drawInterval)
         drawInterval = nil
 

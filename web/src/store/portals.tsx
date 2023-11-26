@@ -1,25 +1,41 @@
 import create, { GetState, SetState } from "zustand";
-import { BooleanField } from ".";
+import { BooleanField, NumberField } from ".";
 
-export interface PortalsDebugStoreState {
+export interface PortalsStoreState {
+  // DebugToggles
   enablePortalOutline: BooleanField;
   enablePortalFill: BooleanField;
   enablePortalInfo: BooleanField;
+
+  // PortalToggles
+  navigatedPortal: NumberField;
 };
 
-interface PortalsDebugStateSetters {
+interface PortalsStateSetters {
+  // DebugToggles
   toggleSwitch: (type: 'enablePortalOutline' | 'enablePortalFill' | 'enablePortalInfo') => void;
+
+  // PortalToggles
+  setNavigatedPortal: (portal: PortalsStoreState['navigatedPortal']) => void;
 };
 
-export const usePortalsDebugStore = create<PortalsDebugStoreState>(() => ({
+export const usePortalsStore = create<PortalsStoreState>(() => ({
+  // DebugToggles
   enablePortalOutline: false,
   enablePortalFill: false,
-  enablePortalInfo: false
+  enablePortalInfo: false,
+
+  // PortalToggles
+  navigatedPortal: null
 }));
 
-export const defaultPortalsDebugState = usePortalsDebugStore.getState();
+export const defaultPortalsState = usePortalsStore.getState();
 
-export const usePortalsDebugSetters = create<PortalsDebugStateSetters>((set: SetState<PortalsDebugStateSetters>, get: GetState<PortalsDebugStateSetters>) => ({
+export const usePortalsSetters = create<PortalsStateSetters>((set: SetState<PortalsStateSetters>, get: GetState<PortalsStateSetters>) => ({
+  // DebugToggles
   // @ts-ignore
-  toggleSwitch: (toggleType) => usePortalsDebugStore.setState((state) => ({ [toggleType]: !state[toggleType] }))
+  toggleSwitch: (toggleType) => usePortalsStore.setState((state) => ({ [toggleType]: !state[toggleType] })),
+
+  // PortalToggles
+  setNavigatedPortal: (portal) => usePortalsStore.setState({ navigatedPortal: portal })
 }));

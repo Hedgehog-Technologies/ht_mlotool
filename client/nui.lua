@@ -25,7 +25,7 @@ end)
 RegisterNUICallback('ht_mlotool:debugDrawToggle', function(data, cb)
     cb({})
 
-    UpdateDebugDraw(data.info, data.outline, data.fill)
+    UpdateDebugDraw(data.info, data.outline, data.fill, data.navigate)
 end)
 
 --- A simple wrapper around SendNUIMessage that you can use to

@@ -1,6 +1,6 @@
 import { Box, SimpleGrid } from "@mantine/core";
+import { MemoTooltipSwitch } from "../../shared/TooltipSwitch";
 import { useGeneralSetters, useGeneralStore } from "../../../../store/general";
-import { MemoTooltipSwitch } from "./TooltipSwitch";
 
 const Settings: React.FC = () => {
   const enableDebug = useGeneralStore((state) => state.enableDebug);
