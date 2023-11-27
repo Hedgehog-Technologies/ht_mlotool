@@ -10,9 +10,36 @@ local mloPortalCount = nil
 local mloPortalCorners = nil
 local mloPortalCrossVectors = nil
 local mloPortalConnections = nil
+local mloPortalNavEnabled = nil
 
 local drawInterval = nil
 local mloInterval = nil
+
+-- ##### Optimization ##### --
+
+local AddTextComponentSubstringPlayerName = AddTextComponentSubstringPlayerName
+local BeginTextCommandDisplayText = BeginTextCommandDisplayText
+local DrawLine = DrawLine
+local DrawMarker = DrawMarker
+local DrawPoly = DrawPoly
+local EndTextCommandDisplayText = EndTextCommandDisplayText
+local GetEntityCoords = GetEntityCoords
+local GetFinalRenderedCamCoord = GetFinalRenderedCamCoord
+local GetGameplayCamFov = GetGameplayCamFov
+local GetInteriorFromEntity = GetInteriorFromEntity
+local GetInteriorPortalCornerPosition = GetInteriorPortalCornerPosition
+local GetInteriorPortalCount = GetInteriorPortalCount
+local GetInteriorPortalRoomFrom = GetInteriorPortalRoomFrom
+local GetInteriorPortalRoomTo = GetInteriorPortalRoomTo
+local GetInteriorPosition = GetInteriorPosition
+local GetInteriorRotation = GetInteriorRotation
+local GetScreenCoordFromWorldCoord = GetScreenCoordFromWorldCoord
+local SetTextCentre = SetTextCentre
+local SetTextDropShadow = SetTextDropShadow
+local SetTextOutline = SetTextOutline
+local SetTextScale = SetTextScale
+
+-- ##### Functions ##### --
 
 local function draw3dText(coords, text)
     local onScreen, screenX, screenY = GetScreenCoordFromWorldCoord(coords.x, coords.y, coords.z)
@@ -75,6 +102,12 @@ local function updateDebugMLOInfo()
     local currentInteriorId = GetInteriorFromEntity(cache.ped)
 
     if currentInteriorId > 0 and currentInteriorId ~= mloInteriorId then
+        if mloPortalNavEnabled ~= nil and mloPortalNavEnabled ~= currentInteriorId then
+            SendReactMessage('ht_mlotool:cancelNavigation', {})
+            mloPortalNavEnabled = nil
+            drawNavigate = nil
+        end
+
         mloInteriorId = currentInteriorId
         local rotX, rotY, rotZ, rotW = GetInteriorRotation(mloInteriorId)
         mloRotation = quat(rotW, rotX, rotY, rotZ)
@@ -122,7 +155,6 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
             if not mloInteriorId or not mloPosition or not mloRotation or not mloPortalCount
                 or not mloPortalCorners or not mloPortalCrossVectors or not mloPortalConnections
             then
-                print('waiting...', mloInteriorId, mloPosition, mloRotation, mloPortalCount)
                 Wait(500)
                 return
             end
@@ -161,19 +193,28 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
                 end
 
                 if drawNavigate == portalId then
-                    -- local angle = math.atan2(crossVector.x - pedCoords.x, crossVector.y - pedCoords.y) * 180 / math.pi
-                    DrawMarker(26, pedCoords.x, pedCoords.y, pedCoords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0, 0, 255, 175, false, false, 0, false, false, false, false)
-                    -- DrawMarker(2, point.coords.x, point.coords.y, point.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 150, 30, 30, 222, false, false, 0, true, false, false, false)
+                    if not mloPortalNavEnabled then
+                        mloPortalNavEnabled = mloInteriorId
+                    end
+
+                    local dirX = pedCoords.x - crossVector.x
+                    local dirY = pedCoords.y - crossVector.y
+                    local dirZ = pedCoords.z - crossVector.z
+                    DrawMarker(26, pedCoords.x, pedCoords.y, pedCoords.z, dirX, dirY, dirZ, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0, 0, 255, 175, false, false, 0, false, '', '', false)
                 end
             end
         end, 0)
-    elseif drawInterval and not drawPortalInfo and not drawPortalOutline and not drawPortalFill and not drawNavigate then
-        print('clearing intervals')
-        ClearInterval(drawInterval)
-        drawInterval = nil
+    elseif not drawPortalInfo and not drawPortalOutline and not drawPortalFill and not drawNavigate then
+        if drawInterval then
+            ClearInterval(drawInterval)
+            drawInterval = nil
+        end
 
-        ClearInterval(mloInterval)
-        mloInterval = nil
+        if mloInterval then
+            ClearInterval(mloInterval)
+            mloInterval = nil
+        end
+
         resetMLODebugData()
     end
 end
