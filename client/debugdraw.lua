@@ -200,7 +200,7 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
                     local dirX = pedCoords.x - crossVector.x
                     local dirY = pedCoords.y - crossVector.y
                     local dirZ = pedCoords.z - crossVector.z
-                    DrawMarker(26, pedCoords.x, pedCoords.y, pedCoords.z, dirX, dirY, dirZ, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0, 0, 255, 175, false, false, 0, false, '', '', false)
+                    DrawMarker(26, pedCoords.x, pedCoords.y, pedCoords.z, dirX, dirY, dirZ, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 7, 232, 225, 200, false, false, 0, false, false, false, false)
                 end
             end
         end, 0)

@@ -64,7 +64,7 @@ const PortalToggles: React.FC<Props> = ({ portal }) => {
     <Stack align='center'>
       <MemoTooltipSwitch
         label='Navigate to Portal'
-        infoCircle='Enables a debug arrow at your feet directing you towards the portal specified'
+        infoCircle='Enables a debug arrow around your ped that will direct you towards the portal specified'
         value={navigate}
         toggle={() => setNavigate(!navigate)}
       />
