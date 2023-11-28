@@ -145,7 +145,7 @@ debugData([
           {
             fromRoomIndex: 2,
             toRoomIndex: 1,
-            mloPortalIndex: 1,
+            mloPortalIndex: 2,
             flags: 0,
             isEnabled: [false, false],
             entities: [
@@ -161,36 +161,29 @@ debugData([
           {
             fromRoomIndex: 2,
             toRoomIndex: 1,
-            mloPortalIndex: 1,
+            mloPortalIndex: 3,
             flags: 0,
             isEnabled: [false, false],
-            entities: [
-              {
-                maxOcclusion: 1.0,
-                modelHashKey: 83737373,
-                modelName: 'office1',
-                isDoor: true,
-                isGlass: false,
-              }
-            ]
+            entities: []
           },{
             fromRoomIndex: 2,
             toRoomIndex: 1,
-            mloPortalIndex: 1,
+            mloPortalIndex: 4,
             flags: 0,
             isEnabled: [false, false],
             entities: [
               {
-                maxOcclusion: 1.0,
-                modelHashKey: 83737373,
-                modelName: 'office1',
-                isDoor: true,
-                isGlass: false,
+                maxOcclusion: 0.7,
+                modelHashKey: 87290120,
+                modelName: 'window1',
+                isDoor: false,
+                isGlass: true,
               }
             ]
           } 
         ]
-      }
+      },
+      roomIndex: 1
     }
   }
 ], 2000);

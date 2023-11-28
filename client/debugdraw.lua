@@ -51,11 +51,7 @@ local function draw3dText(coords, text)
         local scale = (1 / dist) * fov
 
         SetTextScale(0.0 * scale, 1.1 * scale)
-        -- SetTextFont(0)
-        -- SetTextProportional(true)
-        -- SetTextDropshadow(0, 0, 0, 0, 255) -- maybe no-op?
-        SetTextDropShadow() -- maybe no-op? maybe override previous line?
-        -- SetTextEdge(2, 0, 0, 0, 150)
+        SetTextDropShadow()
         SetTextOutline()
         SetTextCentre(true)
 
@@ -65,10 +61,17 @@ local function draw3dText(coords, text)
     end
 end
 
+--- Vector3 Linear Interpolation
+---@param a vector3 Starting position
+---@param b vector3 Ending position
+---@param t number value to interpolate between a and b
 local function lerp(a, b, t)
     return a + (b - a) * t
 end
 
+--- Quaternion Multiplication
+---@param a quat
+---@param b vector3
 local function qMult(a, b)
     local axx = a.x * 2
     local ayy = a.y * 2
@@ -167,7 +170,6 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
                     if drawPortalInfo then
                         local roomFrom, roomTo = table.unpack(mloPortalConnections[portalId])
 
-                        -- adjust the z offsets?
                         draw3dText(vec3(crossVector.x, crossVector.y, crossVector.z + 0.15), ('~b~Portal ~w~%s'):format(portalId))
                         draw3dText(vec3(crossVector.x, crossVector.y, crossVector.z), ('~b~From ~w~%s~b~ To ~w~%s'):format(roomFrom, roomTo))
                     end
@@ -185,6 +187,7 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
                     end
 
                     if drawPortalFill then
+                        -- Both sets are needed so the fill can be seen from both sides of the portal
                         DrawPoly(corners[0].x, corners[0].y, corners[0].z, corners[1].x, corners[1].y, corners[1].z, corners[2].x, corners[2].y, corners[2].z, 0, 0, 180, 150)
                         DrawPoly(corners[0].x, corners[0].y, corners[0].z, corners[2].x, corners[2].y, corners[2].z, corners[3].x, corners[3].y, corners[3].z, 0, 0, 180, 150)
                         DrawPoly(corners[3].x, corners[3].y, corners[3].z, corners[2].x, corners[2].y, corners[2].z, corners[1].x, corners[1].y, corners[1].z, 0, 0, 180, 150)
