@@ -5,11 +5,11 @@ lua54      'yes'
 use_experimental_fxv2_oal 'yes'
 
 --[[ Resource Information ]]--
-name       'ht_mloaudio'
+name       'ht_mlotool'
 version    '0.0.7'
 license    'MIT'
 author     'Hedgehog Technologies'
-repository 'https://github.com/Hedgehog-Technologies/ht_mloaudio'
+repository 'https://github.com/Hedgehog-Technologies/ht_mlotool'
 
 
 --[[ Manifest ]]--

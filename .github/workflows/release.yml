@@ -69,14 +69,14 @@ jobs:
 
       - name: Bundle files
         run: |
-          mkdir -p ./temp/ht_mloaudio
-          mkdir -p ./temp/ht_mloaudio/web/
-          mkdir -p ./temp/ht_mloaudio/saved_mlos/
-          mkdir -p ./temp/ht_mloaudio/generated_files/
-          cp ./{LICENSE,README.md,fxmanifest.lua,utils.lua} ./temp/ht_mloaudio
-          cp -r ./{docs,client,server} ./temp/ht_mloaudio
-          cp -r ./web/build ./temp/ht_mloaudio/web/
-          cd ./temp && zip -r ../ht_mloaudio.zip ./ht_mloaudio
+          mkdir -p ./temp/ht_mlotool
+          mkdir -p ./temp/ht_mlotool/web/
+          mkdir -p ./temp/ht_mlotool/saved_mlos/
+          mkdir -p ./temp/ht_mlotool/generated_files/
+          cp ./{LICENSE,README.md,fxmanifest.lua,utils.lua} ./temp/ht_mlotool
+          cp -r ./{docs,client,server} ./temp/ht_mlotool
+          cp -r ./web/build ./temp/ht_mlotool/web/
+          cd ./temp && zip -r ../ht_mlotool.zip ./ht_mlotool
 
       - name: Create Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
@@ -85,7 +85,7 @@ jobs:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           title: ${{ env.RELEASE_VERSION }}
           prerelease: false
-          files: ht_mloaudio.zip
+          files: ht_mlotool.zip
 
         env:
           CI: false
