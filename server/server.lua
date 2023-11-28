@@ -96,13 +96,13 @@ local function LoadMLOData(source, filename, nameHashString, openUI)
     end
 
     if data ~= nil and tostring(data.nameHash) == nameHashString then
-        TriggerLatentClientEvent('ht_mloaudio:loadMLOData', source, 100000, data, openUI)
+        TriggerLatentClientEvent('ht_mlotool:loadMLOData', source, 100000, data, openUI)
     end
 end
 
--- ##### EVENTS AND CALLBACKS ##### --
+-- ##### EVENTS & CALLBACKS ##### --
 
-RegisterNetEvent('ht_mloaudio:outputResultFile', function(filename, filetype, ymtData, debug)
+RegisterNetEvent('ht_mlotool:outputResultFile', function(filename, filetype, ymtData, debug)
     local source = source
     local success = writeFile(source, generatedFilesDirectoryPath, filename, filetype, ToXml(ymtData, debug)) --SaveResourceFile(cache.resource, filename, ToXml(ymtData, debug), -1)
 
@@ -111,7 +111,7 @@ RegisterNetEvent('ht_mloaudio:outputResultFile', function(filename, filetype, ym
     lib.notify(source, { type = type, title = title:format(filename) })
 end)
 
-RegisterNetEvent('ht_mloaudio:saveMLOData', function(mloInfo)
+RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
     local source = source
     local filename = mloInfo.saveName ~= '' and mloInfo.saveName or mloFilenameLookup[tostring(mloInfo.nameHash)] or mloInfo.name:gsub('hash_', '')
     mloFilenameLookup[tostring(mloInfo.nameHash)] = filename
@@ -127,7 +127,7 @@ RegisterNetEvent('ht_mloaudio:saveMLOData', function(mloInfo)
     end
 end)
 
-lib.callback.register('ht_mloaudio:requestMLOSaveData', function(source, nameHashString)
+lib.callback.register('ht_mlotool:requestMLOSaveData', function(source, nameHashString)
     local filename = mloFilenameLookup[nameHashString]
 
     -- No known save file
@@ -139,7 +139,7 @@ end)
 -- ##### COMMANDS ##### --
 
 lib.addCommand('savemlo', {
-    help = '[Admin] Save current MLO audio object to file',
+    help = '[Admin] Save current MLO object to file',
     restricted = 'group.admin',
     params = {
         {
@@ -151,7 +151,7 @@ lib.addCommand('savemlo', {
     }
 }, function(source, args, raw)
     local name = args and args.name
-    TriggerClientEvent('ht_mloaudio:saveCurrentMLO', source, name)
+    TriggerClientEvent('ht_mlotool:saveCurrentMLO', source, name)
 end)
 
 lib.addCommand('loadmlo', {
@@ -166,7 +166,7 @@ lib.addCommand('loadmlo', {
         }
     }
 }, function(source, args, raw)
-    local nameHash = lib.callback.await('ht_mloaudio:getMLONameHash', source)
+    local nameHash = lib.callback.await('ht_mlotool:getMLONameHash', source)
 
     if nameHash ~= nil then
         local nameHashString = tostring(nameHash)
@@ -193,7 +193,7 @@ lib.addCommand('openmlo', {
 
     if args.force then
         if args.force == 1 then
-            local nameHash = lib.callback.await('ht_mloaudio:getMLONameHash', source)
+            local nameHash = lib.callback.await('ht_mlotool:getMLONameHash', source)
 
             if nameHash ~= nil then
                 local filename = mloFilenameLookup[tostring(nameHash)]
@@ -213,7 +213,7 @@ lib.addCommand('openmlo', {
         end
     end
 
-    TriggerLatentClientEvent('ht_mloaudio:openMLO', source, 100000, data)
+    TriggerLatentClientEvent('ht_mlotool:openMLO', source, 100000, data)
 end)
 
 -- ##### INITIALIZATION THREAD ##### --

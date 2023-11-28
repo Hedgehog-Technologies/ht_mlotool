@@ -1,6 +1,6 @@
 import { Box, SimpleGrid } from "@mantine/core";
+import { MemoTooltipSwitch } from "../../shared/TooltipSwitch";
 import { useGeneralSetters, useGeneralStore } from "../../../../store/general";
-import { MemoTooltipSwitch } from "./TooltipSwitch";
 
 const Settings: React.FC = () => {
   const enableDebug = useGeneralStore((state) => state.enableDebug);
@@ -19,7 +19,7 @@ const Settings: React.FC = () => {
           toggle={() => toggleSwitch('enableAudioOcclusion')}
         />
         <MemoTooltipSwitch
-          label='Enable Debug Output'
+          label='Enable Debug Comments'
           infoCircle='Sets whether or not to include debug comments in output file(s)'
           value={enableDebug ?? false}
           toggle={() => toggleSwitch('enableDebug')}

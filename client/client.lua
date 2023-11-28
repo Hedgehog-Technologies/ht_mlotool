@@ -1,5 +1,7 @@
 local mloCache = {}
 
+-- ##### FUNCTIONS ##### --
+
 local function openMLOInterface(mloData)
     local currentRoomHash = GetRoomKeyFromEntity(cache.ped)
     local currentRoomIndex = GetInteriorRoomIndexByHash(mloData.interiorId, currentRoomHash)
@@ -24,7 +26,7 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
             local aoFileName = tostring(mlo.uintProxyHash)
             local aoFileType = 'ymt.pso.xml'
             local ymtData = EncodeAudioOcclusion(mlo, paths)
-            TriggerLatentServerEvent('ht_mloaudio:outputResultFile', 100000, aoFileName, aoFileType, ymtData, debug)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 100000, aoFileName, aoFileType, ymtData, debug)
         end
 
         if generateDat151 then
@@ -41,14 +43,16 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
             local datFileName = ('%s_game'):format(mloName)
             local datFileType = 'dat151.rel.xml'
             local dat151Data = EncodeDat151(mlo)
-            TriggerLatentServerEvent('ht_mloaudio:outputResultFile', 100000, datFileName, datFileType, dat151Data, debug)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 100000, datFileName, datFileType, dat151Data, debug)
         end
 
-        TriggerLatentServerEvent('ht_mloaudio:saveMLOData', 100000, mloData)
+        TriggerLatentServerEvent('ht_mlotool:saveMLOData', 100000, mloData)
     end
 end
 
-lib.callback.register('ht_mloaudio:getMLONameHash', function()
+-- ##### EVENTS & CALLBACKS ##### --
+
+lib.callback.register('ht_mlotool:getMLONameHash', function()
     local interiorId = GetInteriorFromEntity(cache.ped)
     local nameHash = nil
 
@@ -59,7 +63,7 @@ lib.callback.register('ht_mloaudio:getMLONameHash', function()
     return nameHash
 end)
 
-RegisterNetEvent('ht_mloaudio:openMLO', function(data)
+RegisterNetEvent('ht_mlotool:openMLO', function(data)
     if IsNuiFocused() then
         return lib.notify({
             type = 'error',
@@ -88,7 +92,7 @@ RegisterNetEvent('ht_mloaudio:openMLO', function(data)
     local hasData = nil
     if mlo == nil then
         local _, nameHash = GetInteriorLocationAndNamehash(interiorId)
-        hasData = lib.callback.await('ht_mloaudio:requestMLOSaveData', false, tostring(nameHash))
+        hasData = lib.callback.await('ht_mlotool:requestMLOSaveData', false, tostring(nameHash))
 
         -- Data was found, we'll end execution here and handle the soon-to-be-incoming latent net event elsewhere
         -- $TODO - Look into a latent callback for ox_lib 
@@ -112,7 +116,7 @@ RegisterNetEvent('ht_mloaudio:openMLO', function(data)
     openMLOInterface(mlo)
 end)
 
-RegisterNetEvent('ht_mloaudio:saveCurrentMLO', function(name)
+RegisterNetEvent('ht_mlotool:saveCurrentMLO', function(name)
     local interiorId = GetInteriorFromEntity(cache.ped)
     local mlo = mloCache[interiorId]
 
@@ -129,10 +133,10 @@ RegisterNetEvent('ht_mloaudio:saveCurrentMLO', function(name)
 
     if name ~= nil then mlo.saveName = name end
 
-    TriggerLatentServerEvent('ht_mloaudio:saveMLOData', 100000, mlo)
+    TriggerLatentServerEvent('ht_mlotool:saveMLOData', 100000, mlo)
 end)
 
-RegisterNetEvent('ht_mloaudio:loadMLOData', function(mloData, openUI)
+RegisterNetEvent('ht_mlotool:loadMLOData', function(mloData, openUI)
     if mloData == nil then return end
 
     local interiorId = GetInteriorFromEntity(cache.ped)
@@ -148,3 +152,7 @@ RegisterNetEvent('ht_mloaudio:loadMLOData', function(mloData, openUI)
         openMLOInterface(mloData)
     end
 end)
+
+lib.addKeybind({
+    name = 'ht_mlotool:'
+})

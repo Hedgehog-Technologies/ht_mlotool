@@ -1,14 +1,15 @@
 import { Box, CloseButton, createStyles, Divider, Group, Title, Transition } from "@mantine/core";
+import { useHotkeys } from "@mantine/hooks";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useNuiEvent } from "./hooks/useNuiEvent";
 import Occlusion from "./layouts";
 import { useVisibility } from "./providers/VisibilityProvider";
 import { useGeneralStore } from "./store/general";
+import { usePortalsSetters } from "./store/portals";
 import { useRoomsStore } from "./store/rooms";
 import { MLODef } from "./types/MLODef";
 import { RoomDef } from "./types/RoomDef";
 import { fetchNui } from "./utils/fetchNui";
-import { useHotkeys } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -46,7 +47,7 @@ const App: React.FC = () => {
     if (data === undefined) return navigate('/occlusion/general');
   });
 
-  useNuiEvent('openMLO', (data) => {
+  useNuiEvent('ht_mlotool:openMLO', (data) => {
     setVisible(true);
 
     const mloData = new MLODef(data.mloData);
@@ -63,9 +64,14 @@ const App: React.FC = () => {
     return navigate('/occlusion/general');
   });
 
+  const setNavigatedPortal = usePortalsSetters((setter) => setter.setNavigatedPortal)
+  useNuiEvent('ht_mlotool:cancelNavigation', (data: any) => {
+    setNavigatedPortal(null);
+  });
+
   const handleExit = () => {
     setVisible(false);
-    fetchNui('exitMLO', { mloData: mlo });
+    fetchNui('ht_mlotool:exitMLO', { mloData: mlo });
   };
 
   useHotkeys([

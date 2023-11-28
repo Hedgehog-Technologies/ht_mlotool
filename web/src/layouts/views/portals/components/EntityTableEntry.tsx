@@ -1,4 +1,4 @@
-import { Checkbox, NumberInput } from "@mantine/core";
+import { Checkbox, NumberInput, Text, Tooltip } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useGeneralStore } from "../../../../store/general";
 
@@ -29,7 +29,11 @@ const EntityTableEntry: React.FC<Props> = ({ portalIndex, entityIndex }) => {
 
   return (
     <tr key={`${portalIndex}.${entityIndex}`}>
-      <td>{activeEntity?.modelName ?? ''}</td>
+      <td>
+        <Tooltip label={activeEntity?.modelName ?? ''} openDelay={500}>
+          <Text>{activeEntity?.modelName ?? ''}</Text>
+        </Tooltip>
+      </td>
       <td>
         <NumberInput
           value={activeEntity?.maxOcclusion ?? 0}

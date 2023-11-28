@@ -1,9 +1,9 @@
 function OpenMLO(mloData, currentRoomIndex)
     SetNuiFocus(true, true)
-    SendReactMessage('openMLO', { mloData = mloData, roomIndex = currentRoomIndex })
+    SendReactMessage('ht_mlotool:openMLO', { mloData = mloData, roomIndex = currentRoomIndex })
 end
 
-RegisterNUICallback('exitMLO', function(data, cb)
+RegisterNUICallback('ht_mlotool:exitMLO', function(data, cb)
     SetNuiFocus(false, false)
     cb({})
     if data and data.mloData then
@@ -11,7 +11,7 @@ RegisterNUICallback('exitMLO', function(data, cb)
     end
 end)
 
-RegisterNUICallback('generateAudioFiles', function(data, cb)
+RegisterNUICallback('ht_mlotool:generateAudioFiles', function(data, cb)
     cb({})
 
     local mloData = data.mlo
@@ -20,6 +20,12 @@ RegisterNUICallback('generateAudioFiles', function(data, cb)
     local debug = data.debug
 
     GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
+end)
+
+RegisterNUICallback('ht_mlotool:debugDrawToggle', function(data, cb)
+    cb({})
+
+    UpdateDebugDraw(data.info, data.outline, data.fill, data.navigate)
 end)
 
 --- A simple wrapper around SendNUIMessage that you can use to

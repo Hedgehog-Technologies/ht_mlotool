@@ -6,6 +6,12 @@
 
 - Conversion of generated XML files to file types GTAV will actually consume
 
+## Dolutattoo
+
+### [dolu_tool](https://github.com/dolutattoo/dolu_tool)
+
+- In-game debug drawing
+
 ## gtadps
 
 ### [Occlusion Interior Metadata (naOcclusionInteriorMetadata)](https://rage.re/docs?topic=40)

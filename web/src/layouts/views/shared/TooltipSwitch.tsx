@@ -15,7 +15,7 @@ const TooltipSwitch: React.FC<Props> = ({ infoCircle, label, value, toggle }) =>
       <Switch label={label} checked={value} onChange={() => toggle()} />
       <Tooltip label={infoCircle} withArrow arrowSize={10} multiline width={200}>
         <Box>
-          <BsQuestionCircle size={18} />
+          <BsQuestionCircle size={14} />
         </Box>
       </Tooltip>
     </Group>

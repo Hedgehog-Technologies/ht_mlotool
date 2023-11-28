@@ -1,8 +1,8 @@
 import { Paper, Space, Table, Title } from "@mantine/core";
+import EntityTableEntry from "./EntityTableEntry";
+import PortalToggles from "./PortalToggles";
 import { useRoomsStore } from "../../../../store/rooms";
 import { PortalDef } from "../../../../types/PortalDef";
-import EntityTableEntry from "./EntityTableEntry";
-import PathwayToggles from "./PathwayToggles";
 
 interface Props {
   portal: PortalDef;
@@ -20,7 +20,7 @@ const PortalTable: React.FC<Props> = ({ portal, portalIndex: index }) => {
         {portal.mloPortalIndex}. {intRoom.displayName} [{intRoom.index}] ↔ {extRoom.displayName} [{extRoom.index}]
       </Title>
       <Space h={10} />
-      <PathwayToggles portal={portal}/>
+      <PortalToggles portal={portal}/>
       <Table striped withColumnBorders fontSize='xs'>
         <thead>
           <tr>
