@@ -152,7 +152,3 @@ RegisterNetEvent('ht_mlotool:loadMLOData', function(mloData, openUI)
         openMLOInterface(mloData)
     end
 end)
-
-lib.addKeybind({
-    name = 'ht_mlotool:'
-})
