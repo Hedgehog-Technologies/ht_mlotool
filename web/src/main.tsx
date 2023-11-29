@@ -1,7 +1,6 @@
 import { MantineProvider } from "@mantine/core";
-import { ModalsProvider } from "@mantine/modals";
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { HashRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
@@ -188,9 +187,9 @@ debugData([
   }
 ], 2000);
 
-if (isEnvBrowser()) {
-  const root = document.getElementById('root');
+const root = document.getElementById('root');
 
+if (isEnvBrowser()) {
   // https://i.imgur.com/iPTAdYV.png - Night time img
   // https://i.imgur.com/3pzRj9n.png - Day time img
   root!.style.backgroundImage = 'url("https://i.imgur.com/3pzRj9n.png")';
@@ -199,15 +198,27 @@ if (isEnvBrowser()) {
   root!.style.backgroundPosition = 'center';
 }
 
-ReactDOM.render(
+const reactRoot = ReactDOM.createRoot(root!);
+
+reactRoot.render(
   <React.StrictMode>
-    <MantineProvider withNormalizeCSS withGlobalStyles theme={customTheme}>
-      <ModalsProvider modalProps={{ transition: 'slide-up' }}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </ModalsProvider>
+    <MantineProvider withNormalizeCSS theme={customTheme}>
+      <HashRouter>
+        <App />
+      </HashRouter>
     </MantineProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
+
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <MantineProvider withNormalizeCSS withGlobalStyles theme={customTheme}>
+//       <ModalsProvider modalProps={{ transition: 'slide-up' }}>
+//         <HashRouter>
+//           <App />
+//         </HashRouter>
+//       </ModalsProvider>
+//     </MantineProvider>
+//   </React.StrictMode>,
+//   document.getElementById('root')
+// );
