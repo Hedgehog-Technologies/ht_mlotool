@@ -11,7 +11,6 @@ export const customTheme: MantineThemeOverride = {
     Header: {
       styles: {
         root: {
-          height: '100%',
           backgroundColor: themeBackgroundColor,
           borderTopLeftRadius: radius,
           borderTopRightRadius: radius
