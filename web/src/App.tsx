@@ -89,7 +89,6 @@ const App: React.FC = () => {
         {(style) => (
           <Box style={style} className={classes.wrapper}>
             <MloShell />
-            {/* <Button>Hello World</Button> */}
           </Box>
         )}
       </Transition>

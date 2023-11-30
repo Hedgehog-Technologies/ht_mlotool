@@ -1,15 +1,17 @@
 import { Group, Header, Title } from "@mantine/core";
 import { AiFillGithub, AiOutlineClose } from "react-icons/ai";
 import { fetchNui } from "../../utils/fetchNui";
-import TooltipIcon from "./shared/TooltipIcon";
+import HeaderIcon from "./HeaderIcon";
 
 const MloHeader: React.FC = () => {
   return (
-    <Header height='5%'>
-      <Group p={'0.5%'} px={'2.5%'} position='apart'>
+    // height left as empty string on purpose
+    // height needs *some* value, but grows to size of content by default
+    <Header height={''}>
+      <Group p={'1%'} px={'2.5%'} position='apart' sx={{ alignContent: 'center'}}>
         <Title order={4}>MLO Tool</Title>
         <Title order={3}>{'CURRENT MLO'}</Title>
-        <TooltipIcon
+        <HeaderIcon
           label={'Open Github Repo'}
           Icon={AiFillGithub}
           iconSize={24}

@@ -1,10 +1,9 @@
 import { ActionIcon, Tooltip } from "@mantine/core";
 import { IconType } from "react-icons";
-import { Link } from "react-router-dom";
 
-interface TTIProps {
+interface HeaderProps {
+  label: string;
   Icon: IconType;
-  label?: string;
   destination?: string;
   openDelay?: number;
   color?: string;
@@ -12,7 +11,7 @@ interface TTIProps {
   onClick?: () => void;
 };
 
-const TooltipIcon: React.FC<TTIProps> = (props) => {
+const HeaderIcon: React.FC<HeaderProps> = (props) => {
   return (
     <Tooltip
       label={props.label}
@@ -28,4 +27,4 @@ const TooltipIcon: React.FC<TTIProps> = (props) => {
   );
 };
 
-export default TooltipIcon;
+export default HeaderIcon;
