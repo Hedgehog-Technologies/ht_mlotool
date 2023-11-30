@@ -1,5 +1,5 @@
 import { Group, Header, Title } from "@mantine/core";
-import { AiFillGithub, AiOutlineClose } from "react-icons/ai";
+import { AiFillGithub } from "react-icons/ai";
 import { fetchNui } from "../../utils/fetchNui";
 import HeaderIcon from "./HeaderIcon";
 
