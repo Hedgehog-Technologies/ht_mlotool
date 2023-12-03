@@ -5,6 +5,7 @@ const themeBackgroundColor = 'rgba(10, 10, 10, 0.90)';
 
 export const customTheme: MantineThemeOverride = {
   colorScheme: 'dark',
+  primaryColor: 'violet',
   cursorType: 'pointer',
   fontFamily: 'Roboto',
   components: {
@@ -40,6 +41,15 @@ export const customTheme: MantineThemeOverride = {
       defaultProps: {
         transition: 'pop',
       },
+    },
+
+    Input: {
+      styles: {
+        input: {
+          color: '#E5DBFF',
+          borderColor: '#5C5F66'
+        }
+      }
     },
   }
 };

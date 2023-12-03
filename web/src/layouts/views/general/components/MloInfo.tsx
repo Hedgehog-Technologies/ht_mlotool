@@ -1,16 +1,65 @@
-import { Box, Title } from "@mantine/core";
-import { MemoStringInput } from "../../../shared/Inputs";
+import { Box, Group, Stack, Title } from "@mantine/core";
+import { MemoNumberInput, MemoStringInput } from "../../../shared/Inputs";
 
 const MloInfo: React.FC = () => {
   return (
-    <Box>
-      <Title order={4}>General MLO Info</Title>
-      <Box py={5}>
-        <MemoStringInput 
-          label="MLO Save File Name"
-          infoCircle="Name of the file to save the MLO information out to"
+    <Box p={5}>
+      <Title order={5}>Name Hash</Title>
+      <Group grow>
+        <MemoNumberInput 
+          label="Unsigned"
+          value={1667328242}
+          infoCircle="Some stuff"
+          disabled
         />
-      </Box>
+        <MemoNumberInput
+          label="Signed"
+          value={-16660101}
+          infoCircle="Some Signed Stuff"
+        />
+      </Group>
+
+      <Title order={5} pt={20}>Proxy Hash</Title>
+      <Group grow>
+        <MemoNumberInput
+          label="Unsigned"
+          value={1337}
+          infoCircle="stuff"
+        />
+        <MemoNumberInput
+          label="Signed"
+          value={7331}
+          infoCircle={'ffuts'}
+        />
+      </Group>
+
+      <Title order={5} pt={20}>Interior Info</Title>
+      <Stack>
+        <Group grow>
+          <MemoNumberInput
+            label="Interior Id"
+            value={7170}
+            infoCircle="interior id"
+          />
+          <MemoStringInput
+            label="Interior World Coords"
+            value={"-41.4020, -1097.7750, 25.4230"}
+            infoCircle="coords"
+          />
+        </Group>
+        <Group grow>
+          <MemoNumberInput
+            label="Number of Rooms"
+            value={5}
+            infoCircle="room count"
+          />
+          <MemoNumberInput
+            label="Number of Portals"
+            value={14}
+            infoCircle="portal count"
+          />
+        </Group>
+      </Stack>
     </Box>
   );
 };
