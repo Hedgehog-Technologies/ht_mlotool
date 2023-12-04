@@ -26,6 +26,8 @@ interface NumberInputProps extends InputProps {
 interface StringInputProps extends InputProps {
   value?: string;
   setValue?: (value: string) => void;
+  ttDisable?: boolean;
+  ttOpenDelay?: number;
 }
 
 interface TooltipCheckboxProps extends InputProps {
@@ -34,7 +36,7 @@ interface TooltipCheckboxProps extends InputProps {
 }
 
 const useInputStyles = createStyles((theme) => ({
-  disabledInput: {
+  input: {
     '&:disabled, &[data-disabled]': {
       opacity: 1.0,
       color: theme.colors.violet[1],
@@ -59,7 +61,7 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
       label={props.label}
       disabled={props.disabled}
       variant={variant}
-      classNames={{ input: classes.disabledInput }}
+      classNames={{ input: classes.input }}
       rightSection={
         props.infoCircle && (
           <Tooltip
@@ -85,30 +87,37 @@ const StringInput: React.FC<StringInputProps> = (props) => {
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
 
   return (
-    <TextInput
-      value={props.value ?? '[missing value]'}
-      // $TECH_DEBT - Revisit for debouncing?
-      onChange={(e) => { if (props.setValue !== undefined) props.setValue(e.target.value)}}
-      label={props.label}
-      disabled={props.disabled}
-      variant={variant}
-      classNames={{ input: classes.disabledInput }}
-      rightSection={
-        props.infoCircle && (
-          <Tooltip
-            label={props.infoCircle}
-            withArrow={props.icArrow ?? true}
-            arrowSize={arrowSize}
-            multiline={props.icMultiline ?? true}
-            width={props.icWidth ?? 200}
-          >
-            <ThemeIcon color={'violet.6'} variant="outline">
-              <BsQuestionCircle size={props.iconSize ?? 18} />
-            </ThemeIcon>
-          </Tooltip>
-        )
-      }
-    />
+    <Tooltip
+      label={props.ttDisable ?? props.value}
+      disabled={props.ttDisable}
+      openDelay={props.ttOpenDelay ?? 300}
+      withinPortal
+    >
+      <TextInput
+        value={props.value ?? '[missing value]'}
+        // $TECH_DEBT - Revisit for debouncing?
+        onChange={(e) => { if (props.setValue !== undefined) props.setValue(e.target.value)}}
+        label={props.label}
+        disabled={props.disabled}
+        variant={variant}
+        classNames={{ input: classes.input }}
+        rightSection={
+          props.infoCircle && (
+            <Tooltip
+              label={props.infoCircle}
+              withArrow={props.icArrow ?? true}
+              arrowSize={arrowSize}
+              multiline={props.icMultiline ?? true}
+              width={props.icWidth ?? 200}
+            >
+              <ThemeIcon color={'violet.6'} variant="outline">
+                <BsQuestionCircle size={props.iconSize ?? 18} />
+              </ThemeIcon>
+            </Tooltip>
+          )
+        }
+      />
+    </Tooltip>
   );
 };
 

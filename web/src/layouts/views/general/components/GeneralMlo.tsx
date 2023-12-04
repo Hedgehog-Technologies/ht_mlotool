@@ -5,7 +5,7 @@ import { MemoStringInput } from "../../../shared/Inputs"
 const GeneralMlo: React.FC = () => {
   return(
     <Stack>
-      <Title order={4}>General MLO Info</Title>
+      <Title order={4}>General MLO Information</Title>
 
       <Box p={5}>
         <Title order={5} pb={10}>Save File Name</Title>

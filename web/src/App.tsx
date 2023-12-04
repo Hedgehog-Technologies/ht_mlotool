@@ -20,7 +20,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   wrapper: {
-    width: '25%',
+    width: '40%',
     height: '90%',
     position: 'absolute',
     top: '2%',
@@ -30,8 +30,6 @@ const useStyles = createStyles((theme) => ({
   },
 
   main: {
-    // width: 800,
-    // height: 700,
     position: 'absolute',
     top: '2%',
     left: '1.5%',

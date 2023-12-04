@@ -3,6 +3,7 @@ import Nav from "./components/Nav";
 import MloHeader from "./components/MloHeader";
 import { Route, Routes } from "react-router-dom";
 import General from "./views/general";
+import Rooms from "./views/rooms";
 
 const MloShell: React.FC = () => {
   return (
@@ -14,7 +15,7 @@ const MloShell: React.FC = () => {
     >
       <Routes>
         <Route path={'/'} element={<General />} />
-        <Route path={'/rooms'} element={<Box><Title>Rooms</Title></Box>} />
+        <Route path={'/rooms'} element={<Rooms />} />
         <Route path={'/portals'} element={<Box><Title>Portals</Title></Box>} />
       </Routes>
     </AppShell>
