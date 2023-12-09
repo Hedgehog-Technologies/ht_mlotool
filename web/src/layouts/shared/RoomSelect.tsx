@@ -1,4 +1,5 @@
 import { Select } from "@mantine/core";
+import React from "react";
 
 const RoomSelect: React.FC = () => {
   return (
@@ -14,3 +15,4 @@ const RoomSelect: React.FC = () => {
 };
 
 export default RoomSelect;
+export const MemoRoomSelect = React.memo(RoomSelect);

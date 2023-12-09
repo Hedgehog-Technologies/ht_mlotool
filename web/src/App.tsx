@@ -64,7 +64,7 @@ const App: React.FC = () => {
       selectedRoom: data?.roomIndex ? roomSelectList[data.roomIndex].value : null
     });
 
-    return navigate('/occlusion/general');
+    return navigate('/portals');
   });
 
   const setNavigatedPortal = usePortalsSetters((setter) => setter.setNavigatedPortal)
