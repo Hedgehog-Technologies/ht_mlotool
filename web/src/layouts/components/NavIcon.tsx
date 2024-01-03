@@ -1,4 +1,4 @@
-import { ActionIcon, Text, Tooltip, createStyles } from "@mantine/core";
+import { ActionIcon, ActionIconVariant, Text, Tooltip, createStyles } from "@mantine/core";
 import { FloatingPosition } from "@mantine/core/lib/Floating";
 import { IconType } from "react-icons";
 import { Link } from "react-router-dom";
@@ -11,6 +11,7 @@ interface NavIconProps {
   openDelay?: number;
   color?: string;
   iconSize?: number;
+  variant?: ActionIconVariant;
   onClick?: () => void;
 };
 
@@ -40,6 +41,7 @@ const NavIcon: React.FC<NavIconProps> = (props) => {
         component={Link}
         to={props.destination}
         color={props.color}
+        variant={props.variant}
       >
         <props.Icon size={props.iconSize ?? 36} />
       </ActionIcon>

@@ -1,14 +1,35 @@
-import { Navbar, Stack } from "@mantine/core";
+import { ActionIconVariant, Navbar, Stack } from "@mantine/core";
 import { AiFillHome } from "react-icons/ai";
 import { FaDoorOpen } from "react-icons/fa";
 import { IoCubeSharp } from "react-icons/io5";
 import NavIcon from "./NavIcon";
+import { useState } from "react";
 
 const Nav: React.FC = () => {
+  const [generalVariant, setGeneralVariant] = useState<ActionIconVariant>();
+  const [roomsVariant, setRoomsVariant] = useState<ActionIconVariant>();
+  const [portalsVariant, setPortalsVariant] = useState<ActionIconVariant>();
+
+  const onNavPress = (dest: 'general' | 'rooms' | 'portals') => {
+    setGeneralVariant(undefined);
+    setRoomsVariant(undefined);
+    setPortalsVariant(undefined);
+
+    if (dest === 'general') {
+      setGeneralVariant('filled');
+    }
+    else if (dest === 'rooms') {
+      setRoomsVariant('filled');
+    }
+    else if (dest === 'portals') {
+      setPortalsVariant('filled');
+    }
+  }
+
   return (
     <Navbar
       height={800}
-      width={{ base: '12%' }}
+      width={{ base: '10%' }}
       p='md'
       fixed={false}
     >
@@ -19,7 +40,8 @@ const Nav: React.FC = () => {
             destination={'/'}
             Icon={AiFillHome}
             color={'violet.6'}
-            onClick={() => console.log('go home')}
+            variant={generalVariant}
+            onClick={() => { console.log('go home'); onNavPress('general') }}
           />
 
           <NavIcon 
@@ -27,7 +49,8 @@ const Nav: React.FC = () => {
             destination={'/rooms'}
             Icon={IoCubeSharp}
             color={'violet.6'}
-            onClick={() => console.log('go rooms')}
+            variant={roomsVariant}
+            onClick={() => { console.log('go rooms'); onNavPress('rooms') }}
           />
 
           <NavIcon 
@@ -35,7 +58,8 @@ const Nav: React.FC = () => {
             destination={'/portals'}
             Icon={FaDoorOpen}
             color={'violet.6'}
-            onClick={() => console.log('go portals')}
+            variant={portalsVariant}
+            onClick={() => { console.log('go portals'); onNavPress('portals') }}
           />
         </Stack>
       </Navbar.Section>

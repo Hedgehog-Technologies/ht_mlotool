@@ -20,6 +20,7 @@ interface NumberInputProps extends InputProps {
   precision?: number;
   min?: number;
   max?: number;
+  step?: number;
   hideControls?: boolean;
 }
 
@@ -56,6 +57,7 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
       precision={props.precision}
       min={props.min}
       max={props.max}
+      step={props.step}
       // $TECH_DEBT - Revist for debouncing
       onChange={(value) => { if (props.setValue !== undefined) props.setValue(value)}}
       label={props.label}

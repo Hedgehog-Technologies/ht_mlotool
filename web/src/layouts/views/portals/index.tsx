@@ -1,16 +1,21 @@
-import { Box, ScrollArea, Title } from "@mantine/core";
+import { Box, Group, ScrollArea, Space, Title } from "@mantine/core";
 import { MemoRoomSelect } from "../../shared/RoomSelect";
-import { MemoStringInput } from "../../shared/Inputs";
+import DebugMenu from "./components/DebugMenu";
+import PortalInfo from "./components/PortalInfo";
 
 const Portals: React.FC = () => {
   return (
     <Box>
       <MemoRoomSelect />
-      <Title order={4} pt={10}>Portal Information</Title>
+      <Group position="apart" pt={20}>
+        <Title order={4}>Portal Information</Title>
+        <DebugMenu />
+      </Group>
 
-      {/* <ScrollArea style={{ height: 665 }} px={5}>
-        
-      </ScrollArea> */}
+      <ScrollArea style={{ height: 650 }} pt={5}>
+        <PortalInfo />
+        <Space h={10} />
+      </ScrollArea>
     </Box>
   );
 };

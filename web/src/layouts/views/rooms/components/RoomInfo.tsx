@@ -4,7 +4,7 @@ import { MemoNumberInput, MemoStringInput } from "../../../shared/Inputs";
 const RoomInfo: React.FC = () => {
   return (
     <>
-      <Title order={4} pt={10}>Room Information</Title>
+      <Title order={4} pt={20}>Room Information</Title>
       <Box>
         <Group position="apart" grow>
           <MemoStringInput
