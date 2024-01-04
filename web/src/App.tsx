@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useNuiEvent } from "./hooks/useNuiEvent";
 import { useVisibility } from "./providers/VisibilityProvider";
 import { useGeneralStore } from "./store/general";
-import { usePortalsSetters } from "./store/portals";
+import { usePortalsStore } from "./store/portals";
 import { useRoomsStore } from "./store/rooms";
 import { MLODef } from "./types/MLODef";
 import { RoomDef } from "./types/RoomDef";
@@ -20,13 +20,13 @@ const useStyles = createStyles((theme) => ({
   },
 
   wrapper: {
-    width: '35%',
+    width: '37.5%',
     height: '90%',
     position: 'absolute',
     top: '2%',
     left: '2%',
     // bottom: '2%',
-    color: theme.colors.violet[0]
+    color: theme.colors.violet[1]
   },
 
   main: {
@@ -47,7 +47,6 @@ const App: React.FC = () => {
 
   useNuiEvent('setVisible', (data: any) => {
     setVisible(true);
-    // if (data === undefined) return navigate('/occlusion/general');
   });
 
   useNuiEvent('ht_mlotool:openMLO', (data) => {
@@ -64,10 +63,10 @@ const App: React.FC = () => {
       selectedRoom: data?.roomIndex ? roomSelectList[data.roomIndex].value : null
     });
 
-    return navigate('/portals');
+    // return navigate('/');
   });
 
-  const setNavigatedPortal = usePortalsSetters((setter) => setter.setNavigatedPortal)
+  const setNavigatedPortal = usePortalsStore((state) => state.setNavigatedPortal);
   useNuiEvent('ht_mlotool:cancelNavigation', (data: any) => {
     setNavigatedPortal(null);
   });
@@ -91,25 +90,6 @@ const App: React.FC = () => {
         )}
       </Transition>
     </Box>
-    // <Box className={classes.container}>
-    //   <Transition transition="slide-up" mounted={visible}>
-    //     {(style) => (
-    //       <Box className={classes.main} style={style}>
-    //         <Group position='apart' p={10}>
-    //           <Title order={3}>MLO Audio Occlusion Generator</Title>
-    //           <CloseButton
-    //             size='xl'
-    //             onClick={handleExit}
-    //           />
-    //         </Group>
-    //         <Divider size='sm' />
-    //         <Routes>
-    //           <Route path="/occlusion/*" element={<Occlusion />} />
-    //         </Routes>
-    //       </Box>
-    //     )}
-    //   </Transition>
-    // </Box>
   );
 };
 

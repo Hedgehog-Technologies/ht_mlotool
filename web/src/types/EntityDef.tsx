@@ -15,12 +15,12 @@ export class EntityDef {
   public isDoor: boolean;
   public isGlass: boolean;
 
-  constructor({ linkType, maxOcclusion, modelHashKey, isDoor, isGlass, modelName }: EntityDefConstructor) {
-    this.linkType = linkType;
-    this.maxOcclusion = maxOcclusion;
-    this.modelHashKey = modelHashKey;
-    this.isDoor = isDoor;
-    this.isGlass = isGlass;
-    this.modelName = modelName;
+  constructor(data: EntityDefConstructor | EntityDef) {
+    this.linkType = data.linkType;
+    this.maxOcclusion = data.maxOcclusion;
+    this.modelHashKey = data.modelHashKey;
+    this.isDoor = data.isDoor;
+    this.isGlass = data.isGlass;
+    this.modelName = data.modelName;
   }
 }

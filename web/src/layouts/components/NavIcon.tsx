@@ -1,5 +1,6 @@
 import { ActionIcon, ActionIconVariant, Text, Tooltip, createStyles } from "@mantine/core";
 import { FloatingPosition } from "@mantine/core/lib/Floating";
+import React from "react";
 import { IconType } from "react-icons";
 import { Link } from "react-router-dom";
 
@@ -50,3 +51,4 @@ const NavIcon: React.FC<NavIconProps> = (props) => {
 };
 
 export default NavIcon;
+export const MemoNavIcon = React.memo(NavIcon);

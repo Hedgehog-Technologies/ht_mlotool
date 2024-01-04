@@ -1,15 +1,33 @@
 import { Select } from "@mantine/core";
 import React from "react";
+import { RoomsStoreState, useRoomsStore } from "../../store/rooms";
 
 const RoomSelect: React.FC = () => {
+  const [roomSelectList, selectedRoom, roomList] = useRoomsStore((state) => [state.roomSelectList, state.selectedRoom, state.roomList]);
+  const [setSelectedRoom, setActiveRoom] = useRoomsStore((state) => [state.setSelectedRoom, state.setActiveRoom]);
+
+  const handleSelect = (room: string | null) => {
+    let activeRoom: RoomsStoreState['activeRoom'] = null;
+
+    if (room !== null) {
+      let roomNumber: number = +room;
+      activeRoom = roomList[roomNumber] ?? null;
+    }
+
+    setActiveRoom(activeRoom);
+    setSelectedRoom(room);
+  }
+
   return (
     <Select
         label="Room Select"
-        value={"1"}
-        placeholder="Pick a room"
+        value={selectedRoom}
+        onChange={handleSelect}
+        placeholder={"Pick a room"}
         searchable
-        nothingFound="No room found"
-        data={[ { value: '0', label: '0. Room Zero'}, {value: '1', label: '1. Room One'}, {value: '2', label: '2. Room Two' } ]}
+        nothingFound={"No room found"}
+        data={roomSelectList}
+        maxDropdownHeight={200}
       />
   )
 };

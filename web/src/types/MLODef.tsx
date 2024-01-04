@@ -3,7 +3,7 @@ import { EntityDef } from "./EntityDef";
 import { PortalDef } from "./PortalDef";
 import { RoomDef } from "./RoomDef";
 
-interface MLODefConstructor {
+export interface MLODefConstructor {
   interiorId: number;
   saveName: string;
   nameHash: number;
@@ -27,18 +27,18 @@ export class MLODef {
   public rooms: RoomDef[];
   public portals: PortalDef[];
 
-  constructor({ interiorId, saveName, nameHash, uintNameHash, location, proxyHash, uintProxyHash, rooms, portals }: MLODefConstructor) {
-    this.interiorId = interiorId;
-    this.nameHash = nameHash;
-    this.uintNameHash = uintNameHash;
-    this.location = location;
-    this.locationString = `${location.x.toFixed(4)}, ${location.y.toFixed(4)}, ${location.z.toFixed(4)}`;
-    this.proxyHash = proxyHash;
-    this.uintProxyHash = uintProxyHash;
+  constructor(data: MLODefConstructor | MLODef) {
+    this.interiorId = data.interiorId;
+    this.nameHash = data.nameHash;
+    this.uintNameHash = data.uintNameHash;
+    this.location = data.location;
+    this.locationString = `${data.location.x.toFixed(4)}, ${data.location.y.toFixed(4)}, ${data.location.z.toFixed(4)}`;
+    this.proxyHash = data.proxyHash;
+    this.uintProxyHash = data.uintProxyHash;
 
-    this.saveName = saveName;
-    this.rooms = rooms.map(room => new RoomDef(room));
-    this.portals = portals.map(portal => new PortalDef(portal));
+    this.saveName = data.saveName;
+    this.rooms = data.rooms.map(room => new RoomDef(room));
+    this.portals = data.portals.map(portal => new PortalDef(portal));
   }
 
   SetPortalEnabled(portalIndex: number, enabled: boolean[]) {
@@ -47,5 +47,9 @@ export class MLODef {
 
   SetPortalEntity(portalIndex: number, entityIndex: number, entity: EntityDef) {
     this.portals[portalIndex].entities[entityIndex] = entity;
+  }
+
+  SetSaveName(newName: string) {
+    this.saveName = newName;
   }
 }

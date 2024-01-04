@@ -19,13 +19,13 @@ export class PortalDef {
   public isEnabled: boolean[];
   public entities: EntityDef[];
 
-  constructor({ isEnabled, mloPortalIndex, fromRoomIndex, toRoomIndex, flags, isMirror, entities }: PortalDefConstructor) {
-    this.isEnabled = isEnabled;
-    this.mloPortalIndex = mloPortalIndex;
-    this.fromRoomIndex = fromRoomIndex;
-    this.toRoomIndex = toRoomIndex;
-    this.flags = flags;
-    this.isMirror = isMirror;
-    this.entities = entities.map(entity => new EntityDef(entity));
+  constructor(data: PortalDefConstructor | PortalDef) {
+    this.isEnabled = data.isEnabled;
+    this.mloPortalIndex = data.mloPortalIndex;
+    this.fromRoomIndex = data.fromRoomIndex;
+    this.toRoomIndex = data.toRoomIndex;
+    this.flags = data.flags;
+    this.isMirror = data.isMirror;
+    this.entities = data.entities.map(entity => new EntityDef(entity));
   }
 }

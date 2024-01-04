@@ -1,32 +1,36 @@
-import create, { GetState, SetState } from "zustand";
-import { BooleanField, } from ".";
-import { MLODef } from "../types/MLODef";
+import { create } from "zustand";
+import { BooleanField } from ".";
+import { MLODef, MLODefConstructor } from "../types/MLODef";
 
 export interface GeneralStoreState {
   mlo: MLODef | null;
   enableAudioOcclusion: BooleanField;
   enableDat151: BooleanField;
   enableDebug: BooleanField;
+
+  // Actions
+  toggleCheck: (t: "enableAudioOcclusion" | "enableDat151" | "enableDebug") => void;
+  updateMLOSaveName: (newName: string) => void;
 };
 
-interface GeneralStateSetters {
-  setMLO: (value: GeneralStoreState['mlo']) => void;
-  setEnableDebug: (value: GeneralStoreState['enableDebug']) => void;
-  toggleSwitch: (type: 'enableDebug' | 'enableAudioOcclusion' | 'enableDat151') => void;
-};
-
-export const useGeneralStore = create<GeneralStoreState>(() => ({
+export const useGeneralStore = create<GeneralStoreState>((set, get) => ({
   mlo: null,
   enableAudioOcclusion: true,
   enableDat151: true,
   enableDebug: false,
+
+  // Actions
+  toggleCheck: (t) => set((state) => ({ [t]: !state[t] })),
+  updateMLOSaveName: (newName) => {
+    let oldMLO = get().mlo;
+
+    if (oldMLO !== null)
+    {
+      let newMLO = new MLODef(oldMLO);
+      newMLO.saveName = newName;
+      set({ mlo: newMLO });
+    }
+  }
 }));
 
 export const defaultGeneralState = useGeneralStore.getState();
-
-export const useGeneralSetters = create<GeneralStateSetters>((set: SetState<GeneralStateSetters>, get: GetState<GeneralStateSetters>) => ({
-  setMLO: (value) => useGeneralStore.setState({ mlo: value }),
-  setEnableDebug: (value) => useGeneralStore.setState({ enableDebug: value }),
-  // @ts-ignore
-  toggleSwitch: (toggleType) => useGeneralStore.setState((state) => ({ [toggleType]: !state[toggleType] })),
-}));

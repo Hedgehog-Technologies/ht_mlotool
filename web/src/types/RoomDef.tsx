@@ -73,33 +73,33 @@ export class RoomDef {
   public unk13: string;
   public soundSet: string;
 
-  constructor({ index, name, displayName, nameHash, uintNameHash, roomKey, uintRoomKey, portalCount, occlRoomName, flags, zone, unk02, unk03, reverb, echo, sound, unk07, unk08, unk09, unk10, unk11, unk12, unk13, soundSet }: RoomDefConstructor) {
-    this.index = index;
-    this.name = name;
-    this.displayName = displayName
-    this.nameHash = nameHash;
-    this.uintNameHash = uintNameHash;
-    this.roomKey = roomKey;
-    this.uintRoomKey = uintRoomKey;
-    this.portalCount = portalCount;
+  constructor(data: RoomDefConstructor | RoomDef) {
+    this.index = data.index;
+    this.name = data.name;
+    this.displayName = data.displayName
+    this.nameHash = data.nameHash;
+    this.uintNameHash = data.uintNameHash;
+    this.roomKey = data.roomKey;
+    this.uintRoomKey = data.uintRoomKey;
+    this.portalCount = data.portalCount;
 
     // Dat151 Fields
-    this.occlRoomName = occlRoomName;
-    this.flags = flags;
-    this.zone = zone;
-    this.unk02 = unk02;
-    this.unk03 = unk03;
-    this.reverb = reverb;
-    this.echo = echo;
-    this.sound = sound;
-    this.unk07 = unk07;
-    this.unk08 = unk08;
-    this.unk09 = unk09;
-    this.unk10 = unk10;
-    this.unk11 = unk11;
-    this.unk12 = unk12;
-    this.unk13 = unk13;
-    this.soundSet = soundSet;
+    this.occlRoomName = data.occlRoomName;
+    this.flags = data.flags;
+    this.zone = data.zone;
+    this.unk02 = data.unk02;
+    this.unk03 = data.unk03;
+    this.reverb = data.reverb;
+    this.echo = data.echo;
+    this.sound = data.sound;
+    this.unk07 = data.unk07;
+    this.unk08 = data.unk08;
+    this.unk09 = data.unk09;
+    this.unk10 = data.unk10;
+    this.unk11 = data.unk11;
+    this.unk12 = data.unk12;
+    this.unk13 = data.unk13;
+    this.soundSet = data.soundSet;
   }
 
   SetDat151Fields(data: Dat151Fields) {

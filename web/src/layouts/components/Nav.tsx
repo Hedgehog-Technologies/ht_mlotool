@@ -1,30 +1,33 @@
 import { ActionIconVariant, Navbar, Stack } from "@mantine/core";
+import { useEffect, useState } from "react";
 import { AiFillHome } from "react-icons/ai";
 import { FaDoorOpen } from "react-icons/fa";
 import { IoCubeSharp } from "react-icons/io5";
-import NavIcon from "./NavIcon";
-import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { MemoNavIcon } from "./NavIcon";
 
 const Nav: React.FC = () => {
+  const location = useLocation();
   const [generalVariant, setGeneralVariant] = useState<ActionIconVariant>();
   const [roomsVariant, setRoomsVariant] = useState<ActionIconVariant>();
   const [portalsVariant, setPortalsVariant] = useState<ActionIconVariant>();
 
-  const onNavPress = (dest: 'general' | 'rooms' | 'portals') => {
+  useEffect(() => {
+    let path = location.pathname;
     setGeneralVariant(undefined);
     setRoomsVariant(undefined);
     setPortalsVariant(undefined);
 
-    if (dest === 'general') {
+    if (path === '/') {
       setGeneralVariant('filled');
     }
-    else if (dest === 'rooms') {
+    else if (path === '/rooms') {
       setRoomsVariant('filled');
     }
-    else if (dest === 'portals') {
+    else if (path === '/portals') {
       setPortalsVariant('filled');
     }
-  }
+  }, [location]);
 
   return (
     <Navbar
@@ -35,31 +38,31 @@ const Nav: React.FC = () => {
     >
       <Navbar.Section grow>
         <Stack justify='center' align='center' spacing={5}>
-          <NavIcon
+          <MemoNavIcon
             label={'General'}
             destination={'/'}
             Icon={AiFillHome}
             color={'violet.6'}
             variant={generalVariant}
-            onClick={() => { console.log('go home'); onNavPress('general') }}
+            onClick={() => { console.log('go home'); }}
           />
 
-          <NavIcon 
+          <MemoNavIcon 
             label={'Rooms'}
             destination={'/rooms'}
             Icon={IoCubeSharp}
             color={'violet.6'}
             variant={roomsVariant}
-            onClick={() => { console.log('go rooms'); onNavPress('rooms') }}
+            onClick={() => { console.log('go rooms'); }}
           />
 
-          <NavIcon 
+          <MemoNavIcon 
             label={'Portals'}
             destination={'/portals'}
             Icon={FaDoorOpen}
             color={'violet.6'}
             variant={portalsVariant}
-            onClick={() => { console.log('go portals'); onNavPress('portals') }}
+            onClick={() => { console.log('go portals'); }}
           />
         </Stack>
       </Navbar.Section>

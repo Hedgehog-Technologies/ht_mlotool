@@ -209,16 +209,3 @@ reactRoot.render(
     </MantineProvider>
   </React.StrictMode>
 );
-
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <MantineProvider withNormalizeCSS withGlobalStyles theme={customTheme}>
-//       <ModalsProvider modalProps={{ transition: 'slide-up' }}>
-//         <HashRouter>
-//           <App />
-//         </HashRouter>
-//       </ModalsProvider>
-//     </MantineProvider>
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );

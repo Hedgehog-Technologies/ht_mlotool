@@ -1,4 +1,4 @@
-import { Checkbox, Group, InputVariant, NumberInput, TextInput, ThemeIcon, Tooltip, createStyles } from "@mantine/core";
+import { Checkbox, Group, InputVariant, MantineSize, NumberInput, TextInput, ThemeIcon, Tooltip, createStyles } from "@mantine/core";
 import React from "react";
 import { BsQuestionCircle } from "react-icons/bs";
 
@@ -27,6 +27,7 @@ interface NumberInputProps extends InputProps {
 interface StringInputProps extends InputProps {
   value?: string;
   setValue?: (value: string) => void;
+  placeholder?: string;
   ttDisable?: boolean;
   ttOpenDelay?: number;
 }
@@ -34,6 +35,13 @@ interface StringInputProps extends InputProps {
 interface TooltipCheckboxProps extends InputProps {
   value?: boolean;
   setValue?: (value: boolean) => void;
+}
+
+interface TooltipSwitchProps extends InputProps {
+  value?: boolean;
+  setValue: (value: boolean) => void;
+  size?: MantineSize;
+  labelPosition?: "left" | "right";
 }
 
 const useInputStyles = createStyles((theme) => ({
@@ -92,7 +100,7 @@ const StringInput: React.FC<StringInputProps> = (props) => {
     <Tooltip
       label={props.ttDisable ?? props.value}
       disabled={props.ttDisable}
-      openDelay={props.ttOpenDelay ?? 300}
+      openDelay={props.ttOpenDelay ?? 750}
       withinPortal
     >
       <TextInput
@@ -100,6 +108,7 @@ const StringInput: React.FC<StringInputProps> = (props) => {
         // $TECH_DEBT - Revisit for debouncing?
         onChange={(e) => { if (props.setValue !== undefined) props.setValue(e.target.value)}}
         label={props.label}
+        placeholder={props.placeholder}
         disabled={props.disabled}
         variant={variant}
         classNames={{ input: classes.input }}

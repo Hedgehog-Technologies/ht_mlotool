@@ -1,4 +1,5 @@
-import { ActionIcon, Tooltip } from "@mantine/core";
+import { ActionIcon, Header, Tooltip } from "@mantine/core";
+import React from "react";
 import { IconType } from "react-icons";
 
 interface HeaderProps {
@@ -28,3 +29,4 @@ const HeaderIcon: React.FC<HeaderProps> = (props) => {
 };
 
 export default HeaderIcon;
+export const MemoHeaderIcon = React.memo(HeaderIcon);
