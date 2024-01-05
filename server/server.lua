@@ -108,6 +108,7 @@ RegisterNetEvent('ht_mlotool:outputResultFile', function(filename, filetype, ymt
 
     local type = success and 'success' or 'error'
     local title = success and 'File finished saving: %s' or 'Failed to save file: %s'
+    print(title:format(filename))
     lib.notify(source, { type = type, title = title:format(filename) })
 end)
 
@@ -119,6 +120,7 @@ RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
     local writeSuccess = writeFile(source, savedMloDirectoryPath, filename, 'json', json.encode(mloInfo, { indent = true }))
 
     if writeSuccess then
+        print(('Successfully saved MLO Info: ./%s/%s'):format(savedMLODir, filename))
         lib.notify(source, {
             type = 'success',
             title = 'Successfully saved MLO Info',
@@ -134,6 +136,7 @@ lib.callback.register('ht_mlotool:requestMLOSaveData', function(source, nameHash
     if not filename then return false end
 
     LoadMLOData(source, filename, nameHashString, true)
+    return true
 end)
 
 -- ##### COMMANDS ##### --
