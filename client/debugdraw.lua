@@ -188,10 +188,10 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
 
                     if drawPortalFill then
                         -- Both sets are needed so the fill can be seen from both sides of the portal
-                        DrawPoly(corners[0].x, corners[0].y, corners[0].z, corners[1].x, corners[1].y, corners[1].z, corners[2].x, corners[2].y, corners[2].z, 0, 0, 180, 150)
-                        DrawPoly(corners[0].x, corners[0].y, corners[0].z, corners[2].x, corners[2].y, corners[2].z, corners[3].x, corners[3].y, corners[3].z, 0, 0, 180, 150)
-                        DrawPoly(corners[3].x, corners[3].y, corners[3].z, corners[2].x, corners[2].y, corners[2].z, corners[1].x, corners[1].y, corners[1].z, 0, 0, 180, 150)
-                        DrawPoly(corners[3].x, corners[3].y, corners[3].z, corners[1].x, corners[1].y, corners[1].z, corners[0].x, corners[0].y, corners[0].z, 0, 0, 180, 150)
+                        DrawPoly(corners[0].x, corners[0].y, corners[0].z, corners[1].x, corners[1].y, corners[1].z, corners[2].x, corners[2].y, corners[2].z, 100, 65, 217, 150)
+                        DrawPoly(corners[0].x, corners[0].y, corners[0].z, corners[2].x, corners[2].y, corners[2].z, corners[3].x, corners[3].y, corners[3].z, 100, 65, 217, 150)
+                        DrawPoly(corners[3].x, corners[3].y, corners[3].z, corners[2].x, corners[2].y, corners[2].z, corners[1].x, corners[1].y, corners[1].z, 100, 65, 217, 150)
+                        DrawPoly(corners[3].x, corners[3].y, corners[3].z, corners[1].x, corners[1].y, corners[1].z, corners[0].x, corners[0].y, corners[0].z, 100, 65, 217, 150)
                     end
                 end
 
@@ -202,8 +202,8 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
 
                     local dirX = pedCoords.x - crossVector.x
                     local dirY = pedCoords.y - crossVector.y
-                    local dirZ = pedCoords.z - crossVector.z
-                    DrawMarker(26, pedCoords.x, pedCoords.y, pedCoords.z, dirX, dirY, dirZ, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 7, 232, 225, 200, false, false, 0, false, false, false, false)
+                    local dirZ = pedCoords.z - crossVector.z + 0.75
+                    DrawMarker(26, pedCoords.x, pedCoords.y, pedCoords.z + 0.75, dirX, dirY, dirZ, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 100, 65, 217, 200, false, false, 0, false, false, false, false)
                 end
             end
         end, 0)
