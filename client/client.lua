@@ -46,7 +46,7 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
             TriggerLatentServerEvent('ht_mlotool:outputResultFile', 100000, datFileName, datFileType, dat151Data, debug)
         end
 
-        TriggerLatentServerEvent('ht_mlotool:saveMLOData', 100000, mloData)
+        TriggerLatentServerEvent('ht_mlotool:saveMLOData', 100000, mlo)
     end
 end
 
