@@ -12,9 +12,9 @@ function EncodeDat151(mlo)
                             attr = { type = 'Interior', ntOffset = 0 },
                             content = {
                                 { tagName = 'Name', value = mlo.name },
-                                { tagName = 'Unk0', attr = { value = '0xAAAAA044' } },
-                                { tagName = 'Unk1', attr = { value = '0xD4855127' } },
-                                { tagName = 'Unk2', attr = { value = '0x00000000' } },
+                                { tagName = 'Flags', attr = { value = '0xAAAAA044' } }, -- Flags
+                                { tagName = 'Walla', value = '0xD4855127' }, -- Walla
+                                { tagName = 'Tunnel', value = '0x00000000' }, -- Tunnel
                                 { tagName = 'Rooms', content = {} }
                             }
                         }
