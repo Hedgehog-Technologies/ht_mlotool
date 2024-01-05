@@ -5,21 +5,21 @@ import { Dat151Fields } from "../../../../types/RoomDef";
 import { useRoomsStore } from "../../../../store/rooms";
 
 const defaultDat151Fields: Dat151Fields = {
-  flags: '0xAAAAAAAA',
-  zone: '',
+  flags: "0xAAAAAAAA",
+  zone: "",
   unk02: 0,
   unk03: 0.35,
   reverb: 0,
   echo: 0,
-  sound: 'null_sound',
+  sound: "null_sound",
   unk07: 0,
   unk08: 0,
   unk09: 0,
   unk10: 0.7,
   unk11: 0,
   unk12: 50,
-  unk13: '',
-  soundSet: 'hash_D4855127'
+  unk13: "",
+  soundSet: "hash_D4855127"
 };
 
 const RoomSettings: React.FC = () => {
@@ -81,7 +81,6 @@ const RoomSettings: React.FC = () => {
             placeholder={"<Blank>"}
             value={fieldState.zone}
             setValue={(value) => setFieldState({ ...fieldState, zone: value })}
-            ttDisable={fieldState.zone === ""}
             infoCircle={"Usually left blank"}
             icWidth={125}
             disabled={disabled}

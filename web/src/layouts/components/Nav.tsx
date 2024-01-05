@@ -44,7 +44,6 @@ const Nav: React.FC = () => {
             Icon={AiFillHome}
             color={'violet.6'}
             variant={generalVariant}
-            onClick={() => { console.log('go home'); }}
           />
 
           <MemoNavIcon 
@@ -53,7 +52,6 @@ const Nav: React.FC = () => {
             Icon={IoCubeSharp}
             color={'violet.6'}
             variant={roomsVariant}
-            onClick={() => { console.log('go rooms'); }}
           />
 
           <MemoNavIcon 
@@ -62,7 +60,6 @@ const Nav: React.FC = () => {
             Icon={FaDoorOpen}
             color={'violet.6'}
             variant={portalsVariant}
-            onClick={() => { console.log('go portals'); }}
           />
         </Stack>
       </Navbar.Section>

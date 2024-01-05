@@ -30,7 +30,7 @@ const EntitySettings: React.FC<Props> = (props) => {
     <tr>
       <td>
         <Tooltip label={activeEntity?.modelName ?? ""} openDelay={500} disabled={activeEntity === undefined}>
-          <Text>{activeEntity?.modelName ?? ""}</Text>
+          <Text color={"violet.1"}>{activeEntity?.modelName ?? ""}</Text>
         </Tooltip>
       </td>
       <td>

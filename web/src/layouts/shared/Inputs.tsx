@@ -46,17 +46,17 @@ interface TooltipSwitchProps extends InputProps {
 
 const useInputStyles = createStyles((theme) => ({
   input: {
-    '&:disabled, &[data-disabled]': {
+    "&:disabled, &[data-disabled]": {
       opacity: 1.0,
       color: theme.colors.violet[1],
-      borderColor: 'transparent',
+      borderColor: "transparent",
     }
   }
 }));
 
 const NumInput: React.FC<NumberInputProps> = (props) => {
   const { classes } = useInputStyles();
-  const variant = props.inputVariant ?? props.disabled ? 'filled' : 'default';
+  const variant = props.inputVariant ?? props.disabled ? "filled" : "default";
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
 
   return(
@@ -93,18 +93,18 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
 
 const StringInput: React.FC<StringInputProps> = (props) => {
   const { classes } = useInputStyles();
-  const variant = props.inputVariant ?? props.disabled ? 'filled' : 'default';
+  const variant = props.inputVariant ?? props.disabled ? "filled" : "default";
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
 
   return (
     <Tooltip
       label={props.ttDisable ?? props.value}
-      disabled={props.ttDisable}
+      disabled={props.ttDisable ?? props.value === ""}
       openDelay={props.ttOpenDelay ?? 750}
       withinPortal
     >
       <TextInput
-        value={props.value ?? '[missing value]'}
+        value={props.value ?? "[missing value]"}
         // $TECH_DEBT - Revisit for debouncing?
         onChange={(e) => { if (props.setValue !== undefined) props.setValue(e.target.value)}}
         label={props.label}
@@ -121,7 +121,7 @@ const StringInput: React.FC<StringInputProps> = (props) => {
               multiline={props.icMultiline ?? true}
               width={props.icWidth ?? 200}
             >
-              <ThemeIcon color={'violet.6'} variant="outline">
+              <ThemeIcon color={"violet.6"} variant="outline">
                 <BsQuestionCircle size={props.iconSize ?? 18} />
               </ThemeIcon>
             </Tooltip>
@@ -136,7 +136,7 @@ const TooltipCheckbox: React.FC<TooltipCheckboxProps> = (props) => {
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
 
   return (
-    <Group spacing={8} align='center'>
+    <Group spacing={8} align="center">
       <Checkbox
         label={props.label}
         checked={props.value}

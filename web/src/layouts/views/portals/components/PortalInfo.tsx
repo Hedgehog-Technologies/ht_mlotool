@@ -1,4 +1,4 @@
-import { Center, Checkbox, Divider, Group, Paper, Space, Switch, Table, Title } from "@mantine/core";
+import { Alert, Center, Checkbox, Divider, Group, Paper, Space, Switch, Table, Text, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import EntitySettings from "./EntitySettings";
 import { PortalDef } from "../../../../types/PortalDef";
@@ -87,19 +87,21 @@ const PortalInfo: React.FC<Props> = (props) => {
           </Group>
         </Center>
         <Center py={5} px={15}>
-          <Table striped withColumnBorders withBorder fontSize='xs'>
-            <thead>
-              <tr>
-                <th>Model</th>
-                <th style={{ width: '20%' }}>Max Occlusion</th>
-                <th style={{ width: '15%', textAlign: 'center' }}>Is Door?</th>
-                <th style={{ width: '15%', textAlign: 'center' }}>Is Glass?</th>
-              </tr>
-            </thead>
-            <tbody>
-              {props.portal.entities.map((_, entityIndex) => <EntitySettings key={entityIndex} portalIndex={props.portalIndex} entityIndex={entityIndex} />)}
-            </tbody>
-          </Table>
+          {props.portal.entities.length > 0
+            ? <Table striped withColumnBorders withBorder fontSize='xs'>
+                <thead>
+                  <tr>
+                    <th>Model</th>
+                    <th style={{ width: '20%' }}>Max Occlusion</th>
+                    <th style={{ width: '15%', textAlign: 'center' }}>Is Door?</th>
+                    <th style={{ width: '15%', textAlign: 'center' }}>Is Glass?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {props.portal.entities.map((_, entityIndex) => <EntitySettings key={entityIndex} portalIndex={props.portalIndex} entityIndex={entityIndex} />)}
+                </tbody>
+              </Table>
+            : <Alert w={"100%"}><Center>No entities associated with this portal</Center></Alert>}
         </Center>
       </Paper>
       <Space h={10} />

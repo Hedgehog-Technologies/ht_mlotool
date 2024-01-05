@@ -1,6 +1,5 @@
 import { Box, createStyles, Transition } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
-import { useNavigate } from "react-router-dom";
 import { useNuiEvent } from "./hooks/useNuiEvent";
 import { useVisibility } from "./providers/VisibilityProvider";
 import { useGeneralStore } from "./store/general";
@@ -26,7 +25,7 @@ const useStyles = createStyles((theme) => ({
     top: '2%',
     left: '2%',
     // bottom: '2%',
-    color: theme.colors.violet[1]
+    color: theme.colors.dark[0]
   },
 
   main: {
@@ -41,8 +40,7 @@ const useStyles = createStyles((theme) => ({
 
 const App: React.FC = () => {
   const { classes } = useStyles();
-  const [visible, setVisible] = useVisibility((state) => [state.visible, state.setVisible]);
-  const navigate = useNavigate();
+  const [visible, setVisible, exitUI] = useVisibility((state) => [state.visible, state.setVisible, state.exitUI]);
   const mlo = useGeneralStore((state) => state.mlo);
 
   useNuiEvent('setVisible', (data: any) => {
@@ -62,8 +60,6 @@ const App: React.FC = () => {
       roomSelectList: roomSelectList,
       selectedRoom: data?.roomIndex ? roomSelectList[data.roomIndex].value : null
     });
-
-    // return navigate('/');
   });
 
   const setNavigatedPortal = usePortalsStore((state) => state.setNavigatedPortal);
@@ -71,14 +67,9 @@ const App: React.FC = () => {
     setNavigatedPortal(null);
   });
 
-  // const handleExit = () => {
-  //   setVisible(false);
-  //   fetchNui('ht_mlotool:exitMLO', { mloData: mlo });
-  // };
-
-  // useHotkeys([
-  //   ['Escape', handleExit]
-  // ]);
+  useHotkeys([
+    ['Escape', exitUI]
+  ]);
 
   return (
     <Box className={classes.container}>
