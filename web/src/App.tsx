@@ -1,15 +1,13 @@
-import { Box, CloseButton, createStyles, Divider, Group, Title, Transition } from "@mantine/core";
+import { Box, createStyles, Transition } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
-import { Route, Routes, useNavigate } from "react-router-dom";
 import { useNuiEvent } from "./hooks/useNuiEvent";
-import Occlusion from "./layouts";
 import { useVisibility } from "./providers/VisibilityProvider";
 import { useGeneralStore } from "./store/general";
-import { usePortalsSetters } from "./store/portals";
+import { usePortalsStore } from "./store/portals";
 import { useRoomsStore } from "./store/rooms";
 import { MLODef } from "./types/MLODef";
 import { RoomDef } from "./types/RoomDef";
-import { fetchNui } from "./utils/fetchNui";
+import MloShell from "./layouts";
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -20,31 +18,33 @@ const useStyles = createStyles((theme) => ({
     alignItems: 'center',
   },
 
-  main: {
-    width: 800,
-    height: 700,
-    backgroundColor: theme.colors.dark[8],
-    borderRadius: theme.radius.sm,
+  wrapper: {
+    width: '37.5%',
+    height: '90%',
+    position: 'absolute',
+    top: '2%',
+    left: '2%',
+    // bottom: '2%',
+    color: theme.colors.dark[0]
   },
 
-  search: {
-    width: '40%',
-    transition: '300ms',
-    '&:focus-within': {
-      width: '50%',
-    },
-  },
+  main: {
+    position: 'absolute',
+    top: '2%',
+    left: '1.5%',
+    bottom: '2%',
+    backgroundColor: theme.colors.dark[8],
+    borderRadius: theme.radius.sm,
+  }
 }));
 
 const App: React.FC = () => {
   const { classes } = useStyles();
-  const [visible, setVisible] = useVisibility((state) => [state.visible, state.setVisible]);
-  const navigate = useNavigate();
+  const [visible, setVisible, exitUI] = useVisibility((state) => [state.visible, state.setVisible, state.exitUI]);
   const mlo = useGeneralStore((state) => state.mlo);
 
   useNuiEvent('setVisible', (data: any) => {
     setVisible(true);
-    if (data === undefined) return navigate('/occlusion/general');
   });
 
   useNuiEvent('ht_mlotool:openMLO', (data) => {
@@ -60,40 +60,23 @@ const App: React.FC = () => {
       roomSelectList: roomSelectList,
       selectedRoom: data?.roomIndex ? roomSelectList[data.roomIndex].value : null
     });
-
-    return navigate('/occlusion/general');
   });
 
-  const setNavigatedPortal = usePortalsSetters((setter) => setter.setNavigatedPortal)
+  const setNavigatedPortal = usePortalsStore((state) => state.setNavigatedPortal);
   useNuiEvent('ht_mlotool:cancelNavigation', (data: any) => {
     setNavigatedPortal(null);
   });
 
-  const handleExit = () => {
-    setVisible(false);
-    fetchNui('ht_mlotool:exitMLO', { mloData: mlo });
-  };
-
   useHotkeys([
-    ['Escape', handleExit]
-  ])
+    ['Escape', exitUI]
+  ]);
 
   return (
     <Box className={classes.container}>
-      <Transition transition="slide-up" mounted={visible}>
+      <Transition transition='slide-right' mounted={visible}>
         {(style) => (
-          <Box className={classes.main} style={style}>
-            <Group position='apart' p={10}>
-              <Title order={3}>MLO Audio Occlusion Generator</Title>
-              <CloseButton
-                size='xl'
-                onClick={handleExit}
-              />
-            </Group>
-            <Divider size='sm' />
-            <Routes>
-              <Route path="/occlusion/*" element={<Occlusion />} />
-            </Routes>
+          <Box style={style} className={classes.wrapper}>
+            <MloShell />
           </Box>
         )}
       </Transition>

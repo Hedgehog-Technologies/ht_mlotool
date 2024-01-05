@@ -1,18 +1,16 @@
-import { Divider, Stack } from "@mantine/core";
-import Dat151Info from "./components/Dat151Info";
+import { Box } from "@mantine/core";
 import RoomInfo from "./components/RoomInfo";
-import RoomSelect from "../shared/RoomSelect";
+import RoomSettings from "./components/RoomSettings";
+import { MemoRoomSelect } from "../../shared/RoomSelect";
 
 const Rooms: React.FC = () => {
   return (
-    <Stack sx={{ width: '100%' }} justify='space-between'>
-      <RoomSelect />
-      <Divider size="sm" />
+    <Box>
+      <MemoRoomSelect />
       <RoomInfo />
-      <Divider size='sm' />
-      <Dat151Info />
-    </Stack>
-  );
+      <RoomSettings />
+    </Box>
+  )
 };
 
 export default Rooms;

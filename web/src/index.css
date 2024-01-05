@@ -26,23 +26,23 @@ code {
 }
 
 /* width */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 7.5px;
   border-radius: 5px;
-}
+} */
 
 /* Track */
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background: rgb(95, 95, 95);
   border-radius: 5px;
-}
+} */
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 5px;
-}
+} */
 
-.mantine-Tooltip-tooltip {
+/* .mantine-Tooltip-tooltip {
   background: #333
-}
+} */

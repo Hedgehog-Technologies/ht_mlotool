@@ -4,7 +4,7 @@ import { noop } from "../utils/misc";
 
 type FrameVisibleSetter = (bool: boolean) => void;
 
-const LISTENED_KEYS = ['Escape'];
+const LISTENED_KEYS = ['HOME'];
 
 export const useExitListener = (visibleSetter: FrameVisibleSetter, cb?: () => void) => {
   const setterRef = useRef<FrameVisibleSetter>(noop);
