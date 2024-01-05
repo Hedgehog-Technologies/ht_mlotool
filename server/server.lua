@@ -222,6 +222,8 @@ end)
 -- ##### INITIALIZATION THREAD ##### --
 
 CreateThread(function()
+    lib.versionCheck('Hedgehog-Technologies/ht_mlotool')
+
     local files, fileCount = getFilesInDirectory(savedMLODir, '%.json')
 
     if fileCount > 0 then
