@@ -14,13 +14,13 @@ const MloInfo: React.FC = () => {
         <MemoNumberInput 
           label={locale("ui_unsigned")}
           value={mlo?.uintNameHash ?? 0}
-          infoCircle={locale("ui_name_hash_info_signed")}
+          infoCircle={locale("ui_name_hash_info_unsigned")}
           disabled
         />
         <MemoNumberInput
           label={locale("ui_signed")}
           value={mlo?.nameHash ?? 0}
-          infoCircle={locale("ui_name_hash_info_unsigned")}
+          infoCircle={locale("ui_name_hash_info_signed")}
           disabled
         />
       </Group>
