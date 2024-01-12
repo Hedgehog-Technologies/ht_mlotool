@@ -24,9 +24,14 @@ client_scripts {
 
 server_script 'server/server.lua'
 
+ox_libs {
+    'locale'
+}
+
 files {
     'web/build/index.html',
-    'web/build/**/*'
+    'web/build/**/*',
+    'locales/*.json'
 }
 
 ui_page 'web/build/index.html'

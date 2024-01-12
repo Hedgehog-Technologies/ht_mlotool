@@ -29,5 +29,3 @@ export const useRoomsStore = create<RoomsStoreState>((set) => ({
   setSelectedRoom: (value) => set({ selectedRoom: value }),
   setActiveRoom: (value) => set({ activeRoom: value })
 }));
-
-export const defaultRoomsState = useRoomsStore.getState();

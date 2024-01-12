@@ -1,8 +1,9 @@
 import { Box, Group, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { MemoNumberInput, MemoStringInput } from "../../../shared/Inputs";
-import { Dat151Fields } from "../../../../types/RoomDef";
+import { useLocale } from "../../../../providers/LocaleProvider";
 import { useRoomsStore } from "../../../../store/rooms";
+import { Dat151Fields } from "../../../../types/RoomDef";
 
 const defaultDat151Fields: Dat151Fields = {
   flags: "0xAAAAAAAA",
@@ -23,6 +24,7 @@ const defaultDat151Fields: Dat151Fields = {
 };
 
 const RoomSettings: React.FC = () => {
+  const locale = useLocale((state) => state.locale);
   const activeRoom = useRoomsStore((state) => state.activeRoom);
   const [fieldState, setFieldState] = useState<Dat151Fields>(defaultDat151Fields);
   const [disabled, setDisabled] = useState<boolean>(true);
@@ -66,147 +68,146 @@ const RoomSettings: React.FC = () => {
   }, [activeRoom]);
 
   return (
-    <>
-      <Box pt={25}>
-        <Title order={5}>Settings</Title>
-        <Group position="apart" grow>
-          <MemoStringInput
-            label={"Flags"}
-            value={fieldState.flags}
-            setValue={(value) => setFieldState({ ...fieldState, flags: value })}
-            disabled={disabled}
-          />
-          <MemoStringInput
-            label={"Zone"}
-            placeholder={"<Blank>"}
-            value={fieldState.zone}
-            setValue={(value) => setFieldState({ ...fieldState, zone: value })}
-            infoCircle={"Usually left blank"}
-            icWidth={125}
-            disabled={disabled}
-          />
-          <MemoNumberInput
-            label={"Unk02"}
-            value={fieldState.unk02}
-            setValue={(value) => setFieldState({ ...fieldState, unk02: (value ?? defaultDat151Fields.unk02) })}
-            infoCircle={"Usually left as 0"}
-            icWidth={100}
-            disabled={disabled}
-          />
-          <MemoNumberInput
-            label={"Unk03"}
-            value={fieldState.unk03}
-            setValue={(value) => setFieldState({ ...fieldState, unk03: (value ?? defaultDat151Fields.unk03) })}
-            precision={6}
-            infoCircle={"Usually left as 0.35"}
-            icWidth={125}
-            disabled={disabled}
-          />
-        </Group>
+    <Box pt={25}>
+      <Title order={5}>{locale("ui_room_dat_settings")}</Title>
+      <Group position="apart" grow>
+        <MemoStringInput
+          label={locale("ui_room_dat_flags")}
+          value={fieldState.flags}
+          setValue={(value) => setFieldState({ ...fieldState, flags: value })}
+          infoCircle={locale("ui_room_dat_flags_info")}
+          disabled={disabled}
+        />
+        <MemoStringInput
+          label={locale("ui_room_dat_zone")}
+          placeholder={locale("ui_blank")}
+          value={fieldState.zone}
+          setValue={(value) => setFieldState({ ...fieldState, zone: value })}
+          infoCircle={locale("ui_room_dat_zone_info")}
+          icWidth={125}
+          disabled={disabled}
+        />
+        <MemoNumberInput
+          label={locale("ui_room_dat_unk02")}
+          value={fieldState.unk02}
+          setValue={(value) => setFieldState({ ...fieldState, unk02: (value ?? defaultDat151Fields.unk02) })}
+          infoCircle={locale("ui_room_dat_unk02_info")}
+          icWidth={100}
+          disabled={disabled}
+        />
+        <MemoNumberInput
+          label={locale("ui_room_dat_unk03")}
+          value={fieldState.unk03}
+          setValue={(value) => setFieldState({ ...fieldState, unk03: (value ?? defaultDat151Fields.unk03) })}
+          precision={6}
+          infoCircle={locale("ui_room_dat_unk03_info")}
+          icWidth={125}
+          disabled={disabled}
+        />
+      </Group>
 
-        <Group position="apart" grow>
-          <MemoNumberInput
-            label={"Reverb"}
-            value={fieldState.reverb}
-            setValue={(value) => setFieldState({ ...fieldState, reverb: (value ?? defaultDat151Fields.reverb) })}
-            precision={6}
-            min={0.0}
-            max={1.0}
-            infoCircle={"Set level of reverb for the currently selected room. Range: 0.0 - 1.0"}
-            icWidth={150}
-            disabled={disabled}
-          />
-          <MemoNumberInput
-            label={"Echo"}
-            value={fieldState.echo}
-            setValue={(value) => setFieldState({ ...fieldState, echo: (value ?? defaultDat151Fields.echo) })}
-            precision={6}
-            min={0.0}
-            max={1.0}
-            infoCircle={"Set level of echo for the currently selected room. Range: 0.0 - 1.0"}
-            icWidth={150}
-            disabled={disabled}
-          />
-          <MemoStringInput
-            label={"Sound"}
-            value={fieldState.sound}
-            setValue={(value) => setFieldState({ ...fieldState, sound: value })}
-            infoCircle={"Room sounds. Usually left as null_sound"}
-            disabled={disabled}
-          />
-          <MemoNumberInput
-            label={"Unk07"}
-            value={fieldState.unk07}
-            setValue={(value) => setFieldState({ ...fieldState, unk07: (value ?? defaultDat151Fields.unk07) })}
-            infoCircle={"Usually left as 0"}
-            icWidth={100}
-            disabled={disabled}
-          />
-        </Group>
+      <Group position="apart" grow>
+        <MemoNumberInput
+          label={locale("ui_room_dat_reverb")}
+          value={fieldState.reverb}
+          setValue={(value) => setFieldState({ ...fieldState, reverb: (value ?? defaultDat151Fields.reverb) })}
+          precision={6}
+          min={0.0}
+          max={1.0}
+          infoCircle={locale("ui_room_dat_reverb_info")}
+          icWidth={150}
+          disabled={disabled}
+        />
+        <MemoNumberInput
+          label={locale("ui_room_dat_echo")}
+          value={fieldState.echo}
+          setValue={(value) => setFieldState({ ...fieldState, echo: (value ?? defaultDat151Fields.echo) })}
+          precision={6}
+          min={0.0}
+          max={1.0}
+          infoCircle={locale("ui_room_dat_echo_info")}
+          icWidth={150}
+          disabled={disabled}
+        />
+        <MemoStringInput
+          label={locale("ui_room_dat_sound")}
+          value={fieldState.sound}
+          setValue={(value) => setFieldState({ ...fieldState, sound: value })}
+          infoCircle={locale("ui_room_dat_sound_info")}
+          disabled={disabled}
+        />
+        <MemoNumberInput
+          label={locale("ui_room_dat_unk07")}
+          value={fieldState.unk07}
+          setValue={(value) => setFieldState({ ...fieldState, unk07: (value ?? defaultDat151Fields.unk07) })}
+          infoCircle={locale("ui_room_dat_unk07_info")}
+          icWidth={100}
+          disabled={disabled}
+        />
+      </Group>
 
-        <Group position="apart" grow>
-          <MemoNumberInput
-            label={"Unk08"}
-            value={fieldState.unk08}
-            setValue={(value) => setFieldState({ ...fieldState, unk08: (value ?? defaultDat151Fields.unk08) })}
-            infoCircle={"Usually left as 0"}
-            icWidth={100}
-            disabled={disabled}
-          />
-          <MemoNumberInput
-            label={"Unk09"}
-            value={fieldState.unk09}
-            setValue={(value) => setFieldState({ ...fieldState, unk09: (value ?? defaultDat151Fields.unk09) })}
-            infoCircle={"Usually left as 0"}
-            icWidth={100}
-            disabled={disabled}
-          />
-          <MemoNumberInput
-            label={"Unk10"}
-            value={fieldState.unk10}
-            setValue={(value) => setFieldState({ ...fieldState, unk10: (value ?? defaultDat151Fields.unk10) })}
-            precision={6}
-            infoCircle={"Usually left as 0.7"}
-            icWidth={125}
-            disabled={disabled}
-          />
-          <MemoNumberInput
-            label={"Unk11"}
-            value={fieldState.unk11}
-            setValue={(value) => setFieldState({ ...fieldState, unk11: (value ?? defaultDat151Fields.unk11) })}
-            infoCircle={"Usually left as 0"}
-            icWidth={100}
-            disabled={disabled}
-          />
-        </Group>
+      <Group position="apart" grow>
+        <MemoNumberInput
+          label={locale("ui_room_dat_unk08")}
+          value={fieldState.unk08}
+          setValue={(value) => setFieldState({ ...fieldState, unk08: (value ?? defaultDat151Fields.unk08) })}
+          infoCircle={locale("ui_room_dat_unk08_info")}
+          icWidth={100}
+          disabled={disabled}
+        />
+        <MemoNumberInput
+          label={locale("ui_room_dat_unk09")}
+          value={fieldState.unk09}
+          setValue={(value) => setFieldState({ ...fieldState, unk09: (value ?? defaultDat151Fields.unk09) })}
+          infoCircle={locale("ui_room_dat_unk09_info")}
+          icWidth={100}
+          disabled={disabled}
+        />
+        <MemoNumberInput
+          label={locale("ui_room_dat_unk10")}
+          value={fieldState.unk10}
+          setValue={(value) => setFieldState({ ...fieldState, unk10: (value ?? defaultDat151Fields.unk10) })}
+          precision={6}
+          infoCircle={locale("ui_room_dat_unk10_info")}
+          icWidth={125}
+          disabled={disabled}
+        />
+        <MemoNumberInput
+          label={locale("ui_room_dat_unk11")}
+          value={fieldState.unk11}
+          setValue={(value) => setFieldState({ ...fieldState, unk11: (value ?? defaultDat151Fields.unk11) })}
+          infoCircle={locale("ui_room_dat_unk11_info")}
+          icWidth={100}
+          disabled={disabled}
+        />
+      </Group>
 
-        <Group position="center" grow>
-          <MemoNumberInput
-            label={"Unk12"}
-            value={fieldState.unk12}
-            setValue={(value) => setFieldState({ ...fieldState, unk12: (value ?? defaultDat151Fields.unk12) })}
-            infoCircle={"Usually left as 50"}
-            icWidth={125}
-            disabled={disabled}
-          />
-          <MemoStringInput
-            label={"Unk13"}
-            placeholder="<Blank>"
-            value={fieldState.unk13}
-            setValue={(value) => setFieldState({ ...fieldState, unk13: value })}
-            infoCircle={"Maybe a static emitter hash. Usually left blank"}
-            disabled={disabled}
-          />
-          <MemoStringInput
-            label="SoundSet"
-            value={fieldState.soundSet}
-            setValue={(value) => setFieldState({ ...fieldState, soundSet: value })}
-            infoCircle={"Usually left as hash_D4855127"}
-            disabled={disabled}
-          />
-        </Group>
-      </Box>
-    </>
+      <Group position="center" grow>
+        <MemoNumberInput
+          label={locale("ui_room_dat_unk12")}
+          value={fieldState.unk12}
+          setValue={(value) => setFieldState({ ...fieldState, unk12: (value ?? defaultDat151Fields.unk12) })}
+          infoCircle={locale("ui_room_dat_unk12_info")}
+          icWidth={125}
+          disabled={disabled}
+        />
+        <MemoStringInput
+          label={locale("ui_room_dat_unk13")}
+          placeholder={locale("ui_blank")}
+          value={fieldState.unk13}
+          setValue={(value) => setFieldState({ ...fieldState, unk13: value })}
+          infoCircle={locale("ui_room_dat_unk13_info")}
+          disabled={disabled}
+        />
+        <MemoStringInput
+          label={locale("ui_room_dat_soundset")}
+          value={fieldState.soundSet}
+          setValue={(value) => setFieldState({ ...fieldState, soundSet: value })}
+          infoCircle={locale("ui_room_dat_soundset_info")}
+          disabled={disabled}
+        />
+      </Group>
+    </Box>
   );
 };
 

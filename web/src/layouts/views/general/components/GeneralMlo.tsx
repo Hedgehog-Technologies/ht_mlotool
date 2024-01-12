@@ -1,10 +1,12 @@
 import { Box, Stack, Title } from "@mantine/core"
+import { useEffect, useState } from "react"
 import MloInfo from "./MloInfo"
 import { MemoStringInput } from "../../../shared/Inputs"
+import { useLocale } from "../../../../providers/LocaleProvider"
 import { useGeneralStore } from "../../../../store/general"
-import { useEffect, useState } from "react"
 
 const GeneralMlo: React.FC = () => {
+  const locale = useLocale((state) => state.locale);
   const mlo = useGeneralStore((state) => state.mlo);
   const updateMLOSaveName = useGeneralStore((state) => state.updateMLOSaveName)
   const [mloSaveName, setMLOSaveName] = useState(mlo?.saveName ?? "");
@@ -32,14 +34,14 @@ const GeneralMlo: React.FC = () => {
 
   return(
     <Stack>
-      <Title order={4}>General MLO Information</Title>
+      <Title order={4}>{locale("ui_general_info")}</Title>
 
       <Box p={5}>
-        <Title order={5} pb={10}>Save File Name</Title>
+        <Title order={5} pb={10}>{locale("ui_save_name")}</Title>
         <MemoStringInput
           value={mloSaveName ?? ""}
           setValue={(value: string) => setMLOSaveName(value)}
-          infoCircle="Name of the file to save the MLO information out to"
+          infoCircle={locale("ui_save_name_info")}
         />
       </Box>
 

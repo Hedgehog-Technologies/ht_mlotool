@@ -1,6 +1,7 @@
 import { Checkbox, Group, InputVariant, MantineSize, NumberInput, TextInput, ThemeIcon, Tooltip, createStyles } from "@mantine/core";
 import React from "react";
 import { BsQuestionCircle } from "react-icons/bs";
+import { useLocale } from "../../providers/LocaleProvider";
 
 interface InputProps {
   label?: string;
@@ -92,6 +93,7 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
 }
 
 const StringInput: React.FC<StringInputProps> = (props) => {
+  const locale = useLocale((state) => state.locale);
   const { classes } = useInputStyles();
   const variant = props.inputVariant ?? props.disabled ? "filled" : "default";
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
@@ -104,7 +106,7 @@ const StringInput: React.FC<StringInputProps> = (props) => {
       withinPortal
     >
       <TextInput
-        value={props.value ?? "[missing value]"}
+        value={props.value ?? `[${locale("ui_missing_value")}]`}
         // $TECH_DEBT - Revisit for debouncing?
         onChange={(e) => { if (props.setValue !== undefined) props.setValue(e.target.value)}}
         label={props.label}

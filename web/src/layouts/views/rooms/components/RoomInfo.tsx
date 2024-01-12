@@ -1,26 +1,28 @@
 import { Box, Group, Title } from "@mantine/core";
 import { MemoNumberInput, MemoStringInput } from "../../../shared/Inputs";
+import { useLocale } from "../../../../providers/LocaleProvider";
 import { useRoomsStore } from "../../../../store/rooms";
 
 const RoomInfo: React.FC = () => {
+  const locale = useLocale((state) => state.locale);
   const activeRoom = useRoomsStore((state) => state.activeRoom);
 
   return (
     <>
-      <Title order={4} pt={20}>Room Information</Title>
+      <Title order={4} pt={20}>{locale("ui_room_info")}</Title>
       <Box>
         <Group position="apart" grow>
           <MemoStringInput
-            label={"Name"}
+            label={locale("ui_name")}
             value={activeRoom?.name ?? ""}
-            infoCircle={"Room name of the currently selected room"}
+            infoCircle={locale("ui_name_info")}
             ttOpenDelay={300}
             disabled
           />
           <MemoStringInput
-            label={"Occlusion Name"}
+            label={locale("ui_occl_name")}
             value={activeRoom?.occlRoomName ?? ""}
-            infoCircle={"Room name used in the dat151.rel file"}
+            infoCircle={locale("ui_occl_name_info")}
             ttOpenDelay={300}
             disabled
           />
@@ -28,51 +30,51 @@ const RoomInfo: React.FC = () => {
 
         <Group position="apart" grow>
           <MemoNumberInput
-            label={"Room Index"}
+            label={locale("ui_room_index")}
             value={activeRoom?.index ?? -1}
-            infoCircle={"Room index of the currently selected room"}
+            infoCircle={locale("ui_room_index_info")}
             disabled
           />
           <MemoNumberInput
-            label={"Number of Portals"}
+            label={locale("ui_number_portals")}
             value={activeRoom?.portalCount ?? -1}
-            infoCircle={"Number of portals for the currently selected room"}
+            infoCircle={locale("ui_room_number_portals_info")}
             disabled
           />
         </Group>
       </Box>
 
       <Box pt={10}>
-        <Title order={5}>Name Hash</Title>
+        <Title order={5}>{locale("ui_name_hash")}</Title>
         <Group position="apart" grow>
           <MemoNumberInput
-            label={"Unsigned"}
+            label={locale("ui_unsigned")}
             value={activeRoom?.uintNameHash ?? -1}
-            infoCircle={"Room name represented as an Unsigned Int32"}
+            infoCircle={locale("ui_room_name_hash_info_unsigned")}
             disabled
           />
           <MemoNumberInput
-            label={"Signed"}
+            label={locale("ui_signed")}
             value={activeRoom?.nameHash ?? -1}
-            infoCircle={"Room name represented as a Signed Int32"}
+            infoCircle={locale("ui_room_name_hash_info_signed")}
             disabled
           />
         </Group>
       </Box>
 
       <Box pt={10}>
-        <Title order={5}>Room Key</Title>
+        <Title order={5}>{locale("ui_room_key")}</Title>
         <Group position="apart" grow>
           <MemoNumberInput
-            label={"Unsigned"}
+            label={locale("ui_unsigned")}
             value={activeRoom?.uintRoomKey ?? -1}
-            infoCircle={"Room key calculated and represented as an Unsigned Int32"}
+            infoCircle={locale("ui_room_key_info_unsigned")}
             disabled
           />
           <MemoNumberInput
-            label={"Signed"}
+            label={locale("ui_signed")}
             value={activeRoom?.roomKey ?? -1}
-            infoCircle={"Room key calculated and represented as a Signed Int32"}
+            infoCircle={locale("ui_room_key_info_signed")}
             disabled
           />
         </Group>

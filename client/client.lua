@@ -34,7 +34,7 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
             if not mloName then
                 return lib.notify({
                     type = 'error',
-                    title = 'Missing MLO Archetype Name, cannot generate Dat151 File'
+                    title = locale('missing_mlo_archetype_name')
                 })
             elseif mlo.name:sub(1, 5) == 'hash_' then
                 mloName = mloName:gsub('hash_', '', 1)
@@ -67,7 +67,7 @@ RegisterNetEvent('ht_mlotool:openMLO', function(data)
     if IsNuiFocused() then
         return lib.notify({
             type = 'error',
-            title = 'Cannot bring up audio menu while NUI has focus somewhere else'
+            title = locale('nui_already_focused')
         })
     end
 
@@ -77,7 +77,7 @@ RegisterNetEvent('ht_mlotool:openMLO', function(data)
     if interiorId == 0 or not IsValidInterior(interiorId) then
         return lib.notify({
             type = 'error',
-            title = 'Not currently in a recognized MLO interior'
+            title = locale('unrecognized_interior')
         })
     end
 
@@ -107,7 +107,7 @@ RegisterNetEvent('ht_mlotool:openMLO', function(data)
     if mlo == nil then
         return lib.notify({
             type = 'error',
-            title = 'Failed to generate MLO data'
+            title = locale('data_generation_fail')
         })
     end
 
@@ -121,14 +121,14 @@ RegisterNetEvent('ht_mlotool:saveCurrentMLO', function(name)
     local mlo = mloCache[interiorId]
 
     if interiorId == 0 or not IsValidInterior(interiorId) then
-        return lib.notify({ type = 'error', title = 'Not currently in a recognized MLO interior' })
+        return lib.notify({ type = 'error', title = locale('unrecognized_interior') })
     elseif not mlo then
         mlo = MLO.new(interiorId)
         mloCache[interiorId] = mlo
     end
 
     if mlo == nil then
-        return lib.notify({ type = 'error', title = 'Failed to find a valid MLO'})
+        return lib.notify({ type = 'error', title = locale('save_mlo_fail') })
     end
 
     if name ~= nil then mlo.saveName = name end

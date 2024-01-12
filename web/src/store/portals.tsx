@@ -1,4 +1,4 @@
-import { create }from "zustand";
+import { create } from "zustand";
 import { BooleanField, NumberField } from ".";
 
 export interface PortalsStoreState {
@@ -28,5 +28,3 @@ export const usePortalsStore = create<PortalsStoreState>((set) => ({
   setNavigatedPortal: (portal) => set({ navigatedPortal: portal }),
   toggleSwitch: (t) => set((state) => ({ [t]: !state[t] }))
 }));
-
-export const defaultPortalsState = usePortalsStore.getState();

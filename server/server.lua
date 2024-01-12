@@ -42,8 +42,8 @@ local function readFile(source, filepath, filename, filetype)
         if source ~= nil then
             lib.notify(source, {
                 type = 'error',
-                title = 'Failed to open file',
-                description = 'Check server logs for more info'
+                title = locale('open_file_fail'),
+                description = locale('check_server_logs')
             })
         end
 
@@ -64,8 +64,8 @@ local function writeFile(source, filepath, filename, filetype, dataString)
         print(openError)
         lib.notify(source, {
             type = 'error',
-            title = 'Failed to open output file',
-            description = 'Check server logs for more info'
+            title = locale('open_output_file_fail'),
+            description = locale('check_server_logs')
         })
         return false
     end
@@ -76,8 +76,8 @@ local function writeFile(source, filepath, filename, filetype, dataString)
         print(writeError)
         lib.notify(source, {
             type = 'error',
-            title = 'Failed to write to output file',
-            description = 'Check server logs for more info'
+            title = locale('write_output_fail'),
+            description = locale('check_server_logs')
         })
     end
 
@@ -107,9 +107,9 @@ RegisterNetEvent('ht_mlotool:outputResultFile', function(filename, filetype, ymt
     local success = writeFile(source, generatedFilesDirectoryPath, filename, filetype, ToXml(ymtData, debug)) --SaveResourceFile(cache.resource, filename, ToXml(ymtData, debug), -1)
 
     local type = success and 'success' or 'error'
-    local title = success and 'File finished saving: %s' or 'Failed to save file: %s'
-    print(title:format(filename))
-    lib.notify(source, { type = type, title = title:format(filename) })
+    local title = success and locale('file_save_success', filename) or locale('file_save_fail', filename)
+    print(title)
+    lib.notify(source, { type = type, title = title })
 end)
 
 RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
@@ -120,10 +120,10 @@ RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
     local writeSuccess = writeFile(source, savedMloDirectoryPath, filename, 'json', json.encode(mloInfo, { indent = true }))
 
     if writeSuccess then
-        print(('Successfully saved MLO Info: ./%s/%s'):format(savedMLODir, filename))
+        print(locale('save_mlo_success') .. (': ./%s/%s'):format(savedMLODir, filename))
         lib.notify(source, {
             type = 'success',
-            title = 'Successfully saved MLO Info',
+            title = locale('save_mlo_success'),
             description = ('./%s/%s.json'):format(savedMLODir, filename)
         })
     end
@@ -142,12 +142,12 @@ end)
 -- ##### COMMANDS ##### --
 
 lib.addCommand('savemlo', {
-    help = '[Admin] Save current MLO object to file',
+    help = locale('cmd_savemlo_help'),
     restricted = 'group.admin',
     params = {
         {
             name = 'name',
-            help = '[Optional] If specified, will be used as the filename',
+            help = locale('cmd_savemlo_name_help'),
             type = 'string',
             optional = true
         }
@@ -158,12 +158,12 @@ lib.addCommand('savemlo', {
 end)
 
 lib.addCommand('loadmlo', {
-    help = '[Admin] Load current MLO data from saved file if exists',
+    help = locale('cmd_loadmlo_help'),
     restricted = 'group.admin',
     params = {
         {
             name = 'name',
-            help = '[Optional] Name of the saved file',
+            help = locale('cmd_loadmlo_name_help'),
             type = 'string',
             optional = true
         }
@@ -181,12 +181,12 @@ lib.addCommand('loadmlo', {
 end)
 
 lib.addCommand('openmlo', {
-    help = '[Admin] Open audio occlusion interface for current MLO',
+    help = locale('cmd_openmlo_help'),
     restricted = 'group.admin',
     params = {
         {
             name = 'force',
-            help = '[Optional] (1) Reload from file, (2) Rebuild from scratch, or <leave blank> Use cached value if available',
+            help = locale('cmd_openmlo_force_help'),
             type = 'number',
             optional = true
         }
@@ -206,10 +206,10 @@ lib.addCommand('openmlo', {
 
                     if data then data = json.decode(data) end
                 else
-                    print('No filename associated with name hash ' .. tostring(nameHash))
+                    print(locale('no_filename_name_hash', nameHash))
                 end
             else
-                print('User is not currently standing in an MLO')
+                print(locale('user_not_in_mlo'))
             end
         elseif args.force == 2 then
             data = false
@@ -227,7 +227,7 @@ CreateThread(function()
     local files, fileCount = getFilesInDirectory(savedMLODir, '%.json')
 
     if fileCount > 0 then
-        print(('Found %d saved MLO json files.'):format(fileCount))
+        print(locale('found_mlo_json_files', fileCount))
     end
 
     for i = 1, fileCount do

@@ -28,6 +28,27 @@ RegisterNUICallback('ht_mlotool:debugDrawToggle', function(data, cb)
     UpdateDebugDraw(data.info, data.outline, data.fill, data.navigate)
 end)
 
+RegisterNUICallback('ht_mlotool:fetchLocales', function(_, cb)
+    local lang = GetConvar('ox:locale', 'en')
+    local locales = json.decode(LoadResourceFile(cache.resource, ('locales/%s.json'):format(lang)))
+
+    if not locales then
+        lib.notify({
+            type = 'error',
+            title = 'MLO Tool',
+            description = ('Locale file for "%s" could not be found, please consider contributing with a translation'),
+            duration = 12500
+        })
+
+        if lang ~= 'en' then
+            print('WARNING: Locale file for "%s" could not be found. Defaulting to "en"')
+            locales = json.decode(LoadResourceFile(cache.resource, 'locales/en.json'))
+        end
+    end
+
+    cb(locales)
+end)
+
 --- A simple wrapper around SendNUIMessage that you can use to
 --- dispatch actions to the React frame.
 ---

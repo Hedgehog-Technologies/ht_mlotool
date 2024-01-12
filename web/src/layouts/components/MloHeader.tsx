@@ -1,10 +1,12 @@
 import { Group, Header, Title } from "@mantine/core";
 import { AiFillGithub, AiOutlineCloseSquare } from "react-icons/ai";
 import { MemoHeaderIcon } from "./HeaderIcon";
+import { useLocale } from "../../providers/LocaleProvider";
 import { useVisibility } from "../../providers/VisibilityProvider";
 import { useGeneralStore } from "../../store/general";
 
 const MloHeader: React.FC = () => {
+  const locale = useLocale((state) => state.locale);
   const mlo = useGeneralStore((state) => state.mlo);
   const exitUI = useVisibility((state) => state.exitUI);
 
@@ -20,17 +22,17 @@ const MloHeader: React.FC = () => {
     <Header height={""}>
       <Group p="1%" px="2.5%" position="apart" sx={{ alignContent: "center" }}>
         <Title order={4} color={"violet.1"}>MLO Tool</Title>
-        <Title order={3} color={"violet.1"}>{mlo?.saveName.toUpperCase() ?? "UNKNOWN"}</Title>
+        <Title order={3} color={"violet.1"}>{mlo?.saveName.toUpperCase() ?? locale("ui_save_name_unknown")}</Title>
         <Group>
           <MemoHeaderIcon
-            label={"Open Github Repo"}
+            label={locale("ui_open_github")}
             Icon={AiFillGithub}
             iconSize={24}
             color={"violet.6"}
             onClick={handleGithubClick}
           />
           <MemoHeaderIcon
-            label={"Close"}
+            label={locale("ui_close")}
             Icon={AiOutlineCloseSquare}
             iconSize={24}
             color={"violet.6"}

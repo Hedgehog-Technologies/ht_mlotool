@@ -1,10 +1,11 @@
 import { Alert, Center, Checkbox, Divider, Group, Paper, Space, Switch, Table, Text, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import EntitySettings from "./EntitySettings";
-import { PortalDef } from "../../../../types/PortalDef";
-import { useRoomsStore } from "../../../../store/rooms";
+import { useLocale } from "../../../../providers/LocaleProvider";
 import { useGeneralStore } from "../../../../store/general";
 import { usePortalsStore } from "../../../../store/portals";
+import { useRoomsStore } from "../../../../store/rooms";
+import { PortalDef } from "../../../../types/PortalDef";
 import { fetchNui } from "../../../../utils/fetchNui";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const PortalInfo: React.FC<Props> = (props) => {
+  const locale = useLocale((state) => state.locale);
   const mlo = useGeneralStore((state) => state.mlo);
   const rooms = useRoomsStore((state) => state.roomList);
   const intRoom = rooms[props.portal.fromRoomIndex];
@@ -63,7 +65,7 @@ const PortalInfo: React.FC<Props> = (props) => {
           </Title>
           <Switch
             size={"xs"}
-            label={"Point Towards"}
+            label={locale("ui_portal_debug_point")}
             labelPosition={"left"}
             checked={navigate}
             onChange={() => setNavigate(!navigate)}
@@ -72,14 +74,14 @@ const PortalInfo: React.FC<Props> = (props) => {
         <Center py={10} px={15} >
           <Group>
             <Checkbox
-              label={`[${intRoom.index}] → [${extRoom.index}] Enabled`}
+              label={`[${intRoom.index}] → [${extRoom.index}] ` + locale("ui_portal_enabled")}
               labelPosition={"left"}
               checked={enabledState[0]}
               onChange={(e) => setEnabledState([ e.currentTarget.checked, enabledState[1] ])}
             />
             <Divider orientation="vertical" />
             <Checkbox
-              label={`[${extRoom.index}] → [${intRoom.index}] Enabled`}
+              label={`[${extRoom.index}] → [${intRoom.index}] ` + locale("ui_portal_enabled")}
               labelPosition="left"
               checked={enabledState[1]}
               onChange={(e) => setEnabledState([ enabledState[0], e.currentTarget.checked ])}
@@ -88,20 +90,20 @@ const PortalInfo: React.FC<Props> = (props) => {
         </Center>
         <Center py={5} px={15}>
           {props.portal.entities.length > 0
-            ? <Table striped withColumnBorders withBorder fontSize='xs'>
+            ? <Table striped withColumnBorders withBorder fontSize="xs">
                 <thead>
                   <tr>
-                    <th>Model</th>
-                    <th style={{ width: '20%' }}>Max Occlusion</th>
-                    <th style={{ width: '15%', textAlign: 'center' }}>Is Door?</th>
-                    <th style={{ width: '15%', textAlign: 'center' }}>Is Glass?</th>
+                    <th>{locale("ui_portal_entity_model")}</th>
+                    <th style={{ width: "20%" }}>{locale("ui_portal_entity_max_occl")}</th>
+                    <th style={{ width: "15%", textAlign: "center" }}>{locale("ui_portal_entity_door")}</th>
+                    <th style={{ width: "15%", textAlign: "center" }}>{locale("ui_portal_entity_glass")}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {props.portal.entities.map((_, entityIndex) => <EntitySettings key={entityIndex} portalIndex={props.portalIndex} entityIndex={entityIndex} />)}
                 </tbody>
               </Table>
-            : <Alert w={"100%"}><Center>No entities associated with this portal</Center></Alert>}
+            : <Alert w={"100%"}><Center>{locale("ui_portal_no_entities")}</Center></Alert>}
         </Center>
       </Paper>
       <Space h={10} />

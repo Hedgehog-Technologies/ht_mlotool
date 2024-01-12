@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { BooleanField } from ".";
-import { MLODef, MLODefConstructor } from "../types/MLODef";
+import { MLODef } from "../types/MLODef";
 
 export interface GeneralStoreState {
   mlo: MLODef | null;
@@ -32,5 +32,3 @@ export const useGeneralStore = create<GeneralStoreState>((set, get) => ({
     }
   }
 }));
-
-export const defaultGeneralState = useGeneralStore.getState();

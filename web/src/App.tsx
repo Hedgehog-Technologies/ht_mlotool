@@ -1,38 +1,38 @@
 import { Box, createStyles, Transition } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
 import { useNuiEvent } from "./hooks/useNuiEvent";
+import MloShell from "./layouts";
 import { useVisibility } from "./providers/VisibilityProvider";
 import { useGeneralStore } from "./store/general";
 import { usePortalsStore } from "./store/portals";
 import { useRoomsStore } from "./store/rooms";
 import { MLODef } from "./types/MLODef";
 import { RoomDef } from "./types/RoomDef";
-import MloShell from "./layouts";
 
 const useStyles = createStyles((theme) => ({
   container: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   wrapper: {
-    width: '37.5%',
-    height: '90%',
-    position: 'absolute',
-    top: '2%',
-    left: '2%',
-    // bottom: '2%',
+    width: "37.5%",
+    height: "90%",
+    position: "absolute",
+    top: "2%",
+    left: "2%",
+    // bottom: "2%",
     color: theme.colors.dark[0]
   },
 
   main: {
-    position: 'absolute',
-    top: '2%',
-    left: '1.5%',
-    bottom: '2%',
+    position: "absolute",
+    top: "2%",
+    left: "1.5%",
+    bottom: "2%",
     backgroundColor: theme.colors.dark[8],
     borderRadius: theme.radius.sm,
   }
@@ -41,13 +41,12 @@ const useStyles = createStyles((theme) => ({
 const App: React.FC = () => {
   const { classes } = useStyles();
   const [visible, setVisible, exitUI] = useVisibility((state) => [state.visible, state.setVisible, state.exitUI]);
-  const mlo = useGeneralStore((state) => state.mlo);
 
-  useNuiEvent('setVisible', (data: any) => {
+  useNuiEvent("setVisible", (data: any) => {
     setVisible(true);
   });
 
-  useNuiEvent('ht_mlotool:openMLO', (data) => {
+  useNuiEvent("ht_mlotool:openMLO", (data) => {
     setVisible(true);
 
     const mloData = new MLODef(data.mloData);
@@ -63,17 +62,17 @@ const App: React.FC = () => {
   });
 
   const setNavigatedPortal = usePortalsStore((state) => state.setNavigatedPortal);
-  useNuiEvent('ht_mlotool:cancelNavigation', (data: any) => {
+  useNuiEvent("ht_mlotool:cancelNavigation", (data: any) => {
     setNavigatedPortal(null);
   });
 
   useHotkeys([
-    ['Escape', exitUI]
+    ["Escape", exitUI]
   ]);
 
   return (
     <Box className={classes.container}>
-      <Transition transition='slide-right' mounted={visible}>
+      <Transition transition="slide-right" mounted={visible}>
         {(style) => (
           <Box style={style} className={classes.wrapper}>
             <MloShell />

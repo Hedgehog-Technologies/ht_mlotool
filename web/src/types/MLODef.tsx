@@ -17,7 +17,7 @@ export interface MLODefConstructor {
 
 export class MLODef {
   public interiorId: number;
-  public saveName: string = '';
+  public saveName: string = "";
   public nameHash: number;
   public uintNameHash: number;
   public location: Vector3;

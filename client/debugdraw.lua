@@ -170,8 +170,8 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
                     if drawPortalInfo then
                         local roomFrom, roomTo = table.unpack(mloPortalConnections[portalId])
 
-                        draw3dText(vec3(crossVector.x, crossVector.y, crossVector.z + 0.15), ('~b~Portal ~w~%s'):format(portalId))
-                        draw3dText(vec3(crossVector.x, crossVector.y, crossVector.z), ('~b~From ~w~%s~b~ To ~w~%s'):format(roomFrom, roomTo))
+                        draw3dText(vec3(crossVector.x, crossVector.y, crossVector.z + 0.15), locale('debug_text_portal_id', portalId))
+                        draw3dText(vec3(crossVector.x, crossVector.y, crossVector.z), locale('debug_text_conn_rooms', roomFrom, roomTo))
                     end
 
                     if drawPortalOutline then
@@ -203,7 +203,15 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
                     local dirX = pedCoords.x - crossVector.x
                     local dirY = pedCoords.y - crossVector.y
                     local dirZ = pedCoords.z - crossVector.z + 0.75
-                    DrawMarker(26, pedCoords.x, pedCoords.y, pedCoords.z + 0.75, dirX, dirY, dirZ, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 100, 65, 217, 200, false, false, 0, false, false, false, false)
+
+                    DrawMarker(
+                        26, -- MarkerTypeHorizontalCircleSkinny_Arrow
+                        pedCoords.x, pedCoords.y, pedCoords.z + 0.75,
+                        dirX, dirY, dirZ,
+                        0.0, 0.0, 0.0,
+                        1.0, 1.0, 1.0,
+                        100, 65, 217, 200,
+                        false, false, 0, false, nil, nil, false)
                 end
             end
         end, 0)
