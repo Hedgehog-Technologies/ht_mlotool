@@ -1,4 +1,4 @@
-# Usage Guide (WIP)
+# Usage Guide
 
 ## Background
 

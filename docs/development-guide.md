@@ -1,4 +1,4 @@
-# Development Guide (WIP)
+# Development Guide
 
 ## Preparing Environment
 
