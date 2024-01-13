@@ -41,7 +41,7 @@ An area in which a ped / player could occupy space and / or generate sound.
 
 #### Limbo
 
-Limbo is a special room that simply designates 'outside' of the current Interior. This could represent *another*, separate Interior in some case, but generally will refer to 'outside'.
+Limbo is a special room that simply designates 'outside' of the current Interior. This could represent *another*, separate Interior in some cases, but generally will refer to 'outside'.
 
 ### YMT File
 
