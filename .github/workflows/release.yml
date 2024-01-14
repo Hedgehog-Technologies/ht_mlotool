@@ -74,7 +74,7 @@ jobs:
           mkdir -p ./temp/ht_mlotool/saved_mlos/
           mkdir -p ./temp/ht_mlotool/generated_files/
           cp ./{LICENSE,README.md,fxmanifest.lua,utils.lua} ./temp/ht_mlotool
-          cp -r ./{docs,client,server} ./temp/ht_mlotool
+          cp -r ./{docs,locales,client,server} ./temp/ht_mlotool
           cp -r ./web/build ./temp/ht_mlotool/web/
           cd ./temp && zip -r ../ht_mlotool.zip ./ht_mlotool
 
