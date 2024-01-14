@@ -1,7 +1,9 @@
-import { Checkbox, Group, InputVariant, MantineSize, NumberInput, TextInput, ThemeIcon, Tooltip, createStyles } from "@mantine/core";
+import { Checkbox, Group, InputVariant, MantineSize, NumberInput, Switch, TextInput, ThemeIcon, Tooltip, createStyles } from "@mantine/core";
+import { getHotkeyHandler } from "@mantine/hooks";
 import React from "react";
 import { BsQuestionCircle } from "react-icons/bs";
 import { useLocale } from "../../providers/LocaleProvider";
+import { useVisibility } from "../../providers/VisibilityProvider";
 
 interface InputProps {
   label?: string;
@@ -56,6 +58,7 @@ const useInputStyles = createStyles((theme) => ({
 }));
 
 const NumInput: React.FC<NumberInputProps> = (props) => {
+  const exitUi = useVisibility((state) => state.exitUI);
   const { classes } = useInputStyles();
   const variant = props.inputVariant ?? props.disabled ? "filled" : "default";
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
@@ -88,12 +91,14 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
           </Tooltip>
         )
       }
+      onKeyDown={getHotkeyHandler([["Escape", exitUi]])}
     />
   );
 }
 
 const StringInput: React.FC<StringInputProps> = (props) => {
   const locale = useLocale((state) => state.locale);
+  const exitUi = useVisibility((state) => state.exitUI);
   const { classes } = useInputStyles();
   const variant = props.inputVariant ?? props.disabled ? "filled" : "default";
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
@@ -129,12 +134,14 @@ const StringInput: React.FC<StringInputProps> = (props) => {
             </Tooltip>
           )
         }
+        onKeyDown={getHotkeyHandler([["Escape", exitUi]])}
       />
     </Tooltip>
   );
 };
 
 const TooltipCheckbox: React.FC<TooltipCheckboxProps> = (props) => {
+  const exitUi = useVisibility((state) => state.exitUI);
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
 
   return (
@@ -143,6 +150,7 @@ const TooltipCheckbox: React.FC<TooltipCheckboxProps> = (props) => {
         label={props.label}
         checked={props.value}
         onChange={(e) => { if (props.setValue !== undefined) props.setValue(e.currentTarget.checked) }}
+        onKeyDown={getHotkeyHandler([["Escape", exitUi]])}
       />
       {
         props.infoCircle && (
@@ -163,6 +171,40 @@ const TooltipCheckbox: React.FC<TooltipCheckboxProps> = (props) => {
   );
 };
 
+const TooltipSwitch: React.FC<TooltipSwitchProps> = (props) => {
+  const exitUi = useVisibility((state) => state.exitUI);
+  const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
+
+  return (
+    <Group spacing={8} align="center" p={5}>
+      <Switch
+        label={props.label}
+        checked={props.value}
+        onChange={(e) => { if (props.setValue !== undefined) props.setValue(e.currentTarget.checked) }}
+        size={props.size}
+        labelPosition={props.labelPosition}
+        onKeyDown={getHotkeyHandler([["Escape", exitUi]])}
+      />
+      {
+        props.infoCircle && (
+          <Tooltip
+            label={props.infoCircle}
+            withArrow={props.icArrow ?? true}
+            arrowSize={arrowSize}
+            multiline={props.icMultiline ?? true}
+            width={props.icWidth ?? 200}
+          >
+            <ThemeIcon radius="xl" variant="outline" size={16}>
+              <BsQuestionCircle size={props.iconSize ?? 14} />
+            </ThemeIcon>
+          </Tooltip>
+        )
+      }
+    </Group>
+  );
+}
+
 export const MemoNumberInput = React.memo(NumInput);
 export const MemoStringInput = React.memo(StringInput);
 export const MemoTooltipCheckbox = React.memo(TooltipCheckbox);
+export const MemoTooltipSwitch = React.memo(TooltipSwitch);

@@ -1,6 +1,7 @@
-import { ActionIcon, Menu, Switch } from "@mantine/core";
+import { ActionIcon, Menu } from "@mantine/core";
 import { useEffect } from "react";
 import { FaGear } from "react-icons/fa6";
+import { MemoTooltipSwitch } from "../../../shared/Inputs";
 import { useLocale } from "../../../../providers/LocaleProvider";
 import { usePortalsStore } from "../../../../store/portals";
 import { fetchNui } from "../../../../utils/fetchNui";
@@ -25,25 +26,25 @@ const DebugMenu: React.FC = () => {
       <Menu.Dropdown>
         <Menu.Label>{locale("ui_portal_debug")}</Menu.Label>
         <Menu.Item
-          component={Switch}
+          component={MemoTooltipSwitch}
           closeMenuOnClick={false}
           label={locale("ui_portal_debug_draw_info")}
-          checked={enableInfo ?? false}
-          onChange={() => toggleSwitch("enablePortalInfo")}
+          value={enableInfo ?? false}
+          setValue={() => toggleSwitch("enablePortalInfo")}
         />
         <Menu.Item
-          component={Switch}
+          component={MemoTooltipSwitch}
           closeMenuOnClick={false}
           label={locale("ui_portal_debug_draw_outline")}
-          checked={enableOutline ?? false}
-          onChange={() => toggleSwitch("enablePortalOutline")}
+          value={enableOutline ?? false}
+          setValue={() => toggleSwitch("enablePortalOutline")}
         />
         <Menu.Item
-          component={Switch}
+          component={MemoTooltipSwitch}
           closeMenuOnClick={false}
           label={locale("ui_portal_debug_draw_fill")}
-          checked={enableFill ?? false}
-          onChange={() => toggleSwitch("enablePortalFill")}
+          value={enableFill ?? false}
+          setValue={() => toggleSwitch("enablePortalFill")}
         />
       </Menu.Dropdown>
     </Menu>

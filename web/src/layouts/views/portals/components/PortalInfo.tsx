@@ -1,6 +1,7 @@
-import { Alert, Center, Checkbox, Divider, Group, Paper, Space, Switch, Table, Text, Title } from "@mantine/core";
+import { Alert, Center, Checkbox, Divider, Group, Paper, Space, Table, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import EntitySettings from "./EntitySettings";
+import { MemoTooltipSwitch } from "../../../shared/Inputs";
 import { useLocale } from "../../../../providers/LocaleProvider";
 import { useGeneralStore } from "../../../../store/general";
 import { usePortalsStore } from "../../../../store/portals";
@@ -63,12 +64,12 @@ const PortalInfo: React.FC<Props> = (props) => {
           <Title order={5}>
             {`${props.portal.mloPortalIndex}. ${intRoom.displayName} [${intRoom.index}] ↔ ${extRoom.displayName} [${extRoom.index}]`}
           </Title>
-          <Switch
+          <MemoTooltipSwitch
             size={"xs"}
             label={locale("ui_portal_debug_point")}
             labelPosition={"left"}
-            checked={navigate}
-            onChange={() => setNavigate(!navigate)}
+            value={navigate}
+            setValue={() => setNavigate(!navigate)}
           />
         </Group>
         <Center py={10} px={15} >

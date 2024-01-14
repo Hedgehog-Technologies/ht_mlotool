@@ -1,10 +1,13 @@
 import { Select } from "@mantine/core";
+import { getHotkeyHandler } from "@mantine/hooks";
 import React from "react";
 import { useLocale } from "../../providers/LocaleProvider";
+import { useVisibility } from "../../providers/VisibilityProvider";
 import { RoomsStoreState, useRoomsStore } from "../../store/rooms";
 
 const RoomSelect: React.FC = () => {
   const locale = useLocale((state) => state.locale);
+  const exitUi = useVisibility((state) => state.exitUI);
   const [roomSelectList, selectedRoom, roomList] = useRoomsStore((state) => [state.roomSelectList, state.selectedRoom, state.roomList]);
   const [setSelectedRoom, setActiveRoom] = useRoomsStore((state) => [state.setSelectedRoom, state.setActiveRoom]);
 
@@ -30,9 +33,9 @@ const RoomSelect: React.FC = () => {
         nothingFound={locale("ui_room_select_nothing_found")}
         data={roomSelectList}
         maxDropdownHeight={200}
+        onKeyDown={getHotkeyHandler([["Escape", exitUi]])}
       />
   )
 };
 
-export default RoomSelect;
 export const MemoRoomSelect = React.memo(RoomSelect);
