@@ -6,6 +6,7 @@ import App from "./App";
 import "./index.css";
 import { customTheme } from "./theme";
 import { debugData } from "./utils/debugData";
+import { fetchNui } from "./utils/fetchNui";
 import { isEnvBrowser } from "./utils/misc";
 
 debugData([
@@ -199,6 +200,17 @@ if (isEnvBrowser()) {
 }
 
 const reactRoot = ReactDOM.createRoot(root!);
+
+// Enable freemove while holding down right mouse button
+{
+  root!.addEventListener("mousedown", (e) => {
+    if (e.button === 2) fetchNui("ht_mlotool:freeMove", true, "1");
+  });
+  
+  root!.addEventListener("mouseup", (e) => {
+    if (e.button === 2) fetchNui("ht_mlotool:freeMove", false, "1");
+  });
+}
 
 reactRoot.render(
   <React.StrictMode>

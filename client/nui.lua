@@ -49,6 +49,11 @@ RegisterNUICallback('ht_mlotool:fetchLocales', function(_, cb)
     cb(locales)
 end)
 
+RegisterNUICallback('ht_mlotool:freeMove', function(enabled, cb)
+    cb({})
+    SetNuiFocusKeepInput(enabled)
+end)
+
 --- A simple wrapper around SendNUIMessage that you can use to
 --- dispatch actions to the React frame.
 ---
