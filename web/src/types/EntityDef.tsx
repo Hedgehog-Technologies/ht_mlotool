@@ -1,4 +1,5 @@
 interface EntityDefConstructor {
+  index: number;
   linkType: number;
   maxOcclusion: number;
   modelHashKey: number;
@@ -8,6 +9,7 @@ interface EntityDefConstructor {
 }
 
 export class EntityDef {
+  public index: number;
   public linkType: number;
   public maxOcclusion: number;
   public modelHashKey: number;
@@ -16,6 +18,7 @@ export class EntityDef {
   public isGlass: boolean;
 
   constructor(data: EntityDefConstructor | EntityDef) {
+    this.index = data.index;
     this.linkType = data.linkType;
     this.maxOcclusion = data.maxOcclusion;
     this.modelHashKey = data.modelHashKey;

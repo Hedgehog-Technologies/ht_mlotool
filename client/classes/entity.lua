@@ -3,6 +3,7 @@ Entity = {}
 function Entity.new(interiorId, mloPortalIndex, entityIndex, mloLocation)
     local entity = {}
 
+    entity.index = entityIndex
     entity.linkType = 1
     entity.maxOcclusion = 0.5
     entity.modelHashKey = GetInteriorPortalEntityArchetype(interiorId, mloPortalIndex, entityIndex)

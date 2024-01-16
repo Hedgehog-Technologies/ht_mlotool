@@ -1,4 +1,4 @@
-import { Center, Checkbox, Text, Tooltip } from "@mantine/core";
+import { Center, Checkbox, Switch, Text, Tooltip } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { MemoNumberInput } from "../../../shared/Inputs";
 import { useGeneralStore } from "../../../../store/general";
@@ -25,6 +25,10 @@ const EntitySettings: React.FC<Props> = (props) => {
 
     return () => clearTimeout(timer);
   }, [activeEntity]);
+
+  useEffect(() => {
+    // fetchNui("ht_mlotool:debugDrawEntity", { index: activeEntity?.index, debug: activeEntity?.debug })
+  }, [])
 
   return (
     <tr>
@@ -66,6 +70,19 @@ const EntitySettings: React.FC<Props> = (props) => {
             onChange={(e) => {
               if (activeEntity !== undefined) {
                 setActiveEntity({ ...activeEntity, isGlass: e.currentTarget.checked });
+              }
+            }}
+          />
+        </Center>
+      </td>
+      <td>
+        <Center>
+          <Switch
+            size="xs"
+            checked={activeEntity?.debug ?? false}
+            onChange={(e) => {
+              if (activeEntity !== undefined) {
+                setActiveEntity({ ...activeEntity, debug: e.currentTarget.checked });
               }
             }}
           />

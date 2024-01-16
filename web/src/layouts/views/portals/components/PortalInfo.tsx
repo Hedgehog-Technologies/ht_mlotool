@@ -98,6 +98,7 @@ const PortalInfo: React.FC<Props> = (props) => {
                     <th style={{ width: "20%" }}>{locale("ui_portal_entity_max_occl")}</th>
                     <th style={{ width: "15%", textAlign: "center" }}>{locale("ui_portal_entity_door")}</th>
                     <th style={{ width: "15%", textAlign: "center" }}>{locale("ui_portal_entity_glass")}</th>
+                    <th style={{ width: "10%", textAlign: "center" }}>Debug</th>
                   </tr>
                 </thead>
                 <tbody>
