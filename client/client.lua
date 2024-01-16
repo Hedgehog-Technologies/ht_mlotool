@@ -21,12 +21,13 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
     local mlo = UpdateMLOData(mloData)
 
     if mlo then
+        local saveFileName = mlo.saveName ~= '' and mlo.saveName or { mlo.nameHash, mlo.name }
         if generateAO then
             local paths = MLO.generatePaths(mlo)
             local aoFileName = tostring(mlo.uintProxyHash)
             local aoFileType = 'ymt.pso.xml'
             local ymtData = EncodeAudioOcclusion(mlo, paths)
-            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 100000, aoFileName, aoFileType, ymtData, debug)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 100000, saveFileName, aoFileName, aoFileType, ymtData, debug)
         end
 
         if generateDat151 then
@@ -43,7 +44,7 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
             local datFileName = ('%s_game'):format(mloName)
             local datFileType = 'dat151.rel.xml'
             local dat151Data = EncodeDat151(mlo)
-            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 100000, datFileName, datFileType, dat151Data, debug)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 100000, saveFileName, datFileName, datFileType, dat151Data, debug)
         end
 
         TriggerLatentServerEvent('ht_mlotool:saveMLOData', 100000, mlo)
@@ -128,7 +129,7 @@ RegisterNetEvent('ht_mlotool:saveCurrentMLO', function(name)
     end
 
     if mlo == nil then
-        return lib.notify({ type = 'error', title = locale('save_mlo_fail') })
+        return lib.notify({ type = 'error', title = locale('save_mlo_fail_invalid') })
     end
 
     if name ~= nil then mlo.saveName = name end

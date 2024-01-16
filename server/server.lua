@@ -1,19 +1,26 @@
-local resourcePath = GetResourcePath(cache.resource):gsub('//', '/')
-local savedMLODir = 'saved_mlos'
-local savedMloDirectoryPath = ('%s/%s'):format(resourcePath, savedMLODir)
-local generatedFilesDir = 'generated_files'
-local generatedFilesDirectoryPath = ('%s/%s'):format(resourcePath, generatedFilesDir)
+local systemIsWindows <const> = os.getenv('OS'):match('[Ww]indows')
+local resourcePath <const> = GetResourcePath(cache.resource):gsub('//', '/')
+local savedMLODir <const> = 'saved_mlos'
+local savedMloDirectoryPath <const> = ('%s/%s'):format(resourcePath, savedMLODir)
+local generatedFilesDirectoryPath <const> = resourcePath .. '/generated_files'
 
 local filenames = {}
 local mloFilenameLookup = {}
 
 -- ##### HELPER FUNCTIONS ##### --
 
+local function canUseMloTool(playerId)
+    return IsPlayerAceAllowed(playerId, 'command.openmlo')
+end
+
+local function canUseSaveMlo(playerId)
+    return IsPlayerAceAllowed(playerId, 'command.savemlo')
+end
+
 local function getFilesInDirectory(path, pattern)
     local files = {}
     local fileCount = 0
-    local system = os.getenv('OS')
-    local command = system and system:match('Windows') and 'dir "' or 'ls "'
+    local command = systemIsWindows and 'dir "' or 'ls "'
     local suffix = command == 'dir "' and '/" /b' or '/"'
     local dir = io.popen(command .. resourcePath .. '/' .. path .. suffix)
 
@@ -37,7 +44,7 @@ local function readFile(source, filepath, filename, filetype)
     local data = nil
 
     if not file then
-        print(err)
+        print('^1' .. err)
 
         if source ~= nil then
             lib.notify(source, {
@@ -61,7 +68,7 @@ local function writeFile(source, filepath, filename, filetype, dataString)
     local file, openError = io.open(fullPath, 'w+')
 
     if file == nil then
-        print(openError)
+        print('^1' .. openError)
         lib.notify(source, {
             type = 'error',
             title = locale('open_output_file_fail'),
@@ -73,7 +80,7 @@ local function writeFile(source, filepath, filename, filetype, dataString)
     local _, writeError = file:write(dataString)
 
     if writeError ~= nil then
-        print(writeError)
+        print('^1' .. writeError)
         lib.notify(source, {
             type = 'error',
             title = locale('write_output_fail'),
@@ -86,7 +93,7 @@ local function writeFile(source, filepath, filename, filetype, dataString)
     return writeError == nil
 end
 
-local function LoadMLOData(source, filename, nameHashString, openUI)
+local function loadMLOData(source, filename, nameHashString, openUI)
     local data = nil
 
     if filename ~= nil and nameHashString ~= nil then
@@ -100,31 +107,80 @@ local function LoadMLOData(source, filename, nameHashString, openUI)
     end
 end
 
+local function pathExists(path)
+    local ok, err, code = os.rename(path, path)
+    if not ok then
+        -- Permission denied, but path exists
+        if code == 13 then
+            return true
+        end
+    end
+
+    return ok, err
+end
+
+local function verifyOrCreateOutputDirectory(dirName)
+    local dirPath = ('%s/%s'):format(generatedFilesDirectoryPath, dirName)
+
+    if systemIsWindows then
+        dirPath = dirPath:gsub('/', '\\')
+    end
+
+    if not pathExists(dirPath) then
+        local ok, err, code = os.execute(('mkdir %s'):format(dirPath))
+
+        if not ok then
+            print(locale('create_output_dir_fail', dirPath, err, code))
+            return generatedFilesDirectoryPath
+        end
+    end
+
+    return dirPath
+end
+
 -- ##### EVENTS & CALLBACKS ##### --
 
-RegisterNetEvent('ht_mlotool:outputResultFile', function(filename, filetype, ymtData, debug)
+RegisterNetEvent('ht_mlotool:outputResultFile', function(saveFileName, filename, filetype, ymtData, debug)
     local source = source
-    local success = writeFile(source, generatedFilesDirectoryPath, filename, filetype, ToXml(ymtData, debug)) --SaveResourceFile(cache.resource, filename, ToXml(ymtData, debug), -1)
+    if not canUseMloTool(source) then
+        return print(locale('incorrect_perms', source, GetPlayerName(source)))
+    end
+
+    local mloDirName = type(saveFileName) ~= 'table' and saveFileName or mloFilenameLookup[tostring(saveFileName.nameHash)] or saveFileName.name:gsub('hash_', '')
+    local outputDirPath = verifyOrCreateOutputDirectory(mloDirName)
+    local success = writeFile(source, outputDirPath, filename, filetype, ToXml(ymtData, debug))
 
     local type = success and 'success' or 'error'
-    local title = success and locale('file_save_success', filename) or locale('file_save_fail', filename)
-    print(title)
-    lib.notify(source, { type = type, title = title })
+    local color = success and '^7' or '^1'
+    local title = success and locale('file_save_success') or locale('file_save_fail')
+    print(color .. title .. (': %s.%s'):format(filename, filetype))
+    lib.notify(source, { type = type, title = title, description = ('%s.%s'):format(filename, filetype) })
 end)
 
 RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
     local source = source
+    if not canUseMloTool(source) and not canUseSaveMlo(source) then
+        return print(locale('incorrect_perms', source, GetPlayerName(source)))
+    end
+
     local filename = mloInfo.saveName ~= '' and mloInfo.saveName or mloFilenameLookup[tostring(mloInfo.nameHash)] or mloInfo.name:gsub('hash_', '')
     mloFilenameLookup[tostring(mloInfo.nameHash)] = filename
 
     local writeSuccess = writeFile(source, savedMloDirectoryPath, filename, 'json', json.encode(mloInfo, { indent = true }))
 
     if writeSuccess then
-        print(locale('save_mlo_success') .. (': ./%s/%s'):format(savedMLODir, filename))
+        print(locale('save_mlo_success') .. (': %s/%s.json'):format(savedMLODir, filename))
         lib.notify(source, {
             type = 'success',
             title = locale('save_mlo_success'),
-            description = ('./%s/%s.json'):format(savedMLODir, filename)
+            description = ('%s/%s.json'):format(savedMLODir, filename)
+        })
+    else
+        print('^1' .. locale('save_mlo_fail') .. (': %s/%s.json'):format(savedMLODir, filename))
+        lib.notify(source, {
+            type = 'error',
+            title = locale('save_mlo_fail'),
+            description = ('%s/%s.json'):format(savedMLODir, filename)
         })
     end
 end)
@@ -135,7 +191,7 @@ lib.callback.register('ht_mlotool:requestMLOSaveData', function(source, nameHash
     -- No known save file
     if not filename then return false end
 
-    LoadMLOData(source, filename, nameHashString, true)
+    loadMLOData(source, filename, nameHashString, true)
     return true
 end)
 
@@ -176,7 +232,7 @@ lib.addCommand('loadmlo', {
         local name = args and args.name
         local filename = name and name:gsub('.json', '') or mloFilenameLookup[nameHashString] or nameHashString
 
-        LoadMLOData(source, filename, nameHashString, false)
+        loadMLOData(source, filename, nameHashString, false)
     end
 end)
 
