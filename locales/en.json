@@ -28,6 +28,7 @@
 
     "ui_blank": "<Blank>",
     "ui_close": "Close",
+    "ui_debug": "Debug",
     "ui_debug_comments": "Add Debug Comments",
     "ui_debug_comments_info": "Whether or not to add debug comments to the output file(s). NOTE: These should be used for debugging only, CodeWalker currently parses the comments incorrectly.",
     "ui_file_options": "File Generation Options",
