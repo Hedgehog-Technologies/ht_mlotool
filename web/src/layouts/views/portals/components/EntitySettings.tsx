@@ -1,7 +1,11 @@
 import { Center, Checkbox, Switch, Text, Tooltip } from "@mantine/core";
+import { getHotkeyHandler } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { MemoNumberInput } from "../../../shared/Inputs";
+import { useVisibility } from "../../../../providers/VisibilityProvider";
 import { useGeneralStore } from "../../../../store/general";
+import { usePortalsStore } from "../../../../store/portals";
+import { fetchNui } from "../../../../utils/fetchNui";
 
 interface Props {
   portalIndex: number;
@@ -9,8 +13,11 @@ interface Props {
 }
 
 const EntitySettings: React.FC<Props> = (props) => {
+  const exitUi = useVisibility((state) => state.exitUI);
   const mlo = useGeneralStore((state) => state.mlo);
+  const [debugEntities, addDebugEntity] = usePortalsStore((state) => [state.debugEntities, state.addDebugEntity])
   const [activeEntity, setActiveEntity] = useState(mlo?.portals[props.portalIndex].entities[props.entityIndex]);
+  let key = `${props.portalIndex}:${props.entityIndex}`;
 
   let timer: NodeJS.Timeout;
   useEffect(() => {
@@ -26,9 +33,12 @@ const EntitySettings: React.FC<Props> = (props) => {
     return () => clearTimeout(timer);
   }, [activeEntity]);
 
-  useEffect(() => {
-    // fetchNui("ht_mlotool:debugDrawEntity", { index: activeEntity?.index, debug: activeEntity?.debug })
-  }, [])
+  const handleDebugToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!debugEntities || !key) return;
+
+    addDebugEntity(key, e.currentTarget.checked);
+    fetchNui("ht_mlotool:debugEntityToggle", { portalIndex: props.portalIndex, entityIndex: props.entityIndex, debug: e.currentTarget.checked }, "1")
+  }
 
   return (
     <tr>
@@ -60,6 +70,7 @@ const EntitySettings: React.FC<Props> = (props) => {
                 setActiveEntity({ ...activeEntity, isDoor: e.currentTarget.checked });
               }
             }}
+            onKeyDown={getHotkeyHandler([["Escape", exitUi]])}
           />
         </Center>
       </td>
@@ -72,6 +83,7 @@ const EntitySettings: React.FC<Props> = (props) => {
                 setActiveEntity({ ...activeEntity, isGlass: e.currentTarget.checked });
               }
             }}
+            onKeyDown={getHotkeyHandler([["Escape", exitUi]])}
           />
         </Center>
       </td>
@@ -79,12 +91,9 @@ const EntitySettings: React.FC<Props> = (props) => {
         <Center>
           <Switch
             size="xs"
-            checked={activeEntity?.debug ?? false}
-            onChange={(e) => {
-              if (activeEntity !== undefined) {
-                setActiveEntity({ ...activeEntity, debug: e.currentTarget.checked });
-              }
-            }}
+            checked={(debugEntities && key) ? debugEntities[key] : false}
+            onChange={handleDebugToggle}
+            onKeyDown={getHotkeyHandler([["Escape", exitUi]])}
           />
         </Center>
       </td>

@@ -28,6 +28,12 @@ RegisterNUICallback('ht_mlotool:debugDrawToggle', function(data, cb)
     UpdateDebugDraw(data.info, data.outline, data.fill, data.navigate)
 end)
 
+RegisterNUICallback('ht_mlotool:debugEntityToggle', function(data, cb)
+    cb({})
+
+    UpdateDebugEntities(data.portalIndex, data.entityIndex, data.debug)
+end)
+
 RegisterNUICallback('ht_mlotool:fetchLocales', function(_, cb)
     local lang = GetConvar('ox:locale', 'en')
     local locales = json.decode(LoadResourceFile(cache.resource, ('locales/%s.json'):format(lang)))

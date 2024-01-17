@@ -61,10 +61,9 @@ const App: React.FC = () => {
     });
   });
 
-  const setNavigatedPortal = usePortalsStore((state) => state.setNavigatedPortal);
-  useNuiEvent("ht_mlotool:cancelNavigation", (data: any) => {
-    setNavigatedPortal(null);
-  });
+  const [setNavigatedPortal, resetDebugEntities] = usePortalsStore((state) => [state.setNavigatedPortal, state.resetDebugEntities]);
+  useNuiEvent("ht_mlotool:cancelNavigation", () => setNavigatedPortal(null));
+  useNuiEvent('ht_mlotool:cancelEntityDebug', resetDebugEntities);
 
   useHotkeys([
     ["Escape", exitUI]
