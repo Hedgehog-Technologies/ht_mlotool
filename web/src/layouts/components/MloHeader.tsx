@@ -1,5 +1,6 @@
 import { Group, Header, Title } from "@mantine/core";
 import { AiFillGithub, AiOutlineCloseSquare } from "react-icons/ai";
+import { BsDiscord } from "react-icons/bs";
 import { MemoHeaderIcon } from "./HeaderIcon";
 import { useLocale } from "../../providers/LocaleProvider";
 import { useVisibility } from "../../providers/VisibilityProvider";
@@ -10,11 +11,13 @@ const MloHeader: React.FC = () => {
   const mlo = useGeneralStore((state) => state.mlo);
   const exitUI = useVisibility((state) => state.exitUI);
 
-  const handleGithubClick = () => {
-    const gh = "https://github.com/hedgehog-technologies/ht_mlotool";
+  const openUrl = (url: string) => {
     let w = window as any;
-    w.invokeNative ? w.invokeNative("openUrl", gh) : window.open(gh);
-  };
+    w.invokeNative ? w.invokeNative("openUrl", url) : window.open(url);
+  }
+
+  const handleGithubClick = () => openUrl("https://github.com/hedgehog-technologies/ht_mlotool");
+  const handleDiscordClick = () => openUrl("https://discord.gg/zrQvYAuBsk");
 
   return (
     // height left as empty string on purpose
@@ -24,6 +27,13 @@ const MloHeader: React.FC = () => {
         <Title order={4} color={"violet.1"}>MLO Tool</Title>
         <Title order={3} color={"violet.1"}>{mlo?.saveName.toUpperCase() ?? locale("ui_save_name_unknown")}</Title>
         <Group>
+          <MemoHeaderIcon
+            label={locale("ui_open_discord")}
+            Icon={BsDiscord}
+            iconSize={24}
+            color={"violet.6"}
+            onClick={handleDiscordClick}
+          />
           <MemoHeaderIcon
             label={locale("ui_open_github")}
             Icon={AiFillGithub}

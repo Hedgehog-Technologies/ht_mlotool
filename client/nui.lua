@@ -22,6 +22,15 @@ RegisterNUICallback('ht_mlotool:generateAudioFiles', function(data, cb)
     GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
 end)
 
+RegisterNUICallback('ht_mlotool:saveMlo', function(mlo, cb)
+    cb({})
+
+    local updatedMlo = UpdateMLOData(mlo)
+    if updatedMlo then
+        TriggerLatentServerEvent('ht_mlotool:saveMLOData', 100000, updatedMlo)
+    end
+end)
+
 RegisterNUICallback('ht_mlotool:debugDrawToggle', function(data, cb)
     cb({})
 
