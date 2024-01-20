@@ -71,13 +71,13 @@ Further build / development guidance can be viewed [here](./docs/development-gui
 3. Use the `/openmlo` command
    - Note that by default this requires being a part of `group.admin`
 4. Go room by room through the MLO setting values as you see fit
-   - Closing the UI will save your cache your changes locally, **no need to generate the files everytime you close it**
+   - Closing the UI will cache your changes locally, **no need to generate the files everytime you close it**
    - The resource should detect which room you are currently in and default to that room when you open the UI
-   - Recommendation: Use a dev tool such as [Dolu Tool](https://forum.cfx.re/t/dolu-tool-mlo-debugging-object-spawner-more/5000677) to help with identifying rooms and portals
+   - *Note* - You can press and hold `right mouse button` with the UI open to be able to move around
 5. Press the `Generate Audio Occlusion Files` and wait for confirmation of generated XML file(s)
 6. Use [CodeWalker](https://github.com/dexyfex/CodeWalker) to convert the XML files to the proper GTAV format
 7. Move the converted XML files to a FiveM map resource
-8. Restart your FiveM server and enjoy audio occluded goodness
+8. Restart your FiveM server and enjoy occluded audio goodness
 
 #### In Depth Usage Guide
 

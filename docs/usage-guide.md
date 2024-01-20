@@ -12,6 +12,10 @@ This resource **WILL NOT** live update audio occlusion. As far as I'm aware that
 
 This resource **CAN** *help* you generate the necessary files to calcualte audio occlusion within Interiors.
 
+## Locale
+
+This tool utilizes [ox_lib's](https://github.com/overextended/ox_lib) **locale** system. To change the language add the following convar to your server's CFG file: `setr ox:locale <language code>`. You can check out the [locale documentation](https://overextended.dev/ox_lib/Modules/Locale/Shared) for more information.
+
 ## Commands
 
 ### openmlo
