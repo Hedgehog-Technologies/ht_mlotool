@@ -13,7 +13,7 @@
     "file_save_fail": "Tiedoston tallennus epäonnistui",
     "file_save_success": "Viimeistellään tiedoston tallentamista",
     "found_mlo_json_files": "Löytyi %d aikaisemmin tallennettu JSON tiedosto",
-    "incorrect_perms": "^3VAROITUS: [%s:%s] yritti ajaa [ht_mlotool:outputResultFile] eventin ilman tarvittavia oikeuksia",
+    "incorrect_perms": "[%s:%s] yritti ajaa [ht_mlotool:outputResultFile] eventin ilman tarvittavia oikeuksia",
     "missing_mlo_archetype_name": "MLO Archetype nimi puuttuu. ei voida luoda Dat151 tiedostoa",
     "no_filename_name_hash": "Ei tiedostonimeä nimellä hash %s",
     "nui_already_focused": "Ei voida avata MLO työkalua koska NUI focus on jossain muussa UI:ssa",
@@ -24,6 +24,8 @@
     "save_mlo_success": "MLO tietojen tallennus onnistui",
     "unrecognized_interior": "Et ole tällä hetkellä MLO sisällä tai MLO:ta ei saatu tunnistettua",
     "user_not_in_mlo": "Käyttäjä ei tällä hetkellä ole MLO:n sisällä",
+    "warning": "VAROITUS",
+    "warning_server": "^3${warning}: ",
     "write_output_fail": "Tiedostojen luominen epäonnistui",
 
     "ui_blank": "<Tyhjä>",

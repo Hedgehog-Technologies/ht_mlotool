@@ -13,7 +13,7 @@
     "file_save_fail": "Failed to save file",
     "file_save_success": "File finished saving",
     "found_mlo_json_files": "Found %d saved MLO json files",
-    "incorrect_perms": "^3WARNING: [%s:%s] attempted to execute [ht_mlotool:outputResultFile] event without correct permissions",
+    "incorrect_perms": "[%s:%s] attempted to execute [ht_mlotool:outputResultFile] event without correct permissions",
     "missing_mlo_archetype_name": "Missing MLO Archetype Name, cannot generate Dat151 file",
     "no_filename_name_hash": "No filename associated with name hash %s",
     "nui_already_focused": "Cannot bring up MLO Tool while NUI has focus somewhere else",
@@ -24,6 +24,8 @@
     "save_mlo_success": "Successfully saved MLO info",
     "unrecognized_interior": "Not currently in a recognized MLO interior",
     "user_not_in_mlo": "User is not currently standing in an MLO",
+    "warning": "WARNING",
+    "warning_server": "^3${warning}: ",
     "write_output_fail": "Failed to write to output file",
 
     "ui_blank": "<Blank>",
