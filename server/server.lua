@@ -143,7 +143,7 @@ end
 RegisterNetEvent('ht_mlotool:outputResultFile', function(saveFileName, filename, filetype, ymtData, debug)
     local source = source
     if not canUseMloTool(source) then
-        return print(locale('incorrect_perms', source, GetPlayerName(source)))
+        return print(locale('warning_server') .. locale('incorrect_perms', source, GetPlayerName(source)))
     end
 
     local mloDirName = type(saveFileName) ~= 'table' and saveFileName or mloFilenameLookup[tostring(saveFileName.nameHash)] or saveFileName.name:gsub('hash_', '')
@@ -262,10 +262,20 @@ lib.addCommand('openmlo', {
 
                     if data then data = json.decode(data) end
                 else
-                    print(locale('no_filename_name_hash', nameHash))
+                    print(locale('warning_server') .. locale('no_filename_name_hash', nameHash))
+                    lib.notify(source, {
+                        type = 'warning',
+                        title = locale('warning'),
+                        description = locale('no_filename_name_hash', nameHash)
+                    })
                 end
             else
-                print(locale('user_not_in_mlo'))
+                print(locale('warning_server') .. locale('user_not_in_mlo'))
+                return lib.notify(source, {
+                    type = 'warning',
+                    title = locale('warning'),
+                    description = locale('user_not_in_mlo')
+                })
             end
         elseif args.force == 2 then
             data = false

@@ -1,6 +1,6 @@
-local INT32MIN = -2147483648
-local INT32MAX = 2147483647
-local UINT32MAX = 4294967295
+local INT32MIN <const> = -2147483648
+local INT32MAX <const> = 2147483647
+local UINT32MAX <const> = 4294967295
 
 function ToUInt32(value)
     if value >= 0 and value <= UINT32MAX then
