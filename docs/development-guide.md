@@ -20,10 +20,10 @@ pnpm
 
 ### Installing Package Dependencies
 
-With both [Node.js](#nodejs) and [pnpm](#pnpm) installed you can move on to installing the dependencies for ht_mloaudio.
+With both [Node.js](#nodejs) and [pnpm](#pnpm) installed you can move on to installing the dependencies for ht_mlotool.
 
 - Open a command-line terminal (e.g. `Terminal` or `Command Prompt`)
-- Navigate to the `ht_mloaudio/web` folder in your command-line terminal
+- Navigate to the `ht_mlotool/web` folder in your command-line terminal
 - Enter `pnpm i` to install the dependencies for the project
 
 ## Development
@@ -32,7 +32,7 @@ With both [Node.js](#nodejs) and [pnpm](#pnpm) installed you can move on to inst
 
 #### Before Starting
 
-If you want to make UI changes first make sure that you are working off of a Fork of the repository or download a [source version](https://github.com/Hedgehog-Technologies/ht_mloaudio/archive/refs/heads/main.zip) of the code.
+If you want to make UI changes first make sure that you are working off of a Fork of the repository or download a [source version](https://github.com/Hedgehog-Technologies/ht_mlotool/archive/refs/heads/main.zip) of the code.
 
 This resource utilizes [Mantine v5](https://v5.mantine.dev/) as its UI component library, please familiarize yourself with it before diving into any UI edits.
 
@@ -40,8 +40,8 @@ This resource utilizes [Mantine v5](https://v5.mantine.dev/) as its UI component
 
 Style changes can be made in any number of places, however the three main locations are as follows:
 
-- [ht_mloaudio/web/src/index.css](../web/src/index.css)
-- [ht_mloaudio/web/src/App.tsx:useStyles](../web/src/App.tsx#L13)
+- [ht_mlotool/web/src/index.css](../web/src/index.css)
+- [ht_mlotool/web/src/App.tsx:useStyles](../web/src/App.tsx#L13)
 - In-line with the given element that you want to edit the style of
    - See Mantine's [Style documentation](https://v5.mantine.dev/styles/sx/) for more information
 
@@ -50,12 +50,12 @@ Style changes can be made in any number of places, however the three main locati
 #### Testing in Browser
 
 - Open a command-line terminal (e.g. `Terminal` or `Command Prompt`)
-- Navigate to the `ht_mloaudio/web` folder in your command-line terminal
+- Navigate to the `ht_mlotool/web` folder in your command-line terminal
 - Enter `pnpm start` to start up a locally-accessible web server that can used to iterate quickly on UI changes
 
 #### Testing in Game
 
 - Open a command-line terminal (e.g. `Terminal` or `Command Prompt`)
-- Navigate to the `ht_mloaudio/web` folder in your command-line terminal
+- Navigate to the `ht_mlotool/web` folder in your command-line terminal
 - Enter `pnpm start:game` to start up a service that will actively rebuild the package whenever changes are detected
 - Ensure the resource in-game to pick up the updated package

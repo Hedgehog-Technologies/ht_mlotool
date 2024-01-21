@@ -2,15 +2,21 @@
 
 ## Background
 
-This resource is meant to make the generation of `.ymt` and `.dat151.rel` files less labor intensive than trying to build them out by hand.
+This resource is meant to make the generation of `.ymt` and `.dat151.rel` files more accessible and less labor intensive than trying to build them out by hand.
 
 If you are unfamiliar with `.ymt` and `.dat151.rel` files they are the two main files types that are used for Interior Audio Occlusion within GTAV. You can read more [here](./definitions.md).
 
 ## Setting Expectations
 
-This resource **WILL NOT** live update audio occlusion. As far as I'm aware that isn't possible at this time and I will not be performing miracles for free at this time.
+This resource **WILL NOT** live update audio occlusion. As far as I'm aware that isn't possible and I will not be performing miracles for free at this time. (Yes, I am aware that you can override certain portals with ***existing*** audio occlusion values, but that's not what I'm talking about here)
 
-This resource **CAN** *help* you generate the necessary files to calcualte audio occlusion within Interiors.
+This resource **CAN** *help* you generate the necessary files to calculate audio occlusion within Interiors.
+
+## Locale
+
+This tool utilizes [ox_lib's](https://github.com/overextended/ox_lib) **locale** system. To change the language add the following convar to your server's CFG file: `setr ox:locale <language code>`. You can check out the [locale documentation](https://overextended.dev/ox_lib/Modules/Locale/Shared) for more information.
+
+Please feel free to submit a Pull Request with translations for your preferred language(s).
 
 ## Commands
 
@@ -34,7 +40,7 @@ Used to load MLO data from a saved file (if one exists in the `saved_mlos/` dire
 
 - *Optional* Argument
    - `<filename>` - The name of the file that the current MLO data is saved in
-   - If this argument is left blank then the resource will attempt to find the associated save file and load it into cache if it exists
+   - If this argument is left blank then the resource will attempt to automatically find the associated save file for the MLO your player ped is standing in and load it into cache if it exists
 
 ### savemlo
 
@@ -48,15 +54,16 @@ Used to save MLO data to a save file in the `saved_mlos/` directory.
 
 ## Usage Steps
 
-1. Load into your server (preferably a development environment, but you do you I guess)
+1. Load into your server
+   - Preferably a development environment, but you do you I guess
 2. Enter the MLO that you would like to generate audio occlusion for
 3. Enter the [/openmlo](#openmlo) command into your chat resource to open the resource's UI
 4. With the [General Tab](#general-tab) open you can change the `MLO Save Name` or `Generate Audio Occlusion Files`
 5. Moving to the [Rooms Tab](#rooms-tab) will allow you to edit values for the individual rooms defined in the MLO
 6. Moving to the [Portals Tab](#portals-tab) will allow you to edit values of paths for audio to take when traveling through the MLO
-7. You are able to close and reopen the UI without losing your progress, however, quitting out from the server or restarting the server will not automatically save your work. You will need to save it manually with the [/savemlo](#savemlo) command
+7. You are able to close and reopen the UI without losing your progress, however, quitting out from the server or restarting the server will not automatically save your work.
+   - You will need to save it manually with the [/savemlo](#savemlo) command or the save button on the [General Tab](#general-tab)
 8. Once your are done with your edits, return to the `General Tab` and click the `Generate Audio Occlusion Files` button. Your files will be generated and saved to the `generated_files/` directory of the resource
-    - Be sure to save your changes to file with the [/savemlo](#savemlo) command
 9. Drag and drop those files into Codewalkers RPF Explorer to convert the XMLs into the GTAV equivalent filetypes
 10. Take the converted files and place them into the same resouce as the map or create a new resource that will consume the audio occlusion files
     - The `.ymt` files should be placed in a folder called `stream`
@@ -95,9 +102,11 @@ occlusion_resource/
 
 <span style='color:#00FFF2'>A.</span> **Save File Name**
 - Used to specify the name of the save file
+- Save button will save the progress without generating the occlusion files, similar to the [/savemlo](#savemlo) command
 
 <span style='color:#0CFF00'>B.</span> **Information Fields**
 - Used to display information about the current MLO
+- *Note* - These are READONLY fields
 
 <span style='color:#E100FF'>C.</span> **File Generation Option Toggles**
 - It is recommended to generate and use both the `Audio Occlusion YMT` file and the `Dat151` file
@@ -112,10 +121,11 @@ occlusion_resource/
 
 <span style='color:#00FFF2'>A.</span> **Room Select**
 - Used to select the room to view further information about
-- This should default to the room that your ped is currently located in
+- This should default to the room that your ped is currently located in when the UI is opened with the [/openmlo](#openmlo) command
 
 <span style='color:#0CFF00'>B.</span> **Room Information**
 - Used to display information about the Room that is currently selected
+- *Note* - These are READONLY fields
 
 <span style='color:#E100FF'>C.</span> **Dat151 Settings**
 - Used to view and edit values for a room such as `Reverb` and `Echo`
@@ -130,9 +140,12 @@ occlusion_resource/
 
 <span style='color:#0CFF00'>B.</span> **Portal Information**
 - Displays and allows for editing of portal occlusion settings
-- `Enabled Toggles` allow for completely removing any possible change of sound passing through a portal, or even uni-directional sound
+- `Enabled` Toggles allow for completely removing any possible change of sound passing through a portal, or even uni-directional sound
 - `Max Occlusion` is a value from `0.0` to `1.0`. The higher the value the less sound that will pass through that entity.
-- If an entity is marked as a door, when the door is recognized as open the game will allow sound to travel through the portal
+- If an entity is marked as a door, when the door is recognized as open the game will allow sound to travel through the portal freely
+- `Debug` switch will draw a debug border around the entity to help you find it
+   - This can be useful in cases where the model name is unknown and only the model name hash is shown
+   - *Note* - Some cases where the object has a hash collision, or is improperly set up, this **may not** properly draw the debug border around the entity
 - Note: Not every portal has entities (such as doors) assigned to them so if you don't see any models assigned to a portal, that's just because they aren't set up to be assigned to the portal
 
 <span style='color:#E100FF'>C.</span> **Debug Switches**

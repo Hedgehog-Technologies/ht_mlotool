@@ -2,7 +2,7 @@
 
 ### Audio Occlusion
 
-The inability for sound to travel from Point A to Point B.
+The inability of person at Point A to hear a sound made at Point B.
 
 ### Dat151.Rel File
 
@@ -14,7 +14,7 @@ The concept of a path that audio will take from Room A to Room B (where Room A a
 
 ### MLO
 
-The commonly accepted acronym for building interiors that peds are able to walk directly in and out of.
+The commonly accepted acronym for building interiors in GTAV that peds are able to walk directly in and out of.
 
 ### Portal
 
@@ -41,7 +41,7 @@ An area in which a ped / player could occupy space and / or generate sound.
 
 #### Limbo
 
-Limbo is a special room that simply designates 'outside' of the current Interior. This could represent *another*, separate Interior in some cases, but generally will refer to 'outside'.
+Limbo is a special ["room"](#room) that simply designates 'outside' of the current Interior. This could represent *another*, separate Interior in some cases, but generally will refer to 'outside'.
 
 ### YMT File
 
