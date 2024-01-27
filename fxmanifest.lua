@@ -6,7 +6,7 @@ use_experimental_fxv2_oal 'yes'
 
 --[[ Resource Information ]]--
 name       'ht_mlotool'
-version    '0.6.1'
+version    '1.0.0'
 license    'LGPL-3.0-or-later'
 author     'Hedgehog Technologies'
 repository 'https://github.com/Hedgehog-Technologies/ht_mlotool'
