@@ -2,5 +2,5 @@
 
 ## 1.0.0
 
-Released $TODO - RELEASE DATE
+Released 2024-01-27
 - Initial release
