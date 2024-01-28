@@ -89,3 +89,7 @@ Further build / development guidance can be viewed [here](./docs/development-gui
 ### Acknowledgements
 
 - You can view Acknowledgements [here](./docs/acknowledgements.md)
+
+### Support
+
+- Join the [HedgeTech Discord](https://discord.gg/sJggphj5UX) for support
