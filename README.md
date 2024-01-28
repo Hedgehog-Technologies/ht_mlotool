@@ -1,3 +1,5 @@
+![Header](./docs/images/release_header_v1.1.png 'Header')
+
 # ht_mlotool
 
 A framework-independent dev resource for [FiveM](https://fivem.net) that helps to customize and generate files necessary for the game to interpret and handle audio occlusion for MLOs.
