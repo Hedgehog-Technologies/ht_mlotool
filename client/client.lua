@@ -3,6 +3,10 @@ local mloCache = {}
 -- ##### FUNCTIONS ##### --
 
 local function openMLOInterface(mloData)
+    if not mloData.interiorId or mloData.interiorId <= 0 then
+        mloData.interiorId = GetInteriorFromEntity(cache.ped)
+    end
+
     local currentRoomHash = GetRoomKeyFromEntity(cache.ped)
     local currentRoomIndex = GetInteriorRoomIndexByHash(mloData.interiorId, currentRoomHash)
 

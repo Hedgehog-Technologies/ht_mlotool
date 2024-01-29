@@ -103,6 +103,8 @@ local function loadMLOData(source, filename, nameHashString, openUI)
     end
 
     if data ~= nil and tostring(data.nameHash) == nameHashString then
+        -- This value changes across sessions, we'll need to regrab it
+        data.interiorId = nil
         TriggerLatentClientEvent('ht_mlotool:loadMLOData', source, 100000, data, openUI)
     end
 end
@@ -162,6 +164,9 @@ RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
     if not canUseMloTool(source) and not canUseSaveMlo(source) then
         return print(locale('incorrect_perms', source, GetPlayerName(source)))
     end
+
+    -- This value changes across sessions, we'll need to regrab it
+    mloInfo.interiorId = nil
 
     local filename = mloInfo.saveName ~= '' and mloInfo.saveName or mloFilenameLookup[tostring(mloInfo.nameHash)] or mloInfo.name:gsub('hash_', '')
     mloFilenameLookup[tostring(mloInfo.nameHash)] = filename
@@ -260,7 +265,11 @@ lib.addCommand('openmlo', {
                 if filename then
                     data = readFile(source, savedMloDirectoryPath, filename, 'json')
 
-                    if data then data = json.decode(data) end
+                    if data then
+                        data = json.decode(data)
+                        -- This value changes across sessions, we'll need to regrab it
+                        data.interiorId = nil
+                    end
                 else
                     print(locale('warning_server') .. locale('no_filename_name_hash', nameHash))
                     lib.notify(source, {
