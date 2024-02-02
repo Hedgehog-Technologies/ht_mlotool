@@ -38,7 +38,7 @@ function Path.isRelevant(path, originNode, destinationNode)
 end
 
 function Path.hasPathAlreadyBeenFound(pathList, fromNodeKey, toNodeKey, distance)
-    local nodePairKey = fromNodeKey - toNodeKey
+    local nodePairKey = ToUInt32(fromNodeKey - toNodeKey)
     for i = 1, distance do
         if pathList[nodePairKey + i] then
             return true
