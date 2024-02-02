@@ -105,6 +105,9 @@ local function loadMLOData(source, filename, nameHashString, openUI)
     if data ~= nil and tostring(data.nameHash) == nameHashString then
         -- This value changes across sessions, we'll need to regrab it
         data.interiorId = nil
+        -- Force regenerate of global portals when reloading from save file
+        data.globalPortalCount = nil
+
         TriggerLatentClientEvent('ht_mlotool:loadMLOData', source, 100000, data, openUI)
     end
 end
@@ -256,6 +259,7 @@ lib.addCommand('openmlo', {
     local data = nil
 
     if args.force then
+        -- Force reload from file, if it exists
         if args.force == 1 then
             local nameHash = lib.callback.await('ht_mlotool:getMLONameHash', source)
 
@@ -269,6 +273,8 @@ lib.addCommand('openmlo', {
                         data = json.decode(data)
                         -- This value changes across sessions, we'll need to regrab it
                         data.interiorId = nil
+                        -- Force regenerate of global portals when reloading from save file
+                        data.globalPortalCount = nil
                     end
                 else
                     print(locale('warning_server') .. locale('no_filename_name_hash', nameHash))
@@ -286,6 +292,7 @@ lib.addCommand('openmlo', {
                     description = locale('user_not_in_mlo')
                 })
             end
+        -- Force rebuild from scratch
         elseif args.force == 2 then
             data = false
         end

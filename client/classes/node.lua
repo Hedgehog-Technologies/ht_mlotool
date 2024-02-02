@@ -19,16 +19,18 @@ function Node.new(room, portals)
 end
 
 function Node.generatePaths(nodes)
-    local pathList = {}
+    local pathList, pathKeys = {}, {}
     local nodePairList = Node.generateNodePairs(nodes)
 
     -- local longestShortPathDistance = NodePair.getLongestShortPath(nodePairList)
 
     for i = 1, 5 do
-        Path.generatePathsForDistance(pathList, nodes, nodePairList, i)
+        pathKeys[i] = {}
+        Path.generatePathsForDistance(pathList, pathKeys, nodes, nodePairList, i)
+        table.sort(pathKeys[i])
     end
 
-    return pathList
+    return pathList, pathKeys
 end
 
 function Node.getNonLimboEdges(node)

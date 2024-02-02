@@ -27,10 +27,10 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
     if mlo then
         local saveFileName = mlo.saveName ~= '' and mlo.saveName or { mlo.nameHash, mlo.name }
         if generateAO then
-            local paths = MLO.generatePaths(mlo)
+            local paths, pathKeys = MLO.generatePaths(mlo)
             local aoFileName = tostring(mlo.uintProxyHash)
             local aoFileType = 'ymt.pso.xml'
-            local ymtData = EncodeAudioOcclusion(mlo, paths)
+            local ymtData = EncodeAudioOcclusion(mlo, paths, pathKeys)
             TriggerLatentServerEvent('ht_mlotool:outputResultFile', 100000, saveFileName, aoFileName, aoFileType, ymtData, debug)
         end
 
@@ -116,6 +116,10 @@ RegisterNetEvent('ht_mlotool:openMLO', function(data)
         })
     end
 
+    if not mlo.globalPortalCount then
+        MLO.updateGlobalPortals(mlo)
+    end
+
     if mloCache[interiorId] == nil then mloCache[interiorId] = mlo end
 
     openMLOInterface(mlo)
@@ -148,6 +152,10 @@ RegisterNetEvent('ht_mlotool:loadMLOData', function(mloData, openUI)
     if interiorId == 0 or not IsValidInterior(interiorId) then return end
 
     local _, nameHash = GetInteriorLocationAndNamehash(interiorId)
+
+    if not mloData.globalPortalCount then
+        MLO.updateGlobalPortals(mloData)
+    end
 
     if mloData.nameHash == nameHash then
         mloCache[interiorId] = mloData

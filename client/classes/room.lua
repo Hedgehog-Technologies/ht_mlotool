@@ -8,7 +8,7 @@ function Room.new(interiodId, nameHash, proxyHash, roomIndex)
     room.displayName = room.name:gsub('^%l', string.upper)
     room.nameHash = room.name == 'limbo' and `outside` or joaat(room.name)
     room.uintNameHash = ToUInt32(room.nameHash)
-    room.roomKey = room.name == 'limbo' and room.uintNameHash or proxyHash ~ room.nameHash
+    room.roomKey = room.name == 'limbo' and room.nameHash or proxyHash ~ room.nameHash
     room.uintRoomKey = ToUInt32(room.roomKey)
 
     room.portalCount = 0

@@ -11,19 +11,17 @@ function ToUInt32(value)
 end
 
 function ToInt32(value)
-    if value >= INT32MIN and value <= INT32MAX then
-        return value
-    elseif value > INT32MAX then
+    if value > INT32MAX then
         repeat
-            value -= UINT32MAX - 1
+            value = value - UINT32MAX - 1
         until value <= INT32MAX
-        return value
     elseif value < INT32MIN then
         repeat
-            value += UINT32MAX + 1
+            value = value + UINT32MAX + 1
         until value >= INT32MIN
-        return value
     end
+
+    return value
 end
 
 local function toXmlInternal(xmlTbl, valueTbl, level, debug)

@@ -40,25 +40,34 @@ function MLO.new(interiorId)
         toRoom.portalCount += 1
     end
 
-    -- Gross for performance... but problem for future me I suppose
+    -- MLO Global Portals
+    MLO.updateGlobalPortals(mlo)
+
+    return mlo
+end
+
+-- Not the best performance... but problem for future me I suppose
+function MLO.updateGlobalPortals(mlo)
     mlo.globalPortalCount = 0
+
     for roomIndex = 1, mlo.roomCount do
         local room = mlo.rooms[roomIndex]
 
         for portalIndex = 1, mlo.portalCount do
             local portal = mlo.portals[portalIndex]
-            local matchDirection = portal.fromRoomIndex == room.index and 1
-                or portal.toRoomIndex == room.index and 2
-                or nil
 
-            if matchDirection then
-                portal.globalPortalIndices[matchDirection] = mlo.globalPortalCount
-                mlo.globalPortalCount += 1
+            if not portal.isMirror then
+                local matchDirection = portal.fromRoomIndex == room.index and 1
+                    or portal.toRoomIndex == room.index and 2
+                    or nil
+
+                if matchDirection then
+                    portal.globalPortalIndices[matchDirection] = mlo.globalPortalCount
+                    mlo.globalPortalCount += 1
+                end
             end
         end
     end
-
-    return mlo
 end
 
 function MLO.update(mlo, newData)
@@ -74,7 +83,7 @@ function MLO.update(mlo, newData)
 end
 
 --[[
-    The following algorithm to generate nodes and paths is sourced and translated from pedr0fontoura's gtav-audio-occlusion tool.
+    The following algorithm to generate nodes and paths is originally sourced and translated from pedr0fontoura's gtav-audio-occlusion tool.
     https://github.com/pedr0fontoura/gtav-audio-occlusion
 
     MIT License
@@ -102,9 +111,8 @@ end
 
 function MLO.generatePaths(mlo)
     local nodes = MLO.generateNodes(mlo)
-    local paths = Node.generatePaths(nodes)
-
-    return paths
+    local paths, pathKeys = Node.generatePaths(nodes)
+    return paths, pathKeys
 end
 
 function MLO.generateNodes(mlo)

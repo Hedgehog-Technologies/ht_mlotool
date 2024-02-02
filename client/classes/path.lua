@@ -10,9 +10,11 @@ function Path.new(originNode, destinationNode, distance)
     path.destination = destinationNode
 
     if originNode.index == destinationNode.index then
+        path.uintKey = 0
         path.key = 0
     else
-        path.key = ToInt32(originNode.key - destinationNode.key + distance)
+        path.uintKey = ToUInt32(originNode.key - destinationNode.key) + distance
+        path.key = ToInt32(path.uintKey)
     end
 
     path.childList = {}
@@ -35,14 +37,10 @@ function Path.isRelevant(path, originNode, destinationNode)
     return path.origin.index == originNode.index and path.destination.index == destinationNode.index
 end
 
-function Path.hasPathAlreadyBeenFound(pathList, fromNode, toNode, distance)
-    for pathIndex = 1, #pathList do
-        local path = pathList[pathIndex]
-
-        if path.origin.index == fromNode.index
-            and path.destination.index == toNode.index
-            and path.distance <= distance
-        then
+function Path.hasPathAlreadyBeenFound(pathList, fromNodeKey, toNodeKey, distance)
+    local nodePairKey = fromNodeKey - toNodeKey
+    for i = 1, distance do
+        if pathList[nodePairKey + i] then
             return true
         end
     end
@@ -50,22 +48,12 @@ function Path.hasPathAlreadyBeenFound(pathList, fromNode, toNode, distance)
     return false
 end
 
-function Path.findPathInList(pathList, fromNodeIndex, toNodeIndex, distance)
-    for pathIndex = 1, #pathList do
-        local path = pathList[pathIndex]
-
-        if path.origin.index == fromNodeIndex
-            and path.destination.index == toNodeIndex
-            and path.distance == distance
-        then
-            return path
-        end
-    end
-
-    return nil
+function Path.findPathInList(pathList, fromNodeKey, toNodeKey, distance)
+    local nodePairKey = ToUInt32(fromNodeKey - toNodeKey) + distance
+    return pathList[nodePairKey]
 end
 
-function Path.generatePathsForDistance(pathList, nodes, pairList, distance)
+function Path.generatePathsForDistance(pathList, pathKeys, nodes, pairList, distance)
     -- Shortest distance, list out all one step direct links and move on
     if distance == 1 then
         for nodeIndex = 1, #nodes do
@@ -94,7 +82,8 @@ function Path.generatePathsForDistance(pathList, nodes, pairList, distance)
 
                 -- Only add to the list if there are actually children created
                 if #path.childList > 0 then
-                    table.insert(pathList, path)
+                    pathList[path.uintKey] = path
+                    table.insert(pathKeys[distance], path.uintKey)
                 end
             end
         end
@@ -103,165 +92,123 @@ function Path.generatePathsForDistance(pathList, nodes, pairList, distance)
 
         for pairIndex = 1, #pairList do
             local pair = pairList[pairIndex]
-            Path.generateRoutes(pathList, pair, distance)
+            Path.generateRoutes(pathList, pathKeys, pair, distance)
         end
     end
 end
 
-function Path.generateRoutes(pathList, pair, distance)
+function Path.generateRoutes(pathList, pathKeys, pair, distance)
     local edges = pair.isLimboPair and pair.fromNode.edges or Node.getNonLimboEdges(pair.fromNode)
+    -- because I'll forget, DMO == distance minus one
+    local dmoPathKeys = pathKeys[distance - 1]
 
-    for pathIndex = 1, #pathList do
-        local path = pathList[pathIndex]
+    for keyIndex = 1, #dmoPathKeys do
+        local path = pathList[dmoPathKeys[keyIndex]]
 
-        if path.distance == distance - 1 then
-            if distance == 1 or distance == 2 or distance == 3 then
-                if Path.isRelevant(path, pair.fromNode, pair.toNode) then
-                    local existingPath = Path.findPathInList(pathList, pair.fromNode.index, pair.toNode.index, distance)
+        if distance == 1 or distance == 2 or distance == 3 then
+            if Path.isRelevant(path, pair.fromNode, pair.toNode) then
+                local curPath = Path.findPathInList(pathList, pair.fromNode.key, pair.toNode.key, distance)
 
-                    if existingPath then
-                        for portalIndex = 1, pair.fromNode.activePortalCount do
-                            local portal = pair.fromNode.activePortals[portalIndex]
+                local new = false
+                if not curPath then
+                    curPath = Path.new(pair.fromNode, pair.toNode, distance)
+                    new = true
+                end
 
-                            if not portal.isMirror then
-                                local globalPortalIndex = nil
-                                if portal.toRoomIndex == pair.toNode.index then
-                                    globalPortalIndex = portal.globalPortalIndices[1]
-                                elseif portal.fromRoomIndex == pair.toNode.index then
-                                    globalPortalIndex = portal.globalPortalIndices[2]
-                                end
+                for portalIndex = 1, pair.fromNode.activePortalCount do
+                    local portal = pair.fromNode.activePortals[portalIndex]
 
-                                if globalPortalIndex ~= nil then
-                                    Path.addChild(existingPath, pair.fromNode, pair.fromNode, distance - 1, globalPortalIndex)
-                                end
-                            end
-                        end
-                    else
-                        local newPath = Path.new(pair.fromNode, pair.toNode, distance)
-
-                        for portalIndex = 1, pair.fromNode.activePortalCount do
-                            local portal = pair.fromNode.activePortals[portalIndex]
-
-                            if not portal.isMirror then
-                                local globalPortalIndex = nil
-                                if portal.toRoomIndex == pair.toNode.index then
-                                    globalPortalIndex = portal.globalPortalIndices[1]
-                                elseif portal.fromRoomIndex == pair.toNode.index then
-                                    globalPortalIndex = portal.globalPortalIndices[2]
-                                end
-
-                                if globalPortalIndex ~= nil then
-                                    Path.addChild(newPath, pair.fromNode, pair.fromNode, distance - 1, globalPortalIndex)
-                                end
-                            end
+                    if not portal.isMirror then
+                        local globalPortalIndex = nil
+                        if portal.toRoomIndex == pair.toNode.index then
+                            globalPortalIndex = portal.globalPortalIndices[1]
+                        elseif portal.fromRoomIndex == pair.toNode.index then
+                            globalPortalIndex = portal.globalPortalIndices[2]
                         end
 
-                        if #newPath.childList > 0 then
-                            table.insert(pathList, newPath)
-                        end
-                    end
-                else
-                    for edgeIndex = 1, #edges do
-                        local edge = edges[edgeIndex]
-
-                        if Path.isRelevant(path, edge, pair.toNode) then
-                            local existingPath = Path.findPathInList(pathList, pair.fromNode.index, pair.toNode.index, distance)
-
-                            if existingPath then
-                                for portalIndex = 1, pair.fromNode.activePortalCount do
-                                    local portal = pair.fromNode.activePortals[portalIndex]
-
-                                    if not portal.isMirror then
-                                        local globalPortalIndex = nil
-                                        if portal.toRoomIndex == edge.index then
-                                            globalPortalIndex = portal.globalPortalIndices[1]
-                                        elseif portal.fromRoomIndex == edge.index then
-                                            globalPortalIndex = portal.globalPortalIndices[2]
-                                        end
-
-                                        if globalPortalIndex ~= nil and (edge.index == pair.toNode.index or (portal.fromRoomIndex ~= 0 and portal.toRoomIndex ~= 0)) then
-                                            Path.addChild(existingPath, edge, pair.toNode, distance - 1, globalPortalIndex)
-                                        end
-                                    end
-                                end
-                            else
-                                local newPath = Path.new(pair.fromNode, pair.toNode, distance)
-
-                                for portalIndex = 1, pair.fromNode.activePortalCount do
-                                    local portal = pair.fromNode.activePortals[portalIndex]
-
-                                    if not portal.isMirror then
-                                        local globalPortalIndex = nil
-                                        if portal.toRoomIndex == edge.index then
-                                            globalPortalIndex = portal.globalPortalIndices[1]
-                                        elseif portal.fromRoomIndex == edge.index then
-                                            globalPortalIndex = portal.globalPortalIndices[2]
-                                        end
-
-                                        if globalPortalIndex ~= nil and (edge.index == pair.toNode.index or (portal.fromRoomIndex ~= 0 and portal.toRoomIndex ~= 0)) then
-                                            Path.addChild(newPath, edge, pair.toNode, distance - 1, globalPortalIndex)
-                                        end
-                                    end
-                                end
-
-                                if #newPath.childList > 0 then
-                                    table.insert(pathList, newPath)
-                                end
-                            end
+                        if globalPortalIndex ~= nil then
+                            Path.addChild(curPath, pair.fromNode, pair.fromNode, distance - 1, globalPortalIndex)
                         end
                     end
                 end
-            elseif distance > 3 then
+
+                if new and #curPath.childList > 0 then
+                    pathList[curPath.uintKey] = curPath
+                    table.insert(pathKeys[distance], curPath.uintKey)
+                end
+            else
                 for edgeIndex = 1, #edges do
                     local edge = edges[edgeIndex]
 
                     if Path.isRelevant(path, edge, pair.toNode) then
-                        local alreadyFound = Path.hasPathAlreadyBeenFound(pathList, pair.fromNode, pair.toNode, distance)
+                        local curPath = Path.findPathInList(pathList, pair.fromNode.key, pair.toNode.key, distance)
 
-                        if not alreadyFound then
-                            local existingPath = Path.findPathInList(pathList, pair.fromNode, pair.toNode, distance)
+                        local new = false
+                        if not curPath then
+                            curPath = Path.new(pair.fromNode, pair.toNode, distance)
+                            new = true
+                        end
 
-                            if existingPath then
-                                for portalIndex = 1, pair.fromNode.activePortalCount do
-                                    local portal = pair.fromNode.activePortals[portalIndex]
+                        for portalIndex = 1, pair.fromNode.activePortalCount do
+                            local portal = pair.fromNode.activePortals[portalIndex]
 
-                                    if not portal.isMirror then
-                                        local globalPortalIndex = nil
-                                        if portal.toRoomIndex == edge.index then
-                                            globalPortalIndex = portal.globalPortalIndices[1]
-                                        elseif portal.fromRoomIndex == edge.index then
-                                            globalPortalIndex = portal.globalPortalIndices[2]
-                                        end
-
-                                        if globalPortalIndex ~= nil and (edge.index == pair.toNode.index or (portal.fromRoomIndex ~= 0 and portal.toRoomIndex ~= 0)) then
-                                            Path.addChild(existingPath, edge, pair.toNode, distance - 1, globalPortalIndex)
-                                        end
-                                    end
-                                end
-                            else
-                                local newPath = Path.new(pair.fromNode, pair.toNode, distance)
-
-                                for portalIndex = 1, pair.fromNode.activePortalCount do
-                                    local portal = pair.fromNode.activePortals[portalIndex]
-
-                                    if not portal.isMirror then
-                                        local globalPortalIndex = nil
-                                        if portal.toRoomIndex == edge.index then
-                                            globalPortalIndex = portal.globalPortalIndices[1]
-                                        elseif portal.fromRoomIndex == edge.index then
-                                            globalPortalIndex = portal.globalPortalIndices[2]
-                                        end
-
-                                        if globalPortalIndex ~= nil and (edge.index == pair.toNode.index or (portal.fromRoomIndex ~= 0 and portal.toRoomIndex ~= 0)) then
-                                            Path.addChild(newPath, edge, pair.toNode, distance - 1, globalPortalIndex)
-                                        end
-                                    end
+                            if not portal.isMirror then
+                                local globalPortalIndex = nil
+                                if portal.toRoomIndex == edge.index then
+                                    globalPortalIndex = portal.globalPortalIndices[1]
+                                elseif portal.fromRoomIndex == edge.index then
+                                    globalPortalIndex = portal.globalPortalIndices[2]
                                 end
 
-                                if #newPath.childList > 0 then
-                                    table.insert(pathList, newPath)
+                                if globalPortalIndex ~= nil and (edge.index == portal.fromRoomIndex or (portal.fromRoomIndex ~= 0 and portal.toRoomIndex ~= 0)) then
+                                    Path.addChild(curPath, edge, pair.toNode, distance - 1, globalPortalIndex)
                                 end
                             end
+                        end
+
+                        if new and #curPath.childList > 0 then
+                            pathList[curPath.uintKey] = curPath
+                            table.insert(pathKeys[distance], curPath.uintKey)
+                        end
+                    end
+                end
+            end
+        elseif distance > 3 then
+            for edgeIndex = 1, #edges do
+                local edge = edges[edgeIndex]
+
+                if Path.isRelevant(path, edge, pair.toNode) then
+                    local alreadyFound = Path.hasPathAlreadyBeenFound(pathList, pair.fromNode.key, pair.toNode.key, distance)
+
+                    if not alreadyFound then
+                        local curPath = Path.findPathInList(pathList, pair.fromNode.key, pair.toNode.key, distance)
+
+                        local new = false
+                        if not curPath then
+                            curPath = Path.new(pair.fromNode, pair.toNode, distance)
+                            new = true
+                        end
+
+                        for portalIndex = 1, pair.fromNode.activePortalCount do
+                            local portal = pair.fromNode.activePortals[portalIndex]
+
+                            if not portal.isMirror then
+                                local globalPortalIndex = nil
+                                if portal.toRoomIndex == edge.index then
+                                    globalPortalIndex = portal.globalPortalIndices[1]
+                                elseif portal.fromRoomIndex == edge.index then
+                                    globalPortalIndex = portal.globalPortalIndices[2]
+                                end
+
+                                if globalPortalIndex ~= nil and (edge.index == pair.toNode.index or (portal.fromRoomIndex ~= 0 and portal.toRoomIndex ~= 0)) then
+                                    Path.addChild(curPath, edge, pair.toNode, distance - 1, globalPortalIndex)
+                                end
+                            end
+                        end
+
+                        if new and #curPath.childList > 0 then
+                            pathList[curPath.uintKey] = curPath
+                            table.insert(pathKeys[distance], curPath.uintKey)
                         end
                     end
                 end
