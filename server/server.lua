@@ -1,4 +1,4 @@
-local systemIsWindows <const> = os.getenv('OS'):match('[Ww]indows')
+local systemIsWindows <const> = (os.getenv('OS') or ''):lower():match('[Ww]indows')
 local resourcePath <const> = GetResourcePath(cache.resource):gsub('//', '/')
 local savedMLODir <const> = 'saved_mlos'
 local savedMloDirectoryPath <const> = ('%s/%s'):format(resourcePath, savedMLODir)
