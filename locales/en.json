@@ -105,7 +105,7 @@
     "ui_room_dat_unk12": "Unk12",
     "ui_room_dat_unk12_info": "Usually left as 50",
     "ui_room_dat_unk13": "Unk13",
-    "ui_room_dat_unk13_info": "Maybe a static emitter hash. Usually left blank",
+    "ui_room_dat_unk13_info": "Likely a hash referring to a InteriorRoomParams (further support in a future update). Usually left blank",
     "ui_room_dat_zone": "Zone",
     "ui_room_dat_zone_info": "Usually left blank",
     "ui_room_index": "Room Index",

@@ -105,7 +105,7 @@
     "ui_room_dat_unk12": "Unk12",
     "ui_room_dat_unk12_info": "Usein määritetty 50",
     "ui_room_dat_unk13": "Unk13",
-    "ui_room_dat_unk13_info": "Ehkä staattisen äänilähteen (static emitter) hash. Usein jätetty tyhjäksi",
+    "ui_room_dat_unk13_info": "Luultavasti hash, joka viittaa InteriorRoomParamsiin (lisää tukea tulevassa päivityksessä). Yleensä jätetään tyhjäksi",
     "ui_room_dat_zone": "Alue",
     "ui_room_dat_zone_info": "Usein jätetty tyhjäksi",
     "ui_room_index": "Huoneen Indeksi",

@@ -104,7 +104,7 @@
   "ui_room_dat_unk12": "Unk12",
   "ui_room_dat_unk12_info": "Généralement laissé à 50",
   "ui_room_dat_unk13": "Unk13",
-  "ui_room_dat_unk13_info": "Peut-être un hachage d'émetteur statique. Généralement laissé vide",
+  "ui_room_dat_unk13_info": "Probablement un hachage faisant référence à InteriorRoomParams (support supplémentaire dans une future mise à jour). Généralement laissé vide",
   "ui_room_dat_zone": "Zone",
   "ui_room_dat_zone_info": "Généralement laissé vide",
   "ui_room_index": "Index de la pièce",
