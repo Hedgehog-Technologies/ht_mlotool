@@ -1,4 +1,4 @@
-local systemIsWindows <const> = (os.getenv('OS') or ''):lower():match('[Ww]indows')
+local systemIsWindows <const> = (os.getenv('OS') or ''):lower():match('windows')
 local resourcePath <const> = GetResourcePath(cache.resource):gsub('//', '/')
 local savedMLODir <const> = 'saved_mlos'
 local savedMloDirectoryPath <const> = ('%s/%s'):format(resourcePath, savedMLODir)
@@ -20,9 +20,17 @@ end
 local function getFilesInDirectory(path, pattern)
     local files = {}
     local fileCount = 0
-    local command = systemIsWindows and 'dir "' or 'ls "'
-    local suffix = command == 'dir "' and '/" /b' or '/"'
-    local dir = io.popen(command .. resourcePath .. '/' .. path .. suffix)
+    local command = 'ls "'
+    local suffix = '/"'
+    local dirPath = resourcePath .. '/' .. path
+
+    if systemIsWindows then
+        command = 'dir "'
+        dirPath = dirPath:gsub('/', '\\')
+        suffix = '\\" /b'
+    end
+
+    local dir = io.popen(command .. dirPath .. suffix)
 
     if dir then
         for line in dir:lines() do
@@ -40,6 +48,11 @@ end
 
 local function readFile(source, filepath, filename, filetype)
     local fullPath = ('%s/%s.%s'):format(filepath, filename, filetype)
+
+    if systemIsWindows then
+        fullPath = fullPath:gsub('/', '\\')
+    end
+
     local file, err = io.open(fullPath, 'r')
     local data = nil
 
@@ -65,6 +78,11 @@ end
 
 local function writeFile(source, filepath, filename, filetype, dataString)
     local fullPath = ('%s/%s.%s'):format(filepath, filename, filetype)
+
+    if systemIsWindows then
+        fullPath = fullPath:gsub('/', '\\')
+    end
+
     local file, openError = io.open(fullPath, 'w+')
 
     if file == nil then
@@ -124,8 +142,8 @@ local function pathExists(path)
     return ok, err
 end
 
-local function verifyOrCreateOutputDirectory(dirName)
-    local dirPath = ('%s/%s'):format(generatedFilesDirectoryPath, dirName)
+local function verifyOrCreateOutputDirectory(pathToDir, dirName)
+    local dirPath = ('%s/%s'):format(pathToDir, dirName)
 
     if systemIsWindows then
         dirPath = dirPath:gsub('/', '\\')
@@ -136,7 +154,7 @@ local function verifyOrCreateOutputDirectory(dirName)
 
         if not ok then
             print(locale('create_output_dir_fail', dirPath, err, code))
-            return generatedFilesDirectoryPath
+            return pathToDir
         end
     end
 
@@ -152,7 +170,7 @@ RegisterNetEvent('ht_mlotool:outputResultFile', function(saveFileName, filename,
     end
 
     local mloDirName = type(saveFileName) ~= 'table' and saveFileName or mloFilenameLookup[tostring(saveFileName.nameHash)] or saveFileName.name:gsub('hash_', '')
-    local outputDirPath = verifyOrCreateOutputDirectory(mloDirName)
+    local outputDirPath = verifyOrCreateOutputDirectory(generatedFilesDirectoryPath, mloDirName)
     local success = writeFile(source, outputDirPath, filename, filetype, ToXml(ymtData, debug))
 
     local type = success and 'success' or 'error'
@@ -174,7 +192,8 @@ RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
     local filename = mloInfo.saveName ~= '' and mloInfo.saveName or mloFilenameLookup[tostring(mloInfo.nameHash)] or mloInfo.name:gsub('hash_', '')
     mloFilenameLookup[tostring(mloInfo.nameHash)] = filename
 
-    local writeSuccess = writeFile(source, savedMloDirectoryPath, filename, 'json', json.encode(mloInfo, { indent = true }))
+    local outputPath = verifyOrCreateOutputDirectory(resourcePath, savedMLODir)
+    local writeSuccess = writeFile(source, outputPath, filename, 'json', json.encode(mloInfo, { indent = true }))
 
     if writeSuccess then
         print(locale('save_mlo_success') .. (': %s/%s.json'):format(savedMLODir, filename))
