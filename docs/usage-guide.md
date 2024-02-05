@@ -71,7 +71,7 @@ Used to save MLO data to a save file in the `saved_mlos/` directory.
     - The `.dat151.rel` files should be placed in a separate folder, for example called `audio`
 11. In the fxmanifest file for that resource, be sure to include the following
 ```lua
-this_is_a_map 'yes'
+this_is_a_map 'yes' -- this is required for the stream directory to be picked up by FiveM as map files (i.e. required for YMT files)
 
 files {
     'audio/**/*.rel'
