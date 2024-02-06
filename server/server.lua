@@ -2,7 +2,8 @@ local systemIsWindows <const> = (os.getenv('OS') or ''):lower():match('windows')
 local resourcePath <const> = GetResourcePath(cache.resource):gsub('//', '/')
 local savedMLODir <const> = 'saved_mlos'
 local savedMloDirectoryPath <const> = ('%s/%s'):format(resourcePath, savedMLODir)
-local generatedFilesDirectoryPath <const> = resourcePath .. '/generated_files'
+local generatedFilesDir <const> = 'generated_files'
+local generatedFilesDirectoryPath <const> = ('%s/%s'):format(resourcePath, generatedFilesDir)
 
 local filenames = {}
 local mloFilenameLookup = {}
@@ -143,6 +144,19 @@ local function pathExists(path)
 end
 
 local function verifyOrCreateOutputDirectory(pathToDir, dirName)
+    if systemIsWindows then
+        pathToDir = pathToDir:gsub('/', '\\')
+    end
+
+    if not pathExists(pathToDir) then
+        local ok, err, code = os.execute(('mkdir %s'):format(pathToDir))
+
+        if not ok then
+            print(locale('create_output_dir_fail', pathToDir, err, code))
+            return nil
+        end
+    end
+
     local dirPath = ('%s/%s'):format(pathToDir, dirName)
 
     if systemIsWindows then
@@ -171,7 +185,8 @@ RegisterNetEvent('ht_mlotool:outputResultFile', function(saveFileName, filename,
 
     local mloDirName = type(saveFileName) ~= 'table' and saveFileName or mloFilenameLookup[tostring(saveFileName.nameHash)] or saveFileName.name:gsub('hash_', '')
     local outputDirPath = verifyOrCreateOutputDirectory(generatedFilesDirectoryPath, mloDirName)
-    local success = writeFile(source, outputDirPath, filename, filetype, ToXml(ymtData, debug))
+    local success = outputDirPath ~= nil
+    success = success and writeFile(source, outputDirPath, filename, filetype, ToXml(ymtData, debug))
 
     local type = success and 'success' or 'error'
     local color = success and '^7' or '^1'
@@ -193,10 +208,11 @@ RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
     mloFilenameLookup[tostring(mloInfo.nameHash)] = filename
 
     local outputPath = verifyOrCreateOutputDirectory(resourcePath, savedMLODir)
-    local writeSuccess = writeFile(source, outputPath, filename, 'json', json.encode(mloInfo, { indent = true }))
+    local success = outputPath ~= nil
+    success = success and writeFile(source, outputPath, filename, 'json', json.encode(mloInfo, { indent = true }))
 
-    if writeSuccess then
-        print(locale('save_mlo_success') .. (': %s/%s.json'):format(savedMLODir, filename))
+    if success then
+        print('^7' .. locale('save_mlo_success') .. (': %s/%s.json'):format(savedMLODir, filename))
         lib.notify(source, {
             type = 'success',
             title = locale('save_mlo_success'),
