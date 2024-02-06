@@ -11,13 +11,6 @@ import { isEnvBrowser } from "./utils/misc";
 
 debugData([
   {
-    action: "setVisible",
-    data: undefined
-  }
-]);
-
-debugData([
-  {
     action: "ht_mlotool:openMLO",
     data: {
       mloData: {

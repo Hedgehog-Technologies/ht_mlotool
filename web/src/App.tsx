@@ -42,10 +42,6 @@ const App: React.FC = () => {
   const { classes } = useStyles();
   const [visible, setVisible, exitUI] = useVisibility((state) => [state.visible, state.setVisible, state.exitUI]);
 
-  useNuiEvent("setVisible", (data: any) => {
-    setVisible(true);
-  });
-
   useNuiEvent("ht_mlotool:openMLO", (data) => {
     setVisible(true);
 
