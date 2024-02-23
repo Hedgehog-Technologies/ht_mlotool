@@ -1,7 +1,9 @@
-import { ActionIconVariant, Navbar, Stack } from "@mantine/core";
+import { ActionIconVariant, Divider, Navbar, Stack } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { AiFillHome } from "react-icons/ai";
 import { FaDoorOpen } from "react-icons/fa";
+import { FaGun } from "react-icons/fa6";
+import { GiMagicPortal } from "react-icons/gi";
 import { IoCubeSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 import { MemoNavIcon } from "./NavIcon";
@@ -13,12 +15,16 @@ const Nav: React.FC = () => {
   const [generalVariant, setGeneralVariant] = useState<ActionIconVariant>();
   const [roomsVariant, setRoomsVariant] = useState<ActionIconVariant>();
   const [portalsVariant, setPortalsVariant] = useState<ActionIconVariant>();
+  const [doorTuningVariant, setDoorTuningVariant] = useState<ActionIconVariant>();
+  const [irpVariant, setIRPVariant] = useState<ActionIconVariant>();
 
   useEffect(() => {
     let path = location.pathname;
     setGeneralVariant(undefined);
     setRoomsVariant(undefined);
     setPortalsVariant(undefined);
+    setDoorTuningVariant(undefined);
+    setIRPVariant(undefined);
 
     if (path === "/") {
       setGeneralVariant("filled");
@@ -29,6 +35,12 @@ const Nav: React.FC = () => {
     else if (path === "/portals") {
       setPortalsVariant("filled");
     }
+    else if (path === "/doortuning") {
+      setDoorTuningVariant("filled");
+    }
+    else if (path === "/interiorroomparams") {
+      setIRPVariant("filled");
+    }
   }, [location]);
 
   return (
@@ -38,7 +50,7 @@ const Nav: React.FC = () => {
       p="md"
       fixed={false}
     >
-      <Navbar.Section grow>
+      <Navbar.Section pb={10}>
         <Stack justify="center" align="center" spacing={5}>
           <MemoNavIcon
             label={locale("ui_tab_general")}
@@ -59,9 +71,31 @@ const Nav: React.FC = () => {
           <MemoNavIcon 
             label={locale("ui_tab_portals")}
             destination={"/portals"}
-            Icon={FaDoorOpen}
+            Icon={GiMagicPortal}
             color={"violet.6"}
             variant={portalsVariant}
+          />
+        </Stack>
+      </Navbar.Section>
+
+      <Divider />
+
+      <Navbar.Section pt={10}>
+        <Stack justify="center" align="center" spacing={5}>
+          <MemoNavIcon
+            label={"Interior Room Weapon Audio Tuning"}
+            destination={"/interiorroomparams"}
+            Icon={FaGun}
+            color={"violet.6"}
+            variant={irpVariant}
+          />
+
+          <MemoNavIcon
+            label={"Door Tuning"}
+            destination={"/doortuning"}
+            Icon={FaDoorOpen}
+            color={"violet.6"}
+            variant={doorTuningVariant}
           />
         </Stack>
       </Navbar.Section>
