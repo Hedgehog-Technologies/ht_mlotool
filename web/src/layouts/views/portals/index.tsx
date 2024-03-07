@@ -52,14 +52,14 @@ const Portals: React.FC = () => {
   }, [activeRoom]);
 
   return (
-    <Box>
+    <Box h={"60vh"}>
       <MemoRoomSelect />
       <Group position="apart" pt={20}>
         <Title order={4}>{locale("ui_portal_info")}</Title>
         <DebugMenu />
       </Group>
 
-      <ScrollArea style={{ height: 650 }} pt={5} onScrollPositionChange={setScrollState} viewportRef={viewport}>
+      <ScrollArea h={"100%"} pt={5} onScrollPositionChange={setScrollState} viewportRef={viewport}>
         {activeRoom?.portalCount
           && filteredRooms?.map((portal) => <PortalInfo key={portal.mloPortalIndex} portal={portal} portalIndex={portal.mloPortalIndex} />)
           || <Alert>{locale("ui_portal_alert")}</Alert>}

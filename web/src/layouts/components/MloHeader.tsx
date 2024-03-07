@@ -22,8 +22,8 @@ const MloHeader: React.FC = () => {
   return (
     // height left as empty string on purpose
     // height needs *some* value, but grows to size of content by default
-    <Header height={""}>
-      <Group p="1%" px="2.5%" position="apart" sx={{ alignContent: "center" }}>
+    <Header height={"5vh"}>
+      <Group p="1%" px="2.5%" h={"100%"} position="apart" sx={{ alignContent: "center" }}>
         <Title order={4} color={"violet.1"}>MLO Tool</Title>
         <Title order={3} color={"violet.1"}>{mlo?.saveName.toUpperCase() ?? locale("ui_save_name_unknown")}</Title>
         <Group>

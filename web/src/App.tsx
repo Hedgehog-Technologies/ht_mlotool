@@ -20,7 +20,7 @@ const useStyles = createStyles((theme) => ({
 
   wrapper: {
     width: "37.5%",
-    height: "90%",
+    height: "90vh",
     position: "absolute",
     top: "2%",
     left: "2%",

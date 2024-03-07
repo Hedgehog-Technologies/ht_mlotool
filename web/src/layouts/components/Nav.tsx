@@ -45,8 +45,8 @@ const Nav: React.FC = () => {
 
   return (
     <Navbar
-      height={800}
-      width={{ base: "10%" }}
+      height={"75vh"}
+      width={{ base: "3.5vw" }}
       p="md"
       fixed={false}
     >

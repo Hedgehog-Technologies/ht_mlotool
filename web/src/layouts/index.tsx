@@ -5,6 +5,7 @@ import MloHeader from "./components/MloHeader";
 import General from "./views/general";
 import Portals from "./views/portals";
 import Rooms from "./views/rooms";
+import InteriorRoomParams from "./views/interiorroomparams";
 
 const MloShell: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const MloShell: React.FC = () => {
         <Route path={"/"} element={<General />} />
         <Route path={"/rooms"} element={<Rooms />} />
         <Route path={"/portals"} element={<Portals />} />
+        <Route path={"/interiorroomparams"} element={<InteriorRoomParams />} />
       </Routes>
     </AppShell>
   );

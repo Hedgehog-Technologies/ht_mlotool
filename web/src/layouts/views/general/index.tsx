@@ -1,4 +1,4 @@
-import { Button, Stack } from "@mantine/core";
+import { Box, Button, Stack } from "@mantine/core";
 import { useState } from "react";
 import GenerationFileOptions from "./components/GeneralFileOptions";
 import GeneralMlo from "./components/GeneralMlo";
@@ -36,12 +36,14 @@ const General: React.FC = () => {
   }
 
   return (
-    <Stack justify="space-between" sx={{ height: "100%" }}>
+    <Stack sx={{ height: "100%" }}>
       <GeneralMlo />
 
       <GenerationFileOptions />
 
-      <Button color={color} uppercase onClick={handleButtonClick}>{buttonText}</Button>
+      <Box w={"100%"} py={"2%"}>
+        <Button w={"100%"} color={color} uppercase onClick={handleButtonClick}>{buttonText}</Button>
+      </Box>
     </Stack>
   );
 };
