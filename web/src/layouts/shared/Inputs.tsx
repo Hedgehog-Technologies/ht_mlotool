@@ -2,8 +2,7 @@ import { Checkbox, Group, InputVariant, MantineSize, NumberInput, Switch, TextIn
 import { getHotkeyHandler } from "@mantine/hooks";
 import React from "react";
 import { BsQuestionCircle } from "react-icons/bs";
-import { useLocale } from "../../providers/LocaleProvider";
-import { useVisibility } from "../../providers/VisibilityProvider";
+import { useLocale, useVisibility } from "@/providers";
 
 interface InputProps {
   label?: string;

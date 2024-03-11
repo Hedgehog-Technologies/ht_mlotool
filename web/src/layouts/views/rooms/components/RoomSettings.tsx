@@ -1,10 +1,9 @@
 import { Box, Group, Select, Title } from "@mantine/core";
-import { useEffect, useMemo, useState } from "react";
-import { MemoNumberInput, MemoStringInput } from "../../../shared/Inputs";
-import { useLocale } from "../../../../providers/LocaleProvider";
-import { useRoomsStore } from "../../../../store/rooms";
-import { Dat151Fields } from "../../../../types/RoomDef";
-import { useIRPStore } from "../../../../store/irp";
+import { useEffect, useState } from "react";
+import { MemoNumberInput, MemoStringInput } from "@/layouts/shared";
+import { useLocale } from "@/providers";
+import { useIRPStore, useRoomsStore } from "@/stores";
+import { Dat151Fields } from "@/types";
 
 const defaultDat151Fields: Dat151Fields = {
   flags: "0xAAAAAAAA",
@@ -24,7 +23,7 @@ const defaultDat151Fields: Dat151Fields = {
   soundSet: "hash_D4855127"
 };
 
-const RoomSettings: React.FC = () => {
+export const RoomSettings: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const activeRoom = useRoomsStore((state) => state.activeRoom);
   const [fieldState, setFieldState] = useState<Dat151Fields>(defaultDat151Fields);
@@ -228,5 +227,3 @@ const RoomSettings: React.FC = () => {
     </Box>
   );
 };
-
-export default RoomSettings;

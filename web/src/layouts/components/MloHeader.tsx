@@ -2,11 +2,10 @@ import { Group, Header, Title } from "@mantine/core";
 import { AiFillGithub, AiOutlineCloseSquare } from "react-icons/ai";
 import { BsDiscord } from "react-icons/bs";
 import { MemoHeaderIcon } from "./HeaderIcon";
-import { useLocale } from "../../providers/LocaleProvider";
-import { useVisibility } from "../../providers/VisibilityProvider";
-import { useGeneralStore } from "../../store/general";
+import { useLocale, useVisibility } from "@/providers";
+import { useGeneralStore } from "@/stores/general";
 
-const MloHeader: React.FC = () => {
+export const MloHeader: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const mlo = useGeneralStore((state) => state.mlo);
   const exitUI = useVisibility((state) => state.exitUI);
@@ -20,8 +19,6 @@ const MloHeader: React.FC = () => {
   const handleDiscordClick = () => openUrl("https://discord.gg/zrQvYAuBsk");
 
   return (
-    // height left as empty string on purpose
-    // height needs *some* value, but grows to size of content by default
     <Header height={"5vh"}>
       <Group p="1%" px="2.5%" h={"100%"} position="apart" sx={{ alignContent: "center" }}>
         <Title order={4} color={"violet.1"}>MLO Tool</Title>
@@ -53,5 +50,3 @@ const MloHeader: React.FC = () => {
     </Header>
   );
 };
-
-export default MloHeader;

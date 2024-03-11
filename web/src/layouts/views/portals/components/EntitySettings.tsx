@@ -1,18 +1,17 @@
 import { Center, Checkbox, Switch, Text, Tooltip } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { useEffect, useState } from "react";
-import { MemoNumberInput } from "../../../shared/Inputs";
-import { useVisibility } from "../../../../providers/VisibilityProvider";
-import { useGeneralStore } from "../../../../store/general";
-import { usePortalsStore } from "../../../../store/portals";
-import { fetchNui } from "../../../../utils/fetchNui";
+import { MemoNumberInput } from "@/layouts/shared";
+import { useVisibility } from "@/providers";
+import { useGeneralStore, usePortalsStore } from "@/stores";
+import { fetchNui } from "@/utils";
 
 interface Props {
   portalIndex: number;
   entityIndex: number;
 }
 
-const EntitySettings: React.FC<Props> = (props) => {
+export const EntitySettings: React.FC<Props> = (props) => {
   const exitUi = useVisibility((state) => state.exitUI);
   const mlo = useGeneralStore((state) => state.mlo);
   const [debugEntities, addDebugEntity] = usePortalsStore((state) => [state.debugEntities, state.addDebugEntity])
@@ -100,5 +99,3 @@ const EntitySettings: React.FC<Props> = (props) => {
     </tr>
   );
 };
-
-export default EntitySettings;

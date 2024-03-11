@@ -1,13 +1,11 @@
 import { Box, Button, Stack } from "@mantine/core";
 import { useState } from "react";
-import GenerationFileOptions from "./components/GeneralFileOptions";
-import GeneralMlo from "./components/GeneralMlo";
-import { useLocale } from "../../../providers/LocaleProvider";
-import { useGeneralStore } from "../../../store/general";
-import { useRoomsStore } from "../../../store/rooms";
-import { fetchNui } from "../../../utils/fetchNui";
+import { GenerationFileOptions, GeneralMlo, MloInfo } from "./components";
+import { useLocale } from "@/providers";
+import { useGeneralStore, useRoomsStore } from "@/stores";
+import { fetchNui } from "@/utils";
 
-const General: React.FC = () => {
+export const General: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const [mlo, debug, ao, dat151] = useGeneralStore((state) => [state.mlo, state.enableDebug, state.enableAudioOcclusion, state.enableDat151]);
   const roomList = useRoomsStore((state) => state.roomList);
@@ -37,7 +35,10 @@ const General: React.FC = () => {
 
   return (
     <Stack sx={{ height: "100%" }}>
-      <GeneralMlo />
+      <Stack>
+        <GeneralMlo />
+        <MloInfo />
+      </Stack>
 
       <GenerationFileOptions />
 
@@ -47,5 +48,3 @@ const General: React.FC = () => {
     </Stack>
   );
 };
-
-export default General;

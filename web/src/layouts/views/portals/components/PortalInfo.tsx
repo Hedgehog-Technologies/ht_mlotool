@@ -1,20 +1,18 @@
 import { Alert, Center, Checkbox, Divider, Group, Paper, Space, Table, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
-import EntitySettings from "./EntitySettings";
-import { MemoTooltipSwitch } from "../../../shared/Inputs";
-import { useLocale } from "../../../../providers/LocaleProvider";
-import { useGeneralStore } from "../../../../store/general";
-import { usePortalsStore } from "../../../../store/portals";
-import { useRoomsStore } from "../../../../store/rooms";
-import { PortalDef } from "../../../../types/PortalDef";
-import { fetchNui } from "../../../../utils/fetchNui";
+import { EntitySettings } from "./EntitySettings";
+import { MemoTooltipSwitch } from "@/layouts/shared";
+import { useLocale } from "@/providers";
+import { useGeneralStore, usePortalsStore, useRoomsStore } from "@/stores";
+import { PortalDef } from "@/types";
+import { fetchNui } from "@/utils";
 
 interface Props {
   portal: PortalDef;
   portalIndex: number;
 }
 
-const PortalInfo: React.FC<Props> = (props) => {
+export const PortalInfo: React.FC<Props> = (props) => {
   const locale = useLocale((state) => state.locale);
   const mlo = useGeneralStore((state) => state.mlo);
   const rooms = useRoomsStore((state) => state.roomList);
@@ -112,5 +110,3 @@ const PortalInfo: React.FC<Props> = (props) => {
     </>
   );
 };
-
-export default PortalInfo;

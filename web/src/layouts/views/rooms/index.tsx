@@ -1,9 +1,8 @@
 import { Box } from "@mantine/core";
-import RoomInfo from "./components/RoomInfo";
-import RoomSettings from "./components/RoomSettings";
-import { MemoRoomSelect } from "../../shared/RoomSelect";
+import { RoomInfo, RoomSettings } from "./components";
+import { MemoRoomSelect } from "@/layouts/shared";
 
-const Rooms: React.FC = () => {
+export const Rooms: React.FC = () => {
   return (
     <Box>
       <MemoRoomSelect />
@@ -12,5 +11,3 @@ const Rooms: React.FC = () => {
     </Box>
   )
 };
-
-export default Rooms;

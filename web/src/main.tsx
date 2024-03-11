@@ -2,12 +2,10 @@ import { MantineProvider } from "@mantine/core";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { HashRouter } from "react-router-dom";
-import App from "./App";
-import "./index.css";
-import { customTheme } from "./theme";
-import { debugData } from "./utils/debugData";
-import { fetchNui } from "./utils/fetchNui";
-import { isEnvBrowser } from "./utils/misc";
+import "@/index.css";
+import MLOTool from "@/MLOTool";
+import { customTheme } from "@/theme";
+import { debugData, fetchNui, isEnvBrowser } from "@/utils";
 
 debugData([
   {
@@ -209,7 +207,7 @@ reactRoot.render(
   <React.StrictMode>
     <MantineProvider withNormalizeCSS theme={customTheme}>
       <HashRouter>
-        <App />
+        <MLOTool />
       </HashRouter>
     </MantineProvider>
   </React.StrictMode>

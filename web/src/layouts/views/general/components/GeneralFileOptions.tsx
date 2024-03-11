@@ -1,9 +1,9 @@
-import { Group, Stack, Title } from "@mantine/core"
-import { MemoTooltipCheckbox } from "../../../shared/Inputs";
-import { useLocale } from "../../../../providers/LocaleProvider";
-import { useGeneralStore } from "../../../../store/general";
+import { Group, Stack, Title } from "@mantine/core";
+import { MemoTooltipCheckbox } from "@/layouts/shared";
+import { useLocale } from "@/providers";
+import { useGeneralStore } from "@/stores";
 
-const GenerationFileOptions: React.FC = () => {
+export const GenerationFileOptions: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const [enableAudioOcclusion, enableDat151, enableDebug] = useGeneralStore((state) => [state.enableAudioOcclusion, state.enableDat151, state.enableDebug]);
   const toggleSwitch = useGeneralStore((state) => state.toggleCheck);
@@ -32,7 +32,5 @@ const GenerationFileOptions: React.FC = () => {
         />
       </Group>
     </Stack>
-  )
+  );
 }
-
-export default GenerationFileOptions;

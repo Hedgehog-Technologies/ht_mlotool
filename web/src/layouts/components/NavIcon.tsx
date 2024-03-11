@@ -23,28 +23,38 @@ const useStyles = createStyles((theme, color) => ({
   }
 }));
 
-const NavIcon: React.FC<NavIconProps> = (props) => {
+const NavIcon: React.FC<NavIconProps> = ({
+  Icon,
+  destination,
+  label,
+  labelPosition,
+  openDelay,
+  color,
+  iconSize,
+  variant,
+  onClick
+}) => {
   const { classes } = useStyles();
 
   return (
     <Tooltip
-      label={props.label}
-      openDelay={props.openDelay || 500}
-      position={props.labelPosition ?? "right"}
+      label={label}
+      openDelay={openDelay || 500}
+      position={labelPosition ?? "right"}
       withArrow
       arrowSize={10}
     >
       <ActionIcon
         className={classes.icon}
-        onClick={props.onClick}
+        onClick={onClick}
         size={"md"}
         p={"10%"}
         component={Link}
-        to={props.destination}
-        color={props.color}
-        variant={props.variant}
+        to={destination}
+        color={color}
+        variant={variant}
       >
-        <props.Icon size={props.iconSize ?? 36} />
+        <Icon size={iconSize ?? 36} />
       </ActionIcon>
     </Tooltip>
   );

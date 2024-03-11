@@ -1,9 +1,9 @@
 import { Box, Group, Title } from "@mantine/core";
-import { MemoNumberInput, MemoStringInput } from "../../../shared/Inputs";
-import { useLocale } from "../../../../providers/LocaleProvider";
-import { useRoomsStore } from "../../../../store/rooms";
+import { MemoNumberInput, MemoStringInput } from "@/layouts/shared";
+import { useLocale } from "@/providers";
+import { useRoomsStore } from "@/stores";
 
-const RoomInfo: React.FC = () => {
+export const RoomInfo: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const activeRoom = useRoomsStore((state) => state.activeRoom);
 
@@ -82,5 +82,3 @@ const RoomInfo: React.FC = () => {
     </>
   );
 };
-
-export default RoomInfo;

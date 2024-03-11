@@ -1,11 +1,7 @@
 import { AppShell } from "@mantine/core";
 import { Route, Routes } from "react-router-dom";
-import Nav from "./components/Nav";
-import MloHeader from "./components/MloHeader";
-import General from "./views/general";
-import Portals from "./views/portals";
-import Rooms from "./views/rooms";
-import InteriorRoomParams from "./views/interiorroomparams";
+import { Nav, MloHeader } from "./components";
+import { General, InteriorRoomParams, Portals, Rooms } from "./views";
 
 const MloShell: React.FC = () => {
   return (

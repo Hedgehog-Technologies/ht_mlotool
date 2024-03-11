@@ -1,9 +1,8 @@
 import { Select } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import React from "react";
-import { useLocale } from "../../providers/LocaleProvider";
-import { useVisibility } from "../../providers/VisibilityProvider";
-import { RoomsStoreState, useRoomsStore } from "../../store/rooms";
+import { useLocale, useVisibility } from "@/providers";
+import { RoomsStoreState, useRoomsStore } from "@/stores";
 
 const RoomSelect: React.FC = () => {
   const locale = useLocale((state) => state.locale);

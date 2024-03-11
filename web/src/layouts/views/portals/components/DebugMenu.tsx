@@ -1,12 +1,12 @@
 import { ActionIcon, Menu } from "@mantine/core";
 import { useEffect } from "react";
 import { FaGear } from "react-icons/fa6";
-import { MemoTooltipSwitch } from "../../../shared/Inputs";
-import { useLocale } from "../../../../providers/LocaleProvider";
-import { usePortalsStore } from "../../../../store/portals";
-import { fetchNui } from "../../../../utils/fetchNui";
+import { MemoTooltipSwitch } from "@/layouts/shared";
+import { useLocale } from "@/providers";
+import { usePortalsStore } from "@/stores";
+import { fetchNui } from "@/utils";
 
-const DebugMenu: React.FC = () => {
+export const DebugMenu: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const [enableOutline, enableFill, enableInfo, navigatedPortal] = usePortalsStore((state) => [state.enablePortalOutline, state.enablePortalFill, state.enablePortalInfo, state.navigatedPortal]);
   const toggleSwitch = usePortalsStore((state) => state.toggleSwitch);
@@ -50,5 +50,3 @@ const DebugMenu: React.FC = () => {
     </Menu>
   );
 };
-
-export default DebugMenu;

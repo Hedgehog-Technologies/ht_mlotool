@@ -1,11 +1,11 @@
-import { ActionIcon, Button, Checkbox, Collapse, Grid, Group, NumberInput, Paper, ScrollArea, Stack, Table, Text, TextInput, Title, createStyles, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Button, Collapse, Grid, Group, NumberInput, Paper, ScrollArea, Stack, Table, Text, TextInput, Title, createStyles, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDebouncedState } from "@mantine/hooks";
 import { useMemo, useState } from "react";
 import { FaSort, FaSortDown, FaSortUp, FaTrashCan } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import { MdModeEdit, MdSave } from "react-icons/md";
-import { IRP, useIRPStore } from "../../../store/irp";
+import { IRP, useIRPStore } from "@/stores";
 
 const useStyles = createStyles((theme) => ({
   Table: {
@@ -54,7 +54,7 @@ const useStyles = createStyles((theme) => ({
   }
 }));
 
-const InteriorRoomParams: React.FC = () => {
+export const InteriorRoomParams: React.FC = () => {
   const theme = useMantineTheme();
   const { classes } = useStyles();
   const [searchTerm, setSearchTerm] = useDebouncedState("", 200);
@@ -320,5 +320,3 @@ const InteriorRoomParams: React.FC = () => {
     </Stack>
   );
 }
-
-export default InteriorRoomParams;

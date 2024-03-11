@@ -1,15 +1,12 @@
 import { Alert, Box, Group, ScrollArea, Title } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
-import DebugMenu from "./components/DebugMenu";
-import PortalInfo from "./components/PortalInfo";
-import { MemoRoomSelect } from "../../shared/RoomSelect";
-import { useLocale } from "../../../providers/LocaleProvider";
-import { useGeneralStore } from "../../../store/general";
-import { usePortalsStore } from "../../../store/portals";
-import { useRoomsStore } from "../../../store/rooms";
-import { PortalDef } from "../../../types/PortalDef";
+import { DebugMenu, PortalInfo } from "./components";
+import { MemoRoomSelect } from "@/layouts/shared";
+import { useLocale } from "@/providers";
+import { useGeneralStore, usePortalsStore, useRoomsStore } from "@/stores";
+import { PortalDef } from "@/types";
 
-const Portals: React.FC = () => {
+export const Portals: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const mlo = useGeneralStore((state) => state.mlo);
   const activeRoom = useRoomsStore((state) => state.activeRoom);
@@ -67,5 +64,3 @@ const Portals: React.FC = () => {
     </Box>
   );
 };
-
-export default Portals;

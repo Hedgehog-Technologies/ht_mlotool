@@ -7,9 +7,9 @@ import { GiMagicPortal } from "react-icons/gi";
 import { IoCubeSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 import { MemoNavIcon } from "./NavIcon";
-import { useLocale } from "../../providers/LocaleProvider";
+import { useLocale } from "@/providers";
 
-const Nav: React.FC = () => {
+export const Nav: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const location = useLocation();
   const [generalVariant, setGeneralVariant] = useState<ActionIconVariant>();
@@ -102,5 +102,3 @@ const Nav: React.FC = () => {
     </Navbar>
   );
 };
-
-export default Nav;

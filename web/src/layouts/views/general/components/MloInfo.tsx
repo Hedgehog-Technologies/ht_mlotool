@@ -1,9 +1,9 @@
 import { Box, Group, Stack, Title } from "@mantine/core";
-import { MemoNumberInput, MemoStringInput } from "../../../shared/Inputs";
-import { useLocale } from "../../../../providers/LocaleProvider";
-import { useGeneralStore } from "../../../../store/general";
+import { MemoNumberInput, MemoStringInput } from "@/layouts/shared";
+import { useLocale } from "@/providers";
+import { useGeneralStore } from "@/stores";
 
-const MloInfo: React.FC = () => {
+export const MloInfo: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const mlo = useGeneralStore((state) => state.mlo);
 
@@ -75,5 +75,3 @@ const MloInfo: React.FC = () => {
     </Box>
   );
 };
-
-export default MloInfo;

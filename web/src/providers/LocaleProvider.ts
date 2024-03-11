@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { fetchNui } from '../utils/fetchNui';
+import { fetchNui } from '@/utils';
 
 interface Locale {
   [index: string]: string;

@@ -1,14 +1,12 @@
-import { ActionIcon, Box, Flex, Stack, Title, Tooltip } from "@mantine/core"
-import { useEffect, useState } from "react"
+import { ActionIcon, Box, Flex, Title, Tooltip } from "@mantine/core";
+import { useEffect, useState } from "react";
 import { MdSave } from "react-icons/md";
-import MloInfo from "./MloInfo"
-import { MemoStringInput } from "../../../shared/Inputs"
-import { useLocale } from "../../../../providers/LocaleProvider"
-import { useGeneralStore } from "../../../../store/general"
-import { useRoomsStore } from "../../../../store/rooms";
-import { fetchNui } from "../../../../utils/fetchNui";
+import { MemoStringInput } from "@/layouts/shared";
+import { useLocale } from "@/providers";
+import { useGeneralStore, useRoomsStore } from "@/stores";
+import { fetchNui } from "@/utils";
 
-const GeneralMlo: React.FC = () => {
+export const GeneralMlo: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const mlo = useGeneralStore((state) => state.mlo);
   const roomList = useRoomsStore((state) => state.roomList);
@@ -41,8 +39,8 @@ const GeneralMlo: React.FC = () => {
     fetchNui("ht_mlotool:saveMlo", combinedMLO, "1");
   }
 
-  return(
-    <Stack>
+  return (
+    <>
       <Title order={4}>{locale("ui_general_info")}</Title>
 
       <Box p={5}>
@@ -64,10 +62,6 @@ const GeneralMlo: React.FC = () => {
           </Tooltip>
         </Flex>
       </Box>
-
-      <MloInfo />
-    </Stack>
-  )
+    </>
+  );
 }
-
-export default GeneralMlo;
