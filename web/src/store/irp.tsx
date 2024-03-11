@@ -172,6 +172,7 @@ const defaultParams: IRP[] = [
     unk05: 0.25,
     isDefault: true
   },
+  // DUPES
   {
     name: "hash_2EACAD78",
     unk01: 0.9,

@@ -2,8 +2,9 @@ import { ActionIcon, Button, Checkbox, Collapse, Grid, Group, NumberInput, Paper
 import { useForm } from "@mantine/form";
 import { useDebouncedState } from "@mantine/hooks";
 import { useMemo, useState } from "react";
-import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa6";
+import { FaSort, FaSortDown, FaSortUp, FaTrashCan } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
+import { MdModeEdit, MdSave } from "react-icons/md";
 import { IRP, useIRPStore } from "../../../store/irp";
 
 const useStyles = createStyles((theme) => ({
@@ -105,16 +106,20 @@ const InteriorRoomParams: React.FC = () => {
   }
 
   const checkParam = (param: IRP) => {
-    for (const key in param) {
-      let value = param[key].toString().toLowerCase();
-      let includesIndex = 0;
-
-      if (key === "name" && value.startsWith("hash_")) {
-        includesIndex = 5
-      }
-
-      if (value.includes(searchTerm.toString().toLowerCase(), includesIndex)) {
-        return true;
+    if (editMode) {
+      return !param.isDefault;
+    } else {
+      for (const key in param) {
+        let value = param[key].toString().toLowerCase();
+        let includesIndex = 0;
+  
+        if (key === "name" && value.startsWith("hash_")) {
+          includesIndex = 5
+        }
+  
+        if (value.includes(searchTerm.toString().toLowerCase(), includesIndex)) {
+          return true;
+        }
       }
     }
 
@@ -156,6 +161,9 @@ const InteriorRoomParams: React.FC = () => {
     }
   }
 
+  const [editMode, setEditMode] = useState(false);
+  const [editRow, setEditRow] = useState(-1);
+
   return (
     <Stack h={"71vh"}>
       <Group position={"apart"}>
@@ -189,22 +197,22 @@ const InteriorRoomParams: React.FC = () => {
         <Paper withBorder>
           <Grid p={10}>
             <Grid.Col span={4}>
-              <TextInput label="Name" {...form.getInputProps("name")} />
+              <TextInput label="Name" {...form.getInputProps("name")} size="xs" />
             </Grid.Col>
             <Grid.Col span={4}>
-              <NumberInput label="Unk01" precision={2} step={0.1} {...form.getInputProps("unk01")} />
+              <NumberInput label="Unk01" precision={2} step={0.1} {...form.getInputProps("unk01")} size="xs" />
             </Grid.Col>
             <Grid.Col span={4}>
-              <NumberInput label="Unk02" precision={2} step={0.1} {...form.getInputProps("unk02")} />
+              <NumberInput label="Unk02" precision={2} step={0.1} {...form.getInputProps("unk02")} size="xs" />
             </Grid.Col>
             <Grid.Col span={4}>
-              <NumberInput label="Unk03" {...form.getInputProps("unk03")} />
+              <NumberInput label="Unk03" {...form.getInputProps("unk03")} size="xs" />
             </Grid.Col>
             <Grid.Col span={4}>
-              <NumberInput label="Unk04" {...form.getInputProps("unk04")} />
+              <NumberInput label="Unk04" {...form.getInputProps("unk04")} size="xs" />
             </Grid.Col>
             <Grid.Col span={4}>
-              <NumberInput label="Unk05" precision={2} step={0.1} {...form.getInputProps("unk05")} />
+              <NumberInput label="Unk05" precision={2} step={0.1} {...form.getInputProps("unk05")} size="xs" />
             </Grid.Col>
           </Grid>
           <Group p={10} position="right">
@@ -220,38 +228,38 @@ const InteriorRoomParams: React.FC = () => {
           <Table h={"100%"} fontSize={"xs"} className={classes.Table}>
             <thead className={classes.Header}>
               <tr>
-                <th className={classes.HeaderCell}></th>
-                <th className={classes.HeaderCell} onClick={() => requestSort("name", 0)}>
+                {editMode && <th style={{ width: "12.5%" }} className={classes.HeaderCell} />}
+                <th style={{ width: "20%" }} className={classes.HeaderCell} onClick={() => requestSort("name", 0)}>
                   <Group position={"apart"}>
                     Name
                     {getIcon(0)}
                   </Group>
                 </th>
-                <th className={classes.HeaderCell} onClick={() => requestSort("unk01", 1)}>
+                <th style={{ width: "13.5%" }} className={classes.HeaderCell} onClick={() => requestSort("unk01", 1)}>
                   <Group position={"apart"}>
                     Unk01
                     {getIcon(1)}
                   </Group>
                 </th>
-                <th className={classes.HeaderCell} onClick={() => requestSort("unk02", 2)}>
+                <th style={{ width: "13.5%" }} className={classes.HeaderCell} onClick={() => requestSort("unk02", 2)}>
                   <Group position={"apart"}>
                     Unk02
                     {getIcon(2)}
                   </Group>
                 </th>
-                <th className={classes.HeaderCell} onClick={() => requestSort("unk03", 3)}>
+                <th style={{ width: "13.5%" }} className={classes.HeaderCell} onClick={() => requestSort("unk03", 3)}>
                   <Group position={"apart"}>
                     Unk03
                     {getIcon(3)}
                   </Group>
                 </th>
-                <th className={classes.HeaderCell} onClick={() => requestSort("unk04", 4)}>
+                <th style={{ width: "13.5%" }} className={classes.HeaderCell} onClick={() => requestSort("unk04", 4)}>
                   <Group position={"apart"}>
                     Unk04
                     {getIcon(4)}
                   </Group>
                 </th>
-                <th className={classes.HeaderCell} onClick={() => requestSort("unk05", 5)}>
+                <th style={{ width: "13.5%" }} className={classes.HeaderCell} onClick={() => requestSort("unk05", 5)}>
                   <Group position={"apart"}>
                     Unk05
                     {getIcon(5)}
@@ -261,16 +269,45 @@ const InteriorRoomParams: React.FC = () => {
             </thead>
             <tbody className={classes.Body}>
               {sortedParams
-                .filter((param) => !searchTerm.length || checkParam(param))
+                .filter((param) => (!searchTerm.length && !editMode) || checkParam(param))
                 .map((param, idx) => (
                   <tr key={`irp.${param.name}.${idx}`}>
-                    <td><Checkbox /></td>
-                    <td>{param.name}</td>
-                    <td>{param.unk01}</td>
-                    <td>{param.unk02}</td>
-                    <td>{param.unk03}</td>
-                    <td>{param.unk04}</td>
-                    <td>{param.unk05}</td>
+                    {editMode &&
+                        <td>
+                          {editRow === idx
+                            ? <Group position="center">
+                              <ActionIcon size={15}>
+                                <MdSave />
+                              </ActionIcon>
+
+                              <ActionIcon size={15} onClick={() => setEditRow(-1)}>
+                                <IoClose />
+                              </ActionIcon>
+                            </Group>
+                            : <Group position="center">
+                              <ActionIcon size={15} onClick={() => setEditRow(idx)}>
+                                <MdModeEdit />
+                              </ActionIcon>
+
+                              <ActionIcon size={15}>
+                                <FaTrashCan />
+                              </ActionIcon>
+                            </Group>}
+                        </td>}
+                    {editRow === idx
+                      ? <><td><TextInput value={param.name} size="xs"/></td>
+                      <td><NumberInput value={param.unk01} size="xs"/></td>
+                      <td><NumberInput value={param.unk02} size="xs"/></td>
+                      <td><NumberInput value={param.unk03} size="xs"/></td>
+                      <td><NumberInput value={param.unk04} size="xs"/></td>
+                      <td><NumberInput value={param.unk05} size="xs"/></td></>
+                      : <><td>{param.name}</td>
+                      <td>{param.unk01}</td>
+                      <td>{param.unk02}</td>
+                      <td>{param.unk03}</td>
+                      <td>{param.unk04}</td>
+                      <td>{param.unk05}</td></>
+                    }
                   </tr>
                 ))
               }
@@ -279,7 +316,7 @@ const InteriorRoomParams: React.FC = () => {
         </Paper>
       </ScrollArea>
 
-      <Button>Edit</Button>
+      <Button onClick={() => setEditMode((prev) => { if (prev) setEditRow(-1); return !prev; })}>Edit Mode</Button>
     </Stack>
   );
 }

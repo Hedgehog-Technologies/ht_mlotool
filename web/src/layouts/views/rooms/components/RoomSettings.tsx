@@ -1,9 +1,10 @@
-import { Box, Group, Title } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { Box, Group, Select, Title } from "@mantine/core";
+import { useEffect, useMemo, useState } from "react";
 import { MemoNumberInput, MemoStringInput } from "../../../shared/Inputs";
 import { useLocale } from "../../../../providers/LocaleProvider";
 import { useRoomsStore } from "../../../../store/rooms";
 import { Dat151Fields } from "../../../../types/RoomDef";
+import { useIRPStore } from "../../../../store/irp";
 
 const defaultDat151Fields: Dat151Fields = {
   flags: "0xAAAAAAAA",
@@ -66,6 +67,15 @@ const RoomSettings: React.FC = () => {
 
     setDisabled(activeRoom === null || activeRoom.index === 0);
   }, [activeRoom]);
+
+  const irps = useIRPStore((state) => state.params);
+  
+  useEffect(() => {
+
+    irps.map(val => {
+      
+    });
+  }, [irps]);
 
   return (
     <Box pt={25}>
@@ -191,13 +201,21 @@ const RoomSettings: React.FC = () => {
           icWidth={125}
           disabled={disabled}
         />
-        <MemoStringInput
+        {/* <MemoStringInput
           label={locale("ui_room_dat_unk13")}
           placeholder={locale("ui_blank")}
           value={fieldState.unk13}
           setValue={(value) => setFieldState({ ...fieldState, unk13: value })}
           infoCircle={locale("ui_room_dat_unk13_info")}
           disabled={disabled}
+        /> */}
+        <Select
+          label={locale("ui_room_dat_unk13")}
+          placeholder={locale("ui_blank")}
+          data={irps.map(val => val.name).sort()}
+          searchable
+          allowDeselect
+          clearable
         />
         <MemoStringInput
           label={locale("ui_room_dat_soundset")}
