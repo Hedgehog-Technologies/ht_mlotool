@@ -13,9 +13,11 @@ export interface IRP {
 
 export interface IRPStoreState {
   params: IRP[];
+  createdParams: string[];
 
   // actions
   addParam: (val: IRP) => void;
+  addCreatedParam: (val: string) => void;
 }
 
 const defaultParams: IRP[] = [
@@ -173,38 +175,40 @@ const defaultParams: IRP[] = [
     isDefault: true
   },
   // DUPES
-  {
-    name: "hash_2EACAD78",
-    unk01: 0.9,
-    unk02: 1.0,
-    unk03: 24000,
-    unk04: 35,
-    unk05: 0.8,
-    isDefault: true
-  },
-  {
-    name: "hash_F8B69D6D",
-    unk01: 1.0,
-    unk02: 0.6,
-    unk03: 24000,
-    unk04: 0,
-    unk05: 0.15,
-    isDefault: true
-  },
-  {
-    name: "hash_40ABC5BA",
-    unk01: 0.5,
-    unk02: 0.15,
-    unk03: 8000,
-    unk04: 0,
-    unk05: 0.25,
-    isDefault: true
-  }
+  // {
+  //   name: "hash_2EACAD78",
+  //   unk01: 0.9,
+  //   unk02: 1.0,
+  //   unk03: 24000,
+  //   unk04: 35,
+  //   unk05: 0.8,
+  //   isDefault: true
+  // },
+  // {
+  //   name: "hash_F8B69D6D",
+  //   unk01: 1.0,
+  //   unk02: 0.6,
+  //   unk03: 24000,
+  //   unk04: 0,
+  //   unk05: 0.15,
+  //   isDefault: true
+  // },
+  // {
+  //   name: "hash_40ABC5BA",
+  //   unk01: 0.5,
+  //   unk02: 0.15,
+  //   unk03: 8000,
+  //   unk04: 0,
+  //   unk05: 0.25,
+  //   isDefault: true
+  // }
 ];
 
 export const useIRPStore = create<IRPStoreState>((set) => ({
   params: [...defaultParams],
+  createdParams: [],
 
   // actions
-  addParam: (val) => set((prev) => ({ params: [val, ...prev.params] }))
+  addParam: (val) => set((prev) => ({ params: [val, ...prev.params] })),
+  addCreatedParam: val => set((prev) => ({ createdParams: [val, ...prev.createdParams] }))
 }));

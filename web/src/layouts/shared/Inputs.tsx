@@ -1,11 +1,12 @@
-import { Checkbox, Group, InputVariant, MantineSize, NumberInput, Switch, TextInput, ThemeIcon, Tooltip, createStyles } from "@mantine/core";
-import { getHotkeyHandler } from "@mantine/hooks";
-import React from "react";
+import { Checkbox, createStyles, Group, InputVariant, MantineSize, NumberInput, Select, SelectItem, Switch, TextInput, ThemeIcon, Tooltip } from "@mantine/core";
+import { getHotkeyHandler, useDebouncedValue } from "@mantine/hooks";
+import React, { useEffect, useState } from "react";
 import { BsQuestionCircle } from "react-icons/bs";
 import { useLocale, useVisibility } from "@/providers";
 
 interface InputProps {
   label?: string;
+  placeholder?: string;
   disabled?: boolean;
   inputVariant?: InputVariant
   infoCircle?: string;
@@ -13,7 +14,7 @@ interface InputProps {
   icArrowSize?: number;
   icMultiline?: boolean;
   icWidth?: number;
-  iconSize?: number;
+  icSize?: number;
 };
 
 interface NumberInputProps extends InputProps {
@@ -29,7 +30,6 @@ interface NumberInputProps extends InputProps {
 interface StringInputProps extends InputProps {
   value?: string;
   setValue?: (value: string) => void;
-  placeholder?: string;
   ttDisable?: boolean;
   ttOpenDelay?: number;
 }
@@ -46,6 +46,18 @@ interface TooltipSwitchProps extends InputProps {
   labelPosition?: "left" | "right";
 }
 
+interface TooltipSelectProps extends InputProps {
+  data: ReadonlyArray<string | SelectItem>;
+  value?: string | null;
+  setValue?: (value: string) => void;
+  searchable?: boolean;
+  allowDeselect?: boolean;
+  clearable?: boolean;
+  creatable?: boolean;
+  getCreateLabel?: (query: string) => string;
+  onCreate?: (query: string) => string;
+}
+
 const useInputStyles = createStyles((theme) => ({
   input: {
     "&:disabled, &[data-disabled]": {
@@ -59,18 +71,25 @@ const useInputStyles = createStyles((theme) => ({
 const NumInput: React.FC<NumberInputProps> = (props) => {
   const exitUi = useVisibility((state) => state.exitUI);
   const { classes } = useInputStyles();
+  const [numValue, setNumValue] = useState(props.value ?? -1);
+  const [debouncedNum] = useDebouncedValue(numValue, 200);
   const variant = props.inputVariant ?? props.disabled ? "filled" : "default";
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
 
+  if (props.setValue !== undefined) {
+    useEffect(() => {
+      props.setValue!(debouncedNum);
+    }, [debouncedNum]);
+  }
+
   return(
     <NumberInput
-      value={props.value ?? -1}
+      value={numValue}
       precision={props.precision}
       min={props.min}
       max={props.max}
       step={props.step}
-      // $TECH_DEBT - Revist for debouncing
-      onChange={(value) => { if (props.setValue !== undefined) props.setValue(value)}}
+      onChange={(val) => setNumValue(val ?? -1)}
       label={props.label}
       disabled={props.disabled}
       variant={variant}
@@ -83,9 +102,18 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
             arrowSize={arrowSize}
             multiline={props.icMultiline ?? true}
             width={props.icWidth ?? 200}
+            styles={(theme) => ({
+              tooltip: {
+                border: `1px solid ${theme.colors.dark[3]}`
+              },
+  
+              arrow: {
+                border: `1px solid ${theme.colors.dark[3]}`
+              }
+            })}
           >
             <ThemeIcon color={"violet.6"} variant="outline" mr={10}>
-              <BsQuestionCircle size={props.iconSize ?? 18} />
+              <BsQuestionCircle size={props.icSize ?? 18} />
             </ThemeIcon>
           </Tooltip>
         )
@@ -99,8 +127,16 @@ const StringInput: React.FC<StringInputProps> = (props) => {
   const locale = useLocale((state) => state.locale);
   const exitUi = useVisibility((state) => state.exitUI);
   const { classes } = useInputStyles();
+  const [strValue, setStrValue] = useState(props.value ?? `[${locale("ui_missing_value")}]`);
+  const [debouncedStr] = useDebouncedValue(strValue, 200);
   const variant = props.inputVariant ?? props.disabled ? "filled" : "default";
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
+
+  if (props.setValue !== undefined) {
+    useEffect(() => {
+      props.setValue!(debouncedStr);
+    }, [debouncedStr]);
+  }
 
   return (
     <Tooltip
@@ -110,9 +146,8 @@ const StringInput: React.FC<StringInputProps> = (props) => {
       withinPortal
     >
       <TextInput
-        value={props.value ?? `[${locale("ui_missing_value")}]`}
-        // $TECH_DEBT - Revisit for debouncing?
-        onChange={(e) => { if (props.setValue !== undefined) props.setValue(e.target.value)}}
+        value={strValue}
+        onChange={(e) => { setStrValue(e.target.value)}}
         label={props.label}
         placeholder={props.placeholder}
         disabled={props.disabled}
@@ -126,9 +161,18 @@ const StringInput: React.FC<StringInputProps> = (props) => {
               arrowSize={arrowSize}
               multiline={props.icMultiline ?? true}
               width={props.icWidth ?? 200}
+              styles={(theme) => ({
+                tooltip: {
+                  border: `1px solid ${theme.colors.dark[3]}`
+                },
+    
+                arrow: {
+                  border: `1px solid ${theme.colors.dark[3]}`
+                }
+              })}
             >
               <ThemeIcon color={"violet.6"} variant="outline">
-                <BsQuestionCircle size={props.iconSize ?? 18} />
+                <BsQuestionCircle size={props.icSize ?? 18} />
               </ThemeIcon>
             </Tooltip>
           )
@@ -159,9 +203,18 @@ const TooltipCheckbox: React.FC<TooltipCheckboxProps> = (props) => {
             arrowSize={arrowSize}
             multiline={props.icMultiline ?? true}
             width={props.icWidth ?? 200}
+            styles={(theme) => ({
+              tooltip: {
+                border: `1px solid ${theme.colors.dark[3]}`
+              },
+  
+              arrow: {
+                border: `1px solid ${theme.colors.dark[3]}`
+              }
+            })}
           >
             <ThemeIcon radius="xl" variant="outline" size={16}>
-              <BsQuestionCircle size={props.iconSize ?? 14}/>
+              <BsQuestionCircle size={props.icSize ?? 14}/>
             </ThemeIcon>
           </Tooltip>
         )
@@ -192,9 +245,18 @@ const TooltipSwitch: React.FC<TooltipSwitchProps> = (props) => {
             arrowSize={arrowSize}
             multiline={props.icMultiline ?? true}
             width={props.icWidth ?? 200}
+            styles={(theme) => ({
+              tooltip: {
+                border: `1px solid ${theme.colors.dark[3]}`
+              },
+  
+              arrow: {
+                border: `1px solid ${theme.colors.dark[3]}`
+              }
+            })}
           >
             <ThemeIcon radius="xl" variant="outline" size={16}>
-              <BsQuestionCircle size={props.iconSize ?? 14} />
+              <BsQuestionCircle size={props.icSize ?? 14} />
             </ThemeIcon>
           </Tooltip>
         )
@@ -203,7 +265,52 @@ const TooltipSwitch: React.FC<TooltipSwitchProps> = (props) => {
   );
 }
 
+const TooltipSelect: React.FC<TooltipSelectProps> = (props) => {
+  const exitUi = useVisibility((state) => state.exitUI);
+  const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
+
+  return (
+    <Select
+      label={props.label}
+      placeholder={props.placeholder}
+      data={props.data}
+      value={props.value}
+      onChange={props.setValue}
+      searchable={props.searchable}
+      allowDeselect={props.allowDeselect}
+      clearable={props.clearable}
+      creatable={props.creatable}
+      getCreateLabel={props.getCreateLabel}
+      onCreate={props.onCreate}
+      onKeyDown={getHotkeyHandler([["Escape", exitUi]])}
+      rightSection={props.infoCircle && (
+        <Tooltip
+          label={props.infoCircle}
+          withArrow={props.icArrow ?? true}
+          arrowSize={arrowSize}
+          multiline={props.icMultiline ?? true}
+          width={props.icWidth ?? 200}
+          styles={(theme) => ({
+            tooltip: {
+              border: `1px solid ${theme.colors.dark[3]}`
+            },
+
+            arrow: {
+              border: `1px solid ${theme.colors.dark[3]}`
+            }
+          })}
+        >
+          <ThemeIcon color={"violet.6"} variant="outline">
+            <BsQuestionCircle size={props.icSize ?? 18} />
+          </ThemeIcon>
+        </Tooltip>
+      )}
+    />
+  );
+}
+
 export const MemoNumberInput = React.memo(NumInput);
 export const MemoStringInput = React.memo(StringInput);
 export const MemoTooltipCheckbox = React.memo(TooltipCheckbox);
 export const MemoTooltipSwitch = React.memo(TooltipSwitch);
+export const MemoTooltipSelect = React.memo(TooltipSelect);

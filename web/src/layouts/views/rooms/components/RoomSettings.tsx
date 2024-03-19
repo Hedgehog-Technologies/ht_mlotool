@@ -1,6 +1,6 @@
 import { Box, Group, Select, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { MemoNumberInput, MemoStringInput } from "@/layouts/shared";
+import { MemoNumberInput, MemoStringInput, MemoTooltipSelect } from "@/layouts/shared";
 import { useLocale } from "@/providers";
 import { useIRPStore, useRoomsStore } from "@/stores";
 import { Dat151Fields } from "@/types";
@@ -67,14 +67,15 @@ export const RoomSettings: React.FC = () => {
     setDisabled(activeRoom === null || activeRoom.index === 0);
   }, [activeRoom]);
 
-  const irps = useIRPStore((state) => state.params);
+  const [irps, createdIrps] = useIRPStore((state) => [state.params, state.createdParams]);
+  const [irpData, setIrpData] = useState<string[]>([]);
   
   useEffect(() => {
-
-    irps.map(val => {
-      
-    });
-  }, [irps]);
+    let newData: string[] = [];
+    newData = newData.concat([...createdIrps].sort());
+    newData = newData.concat(irps.map(val => val.name).sort());
+    setIrpData(newData);
+  }, [irps, createdIrps]);
 
   return (
     <Box pt={25}>
@@ -200,21 +201,22 @@ export const RoomSettings: React.FC = () => {
           icWidth={125}
           disabled={disabled}
         />
-        {/* <MemoStringInput
+        <MemoTooltipSelect
           label={locale("ui_room_dat_unk13")}
           placeholder={locale("ui_blank")}
+          infoCircle="Testing"
+          data={irpData}
           value={fieldState.unk13}
-          setValue={(value) => setFieldState({ ...fieldState, unk13: value })}
-          infoCircle={locale("ui_room_dat_unk13_info")}
-          disabled={disabled}
-        /> */}
-        <Select
-          label={locale("ui_room_dat_unk13")}
-          placeholder={locale("ui_blank")}
-          data={irps.map(val => val.name).sort()}
+          setValue={(value) => setFieldState({ ...fieldState, unk13: (value ?? "") })}
           searchable
           allowDeselect
           clearable
+          creatable
+          getCreateLabel={(query) => `Add '${query}'`}
+          onCreate={(query) => {
+            useIRPStore.getState().addCreatedParam(query);
+            return query;
+          }}
         />
         <MemoStringInput
           label={locale("ui_room_dat_soundset")}
