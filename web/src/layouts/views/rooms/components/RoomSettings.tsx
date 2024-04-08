@@ -73,7 +73,11 @@ export const RoomSettings: React.FC = () => {
   useEffect(() => {
     let newData: string[] = [];
     newData = newData.concat([...createdIrps].sort());
-    newData = newData.concat(irps.map(val => val.name).sort());
+    newData = newData.concat([...irps].sort((a,b) => {
+      if (!a.isDefault && b.isDefault) return -1;
+      else if (!b.isDefault && a.isDefault) return 1;
+      else return a.name.localeCompare(b.name);
+    }).map(d => d.name));
     setIrpData(newData);
   }, [irps, createdIrps]);
 

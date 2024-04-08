@@ -157,6 +157,7 @@ export const InteriorRoomParams: React.FC = () => {
         addParam({...formValues, isDefault: false });
         setFormError("");
         form.reset();
+        setAddNew(false);
       }
     }
   }
@@ -218,7 +219,7 @@ export const InteriorRoomParams: React.FC = () => {
           <Group p={10} position="right">
             <Text color={"red"}>{formError}</Text>
             <Button w={"6rem"} onClick={handleSubmit}>Save</Button>
-            <Button w={"6rem"} onClick={() => { form.reset(); setFormError(""); }}>Cancel</Button>
+            <Button w={"6rem"} onClick={() => { form.reset(); setFormError(""); setAddNew(false); }}>Cancel</Button>
           </Group>
         </Paper>
       </Collapse>
@@ -276,20 +277,20 @@ export const InteriorRoomParams: React.FC = () => {
                         <td>
                           {editRow === idx
                             ? <Group position="center">
-                              <ActionIcon size={15}>
+                              <ActionIcon size={18}>
                                 <MdSave />
                               </ActionIcon>
 
-                              <ActionIcon size={15} onClick={() => setEditRow(-1)}>
+                              <ActionIcon size={18} onClick={() => setEditRow(-1)}>
                                 <IoClose />
                               </ActionIcon>
                             </Group>
                             : <Group position="center">
-                              <ActionIcon size={15} onClick={() => setEditRow(idx)}>
+                              <ActionIcon size={18} onClick={() => setEditRow(idx)}>
                                 <MdModeEdit />
                               </ActionIcon>
 
-                              <ActionIcon size={15}>
+                              <ActionIcon size={18}>
                                 <FaTrashCan />
                               </ActionIcon>
                             </Group>}
