@@ -144,6 +144,17 @@ const StringInput: React.FC<StringInputProps> = (props) => {
       disabled={props.ttDisable ?? props.value === ""}
       openDelay={props.ttOpenDelay ?? 750}
       withinPortal
+      withArrow={props.icArrow ?? true}
+      arrowSize={arrowSize}
+      styles={(theme) => ({
+        tooltip: {
+          border: `1px solid ${theme.colors.dark[3]}`
+        },
+
+        arrow: {
+          border: `1px solid ${theme.colors.dark[3]}`
+        }
+      })}
     >
       <TextInput
         value={strValue}

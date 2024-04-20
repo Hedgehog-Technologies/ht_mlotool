@@ -55,7 +55,6 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export const InteriorRoomParams: React.FC = () => {
-  const theme = useMantineTheme();
   const { classes } = useStyles();
   const [searchTerm, setSearchTerm] = useDebouncedState("", 200);
   const [searchValue, setSearchValue] = useState("");
@@ -317,7 +316,7 @@ export const InteriorRoomParams: React.FC = () => {
         </Paper>
       </ScrollArea>
 
-      <Button onClick={() => setEditMode((prev) => { if (prev) setEditRow(-1); return !prev; })}>Edit Mode</Button>
+      <Button onClick={() => setEditMode((prev) => { if (prev) setEditRow(-1); return !prev; })}>Toggle Edit Mode</Button>
     </Stack>
   );
 }
