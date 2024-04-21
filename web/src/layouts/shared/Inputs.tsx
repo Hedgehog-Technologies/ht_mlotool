@@ -102,15 +102,6 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
             arrowSize={arrowSize}
             multiline={props.icMultiline ?? true}
             width={props.icWidth ?? 200}
-            styles={(theme) => ({
-              tooltip: {
-                border: `1px solid ${theme.colors.dark[3]}`
-              },
-  
-              arrow: {
-                border: `1px solid ${theme.colors.dark[3]}`
-              }
-            })}
           >
             <ThemeIcon color={"violet.6"} variant="outline" mr={10}>
               <BsQuestionCircle size={props.icSize ?? 18} />
@@ -146,15 +137,6 @@ const StringInput: React.FC<StringInputProps> = (props) => {
       withinPortal
       withArrow={props.icArrow ?? true}
       arrowSize={arrowSize}
-      styles={(theme) => ({
-        tooltip: {
-          border: `1px solid ${theme.colors.dark[3]}`
-        },
-
-        arrow: {
-          border: `1px solid ${theme.colors.dark[3]}`
-        }
-      })}
     >
       <TextInput
         value={strValue}
@@ -214,15 +196,6 @@ const TooltipCheckbox: React.FC<TooltipCheckboxProps> = (props) => {
             arrowSize={arrowSize}
             multiline={props.icMultiline ?? true}
             width={props.icWidth ?? 200}
-            styles={(theme) => ({
-              tooltip: {
-                border: `1px solid ${theme.colors.dark[3]}`
-              },
-  
-              arrow: {
-                border: `1px solid ${theme.colors.dark[3]}`
-              }
-            })}
           >
             <ThemeIcon radius="xl" variant="outline" size={16}>
               <BsQuestionCircle size={props.icSize ?? 14}/>
@@ -256,15 +229,6 @@ const TooltipSwitch: React.FC<TooltipSwitchProps> = (props) => {
             arrowSize={arrowSize}
             multiline={props.icMultiline ?? true}
             width={props.icWidth ?? 200}
-            styles={(theme) => ({
-              tooltip: {
-                border: `1px solid ${theme.colors.dark[3]}`
-              },
-  
-              arrow: {
-                border: `1px solid ${theme.colors.dark[3]}`
-              }
-            })}
           >
             <ThemeIcon radius="xl" variant="outline" size={16}>
               <BsQuestionCircle size={props.icSize ?? 14} />
@@ -301,15 +265,6 @@ const TooltipSelect: React.FC<TooltipSelectProps> = (props) => {
           arrowSize={arrowSize}
           multiline={props.icMultiline ?? true}
           width={props.icWidth ?? 200}
-          styles={(theme) => ({
-            tooltip: {
-              border: `1px solid ${theme.colors.dark[3]}`
-            },
-
-            arrow: {
-              border: `1px solid ${theme.colors.dark[3]}`
-            }
-          })}
         >
           <ThemeIcon color={"violet.6"} variant="outline">
             <BsQuestionCircle size={props.icSize ?? 18} />

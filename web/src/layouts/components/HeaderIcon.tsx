@@ -19,15 +19,6 @@ const HeaderIcon: React.FC<HeaderProps> = (props) => {
       openDelay={props.openDelay || 500}
       withArrow
       arrowSize={10}
-      styles={(theme) => ({
-        tooltip: {
-          border: `1px solid ${theme.colors.dark[3]}`
-        },
-
-        arrow: {
-          border: `1px solid ${theme.colors.dark[3]}`
-        }
-      })}
     >
       <ActionIcon
         color={props.color}

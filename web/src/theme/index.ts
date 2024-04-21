@@ -41,6 +41,16 @@ export const customTheme: MantineThemeOverride = {
       defaultProps: {
         transition: 'pop',
       },
+
+      styles: (theme, params) => ({
+        tooltip: {
+          border: `1px solid ${theme.colors.dark[3]}`
+        },
+
+        arrow: {
+          border: `1px solid ${theme.colors.dark[3]}`
+        }
+      }),
     },
 
     Input: {

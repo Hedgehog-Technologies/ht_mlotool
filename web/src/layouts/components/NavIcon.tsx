@@ -43,15 +43,6 @@ const NavIcon: React.FC<NavIconProps> = ({
       position={labelPosition ?? "right"}
       withArrow
       arrowSize={10}
-      styles={(theme) => ({
-        tooltip: {
-          border: `1px solid ${theme.colors.dark[3]}`
-        },
-
-        arrow: {
-          border: `1px solid ${theme.colors.dark[3]}`
-        },
-      })}
     >
       <ActionIcon
         className={classes.icon}

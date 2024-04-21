@@ -46,11 +46,6 @@ export const EntitySettings: React.FC<Props> = (props) => {
           label={activeEntity?.modelName ?? ""}
           openDelay={500}
           disabled={activeEntity === undefined}
-          styles={(theme) => ({
-            tooltip: {
-              border: `1px solid ${theme.colors.dark[3]}`
-            }
-          })}
         >
           <Text color={"violet.1"}>{activeEntity?.modelName ?? ""}</Text>
         </Tooltip>
