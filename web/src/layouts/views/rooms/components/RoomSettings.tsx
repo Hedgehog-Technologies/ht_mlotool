@@ -166,7 +166,6 @@ export const RoomSettings: React.FC = () => {
           value={fieldState.unk08}
           setValue={(value) => setFieldState({ ...fieldState, unk08: (value ?? defaultDat151Fields.unk08) })}
           infoCircle={locale("ui_room_dat_unk08_info")}
-          icWidth={100}
           disabled={disabled}
         />
         <MemoNumberInput
@@ -174,7 +173,7 @@ export const RoomSettings: React.FC = () => {
           value={fieldState.unk09}
           setValue={(value) => setFieldState({ ...fieldState, unk09: (value ?? defaultDat151Fields.unk09) })}
           infoCircle={locale("ui_room_dat_unk09_info")}
-          icWidth={100}
+          icWidth={175}
           disabled={disabled}
         />
         <MemoNumberInput
@@ -183,7 +182,6 @@ export const RoomSettings: React.FC = () => {
           setValue={(value) => setFieldState({ ...fieldState, unk10: (value ?? defaultDat151Fields.unk10) })}
           precision={6}
           infoCircle={locale("ui_room_dat_unk10_info")}
-          icWidth={125}
           disabled={disabled}
         />
         <MemoNumberInput
@@ -191,7 +189,6 @@ export const RoomSettings: React.FC = () => {
           value={fieldState.unk11}
           setValue={(value) => setFieldState({ ...fieldState, unk11: (value ?? defaultDat151Fields.unk11) })}
           infoCircle={locale("ui_room_dat_unk11_info")}
-          icWidth={100}
           disabled={disabled}
         />
       </Group>
@@ -202,13 +199,12 @@ export const RoomSettings: React.FC = () => {
           value={fieldState.unk12}
           setValue={(value) => setFieldState({ ...fieldState, unk12: (value ?? defaultDat151Fields.unk12) })}
           infoCircle={locale("ui_room_dat_unk12_info")}
-          icWidth={125}
           disabled={disabled}
         />
         <MemoTooltipSelect
           label={locale("ui_room_dat_unk13")}
           placeholder={locale("ui_blank")}
-          infoCircle="Testing"
+          infoCircle={locale("ui_room_dat_unk13_info")}
           data={irpData}
           value={fieldState.unk13}
           setValue={(value) => setFieldState({ ...fieldState, unk13: (value ?? "") })}

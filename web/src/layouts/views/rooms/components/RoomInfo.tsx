@@ -16,6 +16,7 @@ export const RoomInfo: React.FC = () => {
             label={locale("ui_name")}
             value={activeRoom?.name ?? ""}
             infoCircle={locale("ui_name_info")}
+            icWidth
             ttOpenDelay={300}
             disabled
           />
@@ -23,6 +24,7 @@ export const RoomInfo: React.FC = () => {
             label={locale("ui_occl_name")}
             value={activeRoom?.occlRoomName ?? ""}
             infoCircle={locale("ui_occl_name_info")}
+            icWidth
             ttOpenDelay={300}
             disabled
           />
@@ -33,12 +35,14 @@ export const RoomInfo: React.FC = () => {
             label={locale("ui_room_index")}
             value={activeRoom?.index ?? -1}
             infoCircle={locale("ui_room_index_info")}
+            icWidth
             disabled
           />
           <MemoNumberInput
             label={locale("ui_number_portals")}
             value={activeRoom?.portalCount ?? -1}
             infoCircle={locale("ui_room_number_portals_info")}
+            icWidth
             disabled
           />
         </Group>
@@ -51,12 +55,14 @@ export const RoomInfo: React.FC = () => {
             label={locale("ui_unsigned")}
             value={activeRoom?.uintNameHash ?? -1}
             infoCircle={locale("ui_room_name_hash_info_unsigned")}
+            icWidth
             disabled
           />
           <MemoNumberInput
             label={locale("ui_signed")}
             value={activeRoom?.nameHash ?? -1}
             infoCircle={locale("ui_room_name_hash_info_signed")}
+            icWidth
             disabled
           />
         </Group>
@@ -69,12 +75,14 @@ export const RoomInfo: React.FC = () => {
             label={locale("ui_unsigned")}
             value={activeRoom?.uintRoomKey ?? -1}
             infoCircle={locale("ui_room_key_info_unsigned")}
+            icWidth
             disabled
           />
           <MemoNumberInput
             label={locale("ui_signed")}
             value={activeRoom?.roomKey ?? -1}
             infoCircle={locale("ui_room_key_info_signed")}
+            icWidth
             disabled
           />
         </Group>

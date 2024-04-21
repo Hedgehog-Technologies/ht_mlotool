@@ -52,6 +52,7 @@ export const GeneralMlo: React.FC = () => {
               value={mloSaveName ?? ""}
               setValue={(value: string) => setMLOSaveName(value)}
               infoCircle={locale("ui_save_name_info")}
+              icWidth
             />
           </Box>
 

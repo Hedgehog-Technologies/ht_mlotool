@@ -13,7 +13,7 @@ interface InputProps {
   icArrow?: boolean;
   icArrowSize?: number;
   icMultiline?: boolean;
-  icWidth?: number;
+  icWidth?: number | boolean;
   icSize?: number;
 };
 
@@ -75,6 +75,7 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
   const [debouncedNum] = useDebouncedValue(numValue, 200);
   const variant = props.inputVariant ?? props.disabled ? "filled" : "default";
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
+  const ttWidth = props.icWidth === true ? 200 : typeof(props.icWidth) === "number" ? props.icWidth : undefined;
 
   if (props.setValue !== undefined) {
     useEffect(() => {
@@ -101,7 +102,7 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
             withArrow={props.icArrow ?? true}
             arrowSize={arrowSize}
             multiline={props.icMultiline ?? true}
-            width={props.icWidth ?? 200}
+            width={ttWidth}
           >
             <ThemeIcon color={"violet.6"} variant="outline" mr={10}>
               <BsQuestionCircle size={props.icSize ?? 18} />
@@ -122,6 +123,7 @@ const StringInput: React.FC<StringInputProps> = (props) => {
   const [debouncedStr] = useDebouncedValue(strValue, 200);
   const variant = props.inputVariant ?? props.disabled ? "filled" : "default";
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
+  const ttWidth = props.icWidth === true ? 200 : typeof(props.icWidth) === "number" ? props.icWidth : undefined;
 
   if (props.setValue !== undefined) {
     useEffect(() => {
@@ -153,7 +155,7 @@ const StringInput: React.FC<StringInputProps> = (props) => {
               withArrow={props.icArrow ?? true}
               arrowSize={arrowSize}
               multiline={props.icMultiline ?? true}
-              width={props.icWidth ?? 200}
+              width={ttWidth}
               styles={(theme) => ({
                 tooltip: {
                   border: `1px solid ${theme.colors.dark[3]}`
@@ -179,6 +181,7 @@ const StringInput: React.FC<StringInputProps> = (props) => {
 const TooltipCheckbox: React.FC<TooltipCheckboxProps> = (props) => {
   const exitUi = useVisibility((state) => state.exitUI);
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
+  const ttWidth = props.icWidth === true ? 200 : typeof(props.icWidth) === "number" ? props.icWidth : undefined;
 
   return (
     <Group spacing={8} align="center">
@@ -195,7 +198,7 @@ const TooltipCheckbox: React.FC<TooltipCheckboxProps> = (props) => {
             withArrow={props.icArrow ?? true}
             arrowSize={arrowSize}
             multiline={props.icMultiline ?? true}
-            width={props.icWidth ?? 200}
+            width={ttWidth}
           >
             <ThemeIcon radius="xl" variant="outline" size={16}>
               <BsQuestionCircle size={props.icSize ?? 14}/>
@@ -210,6 +213,7 @@ const TooltipCheckbox: React.FC<TooltipCheckboxProps> = (props) => {
 const TooltipSwitch: React.FC<TooltipSwitchProps> = (props) => {
   const exitUi = useVisibility((state) => state.exitUI);
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
+  const ttWidth = props.icWidth === true ? 200 : typeof(props.icWidth) === "number" ? props.icWidth : undefined;
 
   return (
     <Group spacing={8} align="center" p={5}>
@@ -228,7 +232,7 @@ const TooltipSwitch: React.FC<TooltipSwitchProps> = (props) => {
             withArrow={props.icArrow ?? true}
             arrowSize={arrowSize}
             multiline={props.icMultiline ?? true}
-            width={props.icWidth ?? 200}
+            width={ttWidth}
           >
             <ThemeIcon radius="xl" variant="outline" size={16}>
               <BsQuestionCircle size={props.icSize ?? 14} />
@@ -243,6 +247,7 @@ const TooltipSwitch: React.FC<TooltipSwitchProps> = (props) => {
 const TooltipSelect: React.FC<TooltipSelectProps> = (props) => {
   const exitUi = useVisibility((state) => state.exitUI);
   const arrowSize = props.icArrow !== false ? (props.icArrowSize ?? 10) : undefined;
+  const ttWidth = props.icWidth === true ? 200 : typeof(props.icWidth) === "number" ? props.icWidth : undefined;
 
   return (
     <Select
@@ -264,7 +269,7 @@ const TooltipSelect: React.FC<TooltipSelectProps> = (props) => {
           withArrow={props.icArrow ?? true}
           arrowSize={arrowSize}
           multiline={props.icMultiline ?? true}
-          width={props.icWidth ?? 200}
+          width={ttWidth}
         >
           <ThemeIcon color={"violet.6"} variant="outline">
             <BsQuestionCircle size={props.icSize ?? 18} />

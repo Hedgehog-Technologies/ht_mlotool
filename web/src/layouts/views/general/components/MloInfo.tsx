@@ -15,12 +15,14 @@ export const MloInfo: React.FC = () => {
           label={locale("ui_unsigned")}
           value={mlo?.uintNameHash ?? 0}
           infoCircle={locale("ui_name_hash_info_unsigned")}
+          icWidth
           disabled
         />
         <MemoNumberInput
           label={locale("ui_signed")}
           value={mlo?.nameHash ?? 0}
           infoCircle={locale("ui_name_hash_info_signed")}
+          icWidth
           disabled
         />
       </Group>
@@ -31,12 +33,14 @@ export const MloInfo: React.FC = () => {
           label={locale("ui_unsigned")}
           value={mlo?.uintProxyHash ?? 0}
           infoCircle={locale("ui_proxy_hash_info_signed")}
+          icWidth
           disabled
         />
         <MemoNumberInput
           label={locale("ui_signed")}
           value={mlo?.proxyHash ?? 0}
           infoCircle={locale("ui_proxy_hash_info_unsigned")}
+          icWidth
           disabled
         />
       </Group>
@@ -48,12 +52,14 @@ export const MloInfo: React.FC = () => {
             label={locale("ui_interior_info_id")}
             value={mlo?.interiorId ?? -1}
             infoCircle={locale("ui_interior_info_id_info")}
+            icWidth
             disabled
           />
           <MemoStringInput
             label={locale("ui_interior_info_world_coords")}
             value={mlo?.locationString ? mlo.locationString : "0.0, 0.0, 0.0"}
             infoCircle={locale("ui_interior_info_world_coords_info")}
+            icWidth
             disabled
           />
         </Group>
@@ -62,12 +68,14 @@ export const MloInfo: React.FC = () => {
             label={locale("ui_number_rooms")}
             value={mlo?.rooms.length ?? 0}
             infoCircle={locale("ui_interior_info_number_rooms_info")}
+            icWidth
             disabled
           />
           <MemoNumberInput
             label={locale("ui_number_portals")}
             value={mlo?.portals.length ?? 0}
             infoCircle={locale("ui_interior_info_number_portals_info")}
+            icWidth
             disabled
           />
         </Group>
