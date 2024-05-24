@@ -90,6 +90,7 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
       min={props.min}
       max={props.max}
       step={props.step}
+      hideControls={props.hideControls}
       onChange={(val) => setNumValue(val ?? -1)}
       label={props.label}
       disabled={props.disabled}

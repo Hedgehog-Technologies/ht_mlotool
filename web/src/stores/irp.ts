@@ -11,12 +11,32 @@ export interface IRP {
   [index: string]: string | number | boolean;
 }
 
+export const isEquivalentIRP = (a: IRP, b: IRP) => {
+  return (
+    a.name === b.name &&
+    a.unk01 === b.unk01 &&
+    a.unk02 === b.unk02 &&
+    a.unk03 === b.unk03 &&
+    a.unk04 === b.unk04 &&
+    a.unk05 === b.unk05
+  );
+}
+
 export interface IRPStoreState {
   params: IRP[];
   createdParams: string[];
+  addNew: boolean;
+  searchTerm: string;
+  editMode: boolean;
 
   // actions
+  toggleAddNew: () => void;
+  setAddNew: (val: boolean) => void;
+  setSearchTerm: (val: string) => void;
+  toggleEditMode: () => void;
   addParam: (val: IRP) => void;
+  editParam: (idx: number, val: IRP) => void;
+  removeParam: (idx: number) => void;
   addCreatedParam: (val: string) => void;
 }
 
@@ -207,8 +227,17 @@ const defaultParams: IRP[] = [
 export const useIRPStore = create<IRPStoreState>((set) => ({
   params: [...defaultParams],
   createdParams: [],
+  addNew: false,
+  searchTerm: "",
+  editMode: false,
 
   // actions
+  toggleAddNew: () => set((prev) => ({ addNew: !prev.addNew })),
+  setAddNew: (val) => set({ addNew: val }),
+  setSearchTerm: (val) => set({ searchTerm: val }),
+  toggleEditMode: () => set((prev) => ({ editMode: !prev.editMode })),
   addParam: (val) => set((prev) => ({ params: [val, ...prev.params] })),
-  addCreatedParam: val => set((prev) => ({ createdParams: [val, ...prev.createdParams] }))
+  editParam: (idx, val) => set((prev) => ({ params: [...prev.params.slice(0, idx), val, ...prev.params.slice(idx + 1)] })),
+  removeParam: (idx) => set((prev) => ({ params: [...prev.params.slice(0, idx), ...prev.params.slice(idx + 1)] })),
+  addCreatedParam: (val) => set((prev) => ({ createdParams: [val, ...prev.createdParams] }))
 }));

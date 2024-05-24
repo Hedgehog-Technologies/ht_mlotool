@@ -57,7 +57,7 @@ const defaultLocale: Locale = {
   ui_proxy_hash_info_unsigned: "Proxy Hash represented as an Unsigned Int32",
   ui_room_dat_settings: "Dat151 Settings",
   ui_room_dat_echo: "Echo",
-  ui_room_dat_echo_info: "(ReverbLarge) Set level of echo for the currently selected room. Range 0.0 - 1.0",
+  ui_room_dat_echo_info: "(ReverbLarge) Set level of echo for the currently selected room. Range: 0.0 - 1.0",
   ui_room_dat_flags: "Flags",
   ui_room_dat_flags_info: "Usually left as 0xAAAAAAAA",
   ui_room_dat_reverb: "Reverb",
