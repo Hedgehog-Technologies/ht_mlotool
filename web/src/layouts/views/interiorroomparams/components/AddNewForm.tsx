@@ -1,9 +1,11 @@
 import { Button, Grid, Group, NumberInput, Paper, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
+import { useLocale } from "@/providers";
 import { useIRPStore } from "@/stores";
 
 export const AddNewForm: React.FC = () => {
+  const locale = useLocale((state) => state.locale);
   const [params, addParam] = useIRPStore((state) => [state.params, state.addParam]);
   const setAddNew = useIRPStore((state) => state.setAddNew);
   const [formError, setFormError] = useState("");
@@ -12,8 +14,8 @@ export const AddNewForm: React.FC = () => {
     initialValues: { name: "", unk01: 1.0, unk02: 1.0, unk03: 24000, unk04: 0, unk05: 0.0 },
     validate: {
       name: (value) => {
-        if (!value.length) return "Name too short";
-        if (params.find(val => val.name === value)) return "Name already exists";
+        if (!value.length) return locale("ui_irp_form_error_name_too_short");
+        if (params.find(val => val.name === value)) return locale("ui_irp_form_error_name_exists");
         return null;
       }
     }
@@ -32,7 +34,7 @@ export const AddNewForm: React.FC = () => {
         && val.unk05 === formValues.unk05));
 
       if (found) {
-        setFormError(`"${found.name}" already has these values`);
+        setFormError(locale("ui_irp_form_error_values_exist", [ found.name ]));
       }
       else {
         addParam({ ...formValues, isDefault: false });
@@ -47,22 +49,22 @@ export const AddNewForm: React.FC = () => {
     <Paper withBorder>
       <Grid p ={10}>
         <Grid.Col span={4}>
-          <TextInput label={"Name"} {...form.getInputProps("name")} size="xs" />
+          <TextInput label={locale("ui_irp_form_name")} {...form.getInputProps("name")} size="xs" />
         </Grid.Col>
         <Grid.Col span={4}>
-          <NumberInput label={"Unk01"} precision={2} step={0.1} min={0.0} max={1.0} {...form.getInputProps("unk01")} size="xs" />
+          <NumberInput label={locale("ui_irp_form_unk01")} precision={2} step={0.1} min={0.0} max={1.0} {...form.getInputProps("unk01")} size="xs" />
         </Grid.Col>
         <Grid.Col span={4}>
-          <NumberInput label={"Unk02"} precision={2} step={0.1} min={0.0} max={1.0} {...form.getInputProps("unk02")} size="xs" />
+          <NumberInput label={locale("ui_irp_form_unk02")} precision={2} step={0.1} min={0.0} max={1.0} {...form.getInputProps("unk02")} size="xs" />
         </Grid.Col>
         <Grid.Col span={4}>
-          <NumberInput label={"Unk03"} {...form.getInputProps("unk03")} size="xs" />
+          <NumberInput label={locale("ui_irp_form_unk03")} {...form.getInputProps("unk03")} size="xs" />
         </Grid.Col>
         <Grid.Col span={4}>
-          <NumberInput label={"Unk04"} {...form.getInputProps("unk04")} size="xs" />
+          <NumberInput label={locale("ui_irp_form_unk04")} {...form.getInputProps("unk04")} size="xs" />
         </Grid.Col>
         <Grid.Col span={4}>
-          <NumberInput label={"Unk05"} precision={2} step={0.1} {...form.getInputProps("unk05")} size="xs" />
+          <NumberInput label={locale("ui_irp_form_unk05")} precision={2} step={0.1} {...form.getInputProps("unk05")} size="xs" />
         </Grid.Col>
       </Grid>
 

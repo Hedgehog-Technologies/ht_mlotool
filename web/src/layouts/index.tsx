@@ -1,7 +1,7 @@
 import { AppShell } from "@mantine/core";
 import { Route, Routes } from "react-router-dom";
 import { Nav, MloHeader } from "./components";
-import { General, InteriorRoomParams, Portals, Rooms } from "./views";
+import { General, DoorTuning, InteriorRoomParams, Portals, Rooms } from "./views";
 
 const MloShell: React.FC = () => {
   return (
@@ -16,6 +16,7 @@ const MloShell: React.FC = () => {
         <Route path={"/rooms"} element={<Rooms />} />
         <Route path={"/portals"} element={<Portals />} />
         <Route path={"/interiorroomparams"} element={<InteriorRoomParams />} />
+        <Route path={"/doortuning"} element={<DoorTuning />} />
       </Routes>
     </AppShell>
   );

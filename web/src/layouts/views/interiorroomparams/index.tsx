@@ -1,9 +1,11 @@
 import { Button, Collapse, Stack } from "@mantine/core";
 import { useIRPStore } from "@/stores";
 import { AddNewForm, Header, IRPTable } from "./components";
+import { useLocale } from "@/providers";
 
 
 export const InteriorRoomParams: React.FC = () => {
+  const locale = useLocale((state) => state.locale);
   const addNew = useIRPStore((state) => state.addNew);
   const toggleEditMode = useIRPStore((state) => state.toggleEditMode);
 
@@ -17,7 +19,7 @@ export const InteriorRoomParams: React.FC = () => {
 
       <IRPTable />
 
-      <Button onClick={toggleEditMode}>Toggle Edit Mode</Button>
+      <Button onClick={toggleEditMode}>{locale("ui_irp_toggle_edit_mode")}</Button>
     </Stack>
   );
 }

@@ -2,9 +2,11 @@ import { ActionIcon, Button, Group, TextInput, Title } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
+import { useLocale } from "@/providers";
 import { useIRPStore } from "@/stores";
 
 export const Header: React.FC = () => {
+  const locale = useLocale((state) => state.locale);
   const [searchValue, setSearchValue] = useState("");
   const toggleAddNew = useIRPStore((state) => state.toggleAddNew);
 
@@ -17,13 +19,13 @@ export const Header: React.FC = () => {
 
   return (
     <Group position={"apart"}>
-      <Title order={4}>Interior Room Params</Title>
+      <Title order={4}>{locale("ui_irp_header_title")}</Title>
       
       <Group>
-        <Button onClick={toggleAddNew}>Add New...</Button>
+        <Button onClick={toggleAddNew}>{locale("ui_irp_header_add_new")}</Button>
 
         <TextInput
-          placeholder={"Search..."}
+          placeholder={locale("ui_irp_header_search_placeholder")}
           value={searchValue}
           onChange={(e) => {
             setSearchValue(e.currentTarget.value);

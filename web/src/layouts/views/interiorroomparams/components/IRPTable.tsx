@@ -5,6 +5,7 @@ import { IRP, isEquivalentIRP, useIRPStore } from "@/stores";
 import { MdModeEdit, MdSave } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { MemoNumberInput, MemoStringInput } from "@/layouts/shared";
+import { useLocale } from "@/providers";
 
 const useStyles = createStyles((theme) => ({
   Table: {
@@ -56,6 +57,7 @@ const useStyles = createStyles((theme) => ({
 export const IRPTable: React.FC = () => {
   const theme = useMantineTheme();
   const { classes } = useStyles();
+  const locale = useLocale((state) => state.locale);
   const editMode = useIRPStore((state) => state.editMode);
   const params = useIRPStore((state) => state.params);
   const searchTerm = useIRPStore((state) => state.searchTerm);
@@ -100,13 +102,13 @@ export const IRPTable: React.FC = () => {
     else {
       for (const key in param) {
         let value = param[key].toString().toLowerCase();
-        let includesIndex = 0;
+        let includesStartIndex = 0;
 
         if (key === "name" && value.startsWith("hash_")) {
-          includesIndex = 5;
+          includesStartIndex = 5;
         }
 
-        if (value.includes(searchTerm.toString().toLowerCase(), includesIndex)) {
+        if (value.includes(searchTerm.toString().toLowerCase(), includesStartIndex)) {
           return true;
         }
       }
@@ -189,17 +191,17 @@ export const IRPTable: React.FC = () => {
         <Modal
           opened={confirmDeleteOpen}
           onClose={closeConfirmDelete}
-          title="Confirm Delete"
+          title={locale("ui_irp_table_confirm_delete_title")}
         >
           <Stack>
             <Text>Are you sure that you want to delete parameter with name:</Text>
             <Text fw={700}>{toBeDeletedRow.name}</Text>
             <Group position={"right"} spacing={10}>
               <Button uppercase variant={"default"} onClick={closeConfirmDelete} mr={3}>
-                Cancel
+                {locale("ui_irp_table_confirm_delete_cancel")}
               </Button>
               <Button uppercase variant={"light"} color={theme.primaryColor} onClick={deleteRow}>
-                Confirm
+                {locale("ui_irp_table_confirm_delete_confirm")}
               </Button>
             </Group>
           </Stack>
@@ -211,78 +213,78 @@ export const IRPTable: React.FC = () => {
               {editMode && <th style={{ width: "12.5%" }} className={classes.HeaderCell} />}
                 <th style={{ width: "20%" }} className={classes.HeaderCell} onClick={() => requestSort("name", 0)}>
                   <Tooltip
-                    label={"Name of the configuration"}
+                    label={locale("ui_irp_table_header_name_tooltip")}
                     withArrow
                     arrowSize={10}
                     openDelay={500}
                   >
                     <Group position={"apart"}>
-                      Name
+                      {locale("ui_irp_table_header_name")}
                       {getIcon(0)}
                     </Group>
                   </Tooltip>
                 </th>
               <th style={{ width: "13.5%" }} className={classes.HeaderCell} onClick={() => requestSort("unk01", 1)}>
                 <Tooltip
-                  label={"(Wetness) How processed audio will be. Range: 0.0 - 1.0"}
+                  label={locale("ui_irp_table_header_unk01_tooltip")}
                   withArrow
                   arrowSize={10}
                   openDelay={500}
                 >
                   <Group position={"apart"}>
-                    Unk01
+                    {locale("ui_irp_table_header_unk01")}
                     {getIcon(1)}
                   </Group>
                 </Tooltip>
               </th>
               <th style={{ width: "13.5%" }} className={classes.HeaderCell} onClick={() => requestSort("unk02", 2)}>
                 <Tooltip
-                  label={"(Visibility) Volume level of audio. Range: 0.0 - 1.0"}
+                  label={locale("ui_irp_table_header_unk02_tooltip")}
                   withArrow
                   arrowSize={10}
                   openDelay={500}
                 >
                   <Group position={"apart"}>
-                    Unk02
+                    {locale("ui_irp_table_header_unk02")}
                     {getIcon(2)}
                   </Group>
                 </Tooltip>
               </th>
               <th style={{ width: "13.5%" }} className={classes.HeaderCell} onClick={() => requestSort("unk03", 3)}>
                 <Tooltip
-                  label={"(LowPassFilter) Filter to remove high-frequency sounds."}
+                  label={locale("ui_irp_table_header_unk03_tooltip")}
                   withArrow
                   arrowSize={10}
                   openDelay={500}
                 >
                   <Group position={"apart"}>
-                    Unk03
+                    {locale("ui_irp_table_header_unk03")}
                     {getIcon(3)}
                   </Group>
                 </Tooltip>
               </th>
               <th style={{ width: "13.5%" }} className={classes.HeaderCell} onClick={() => requestSort("unk04", 4)}>
                 <Tooltip
-                  label={"(PreDelay) Time between end of initial sound and beginning of first reflection."}
+                  label={locale("ui_irp_table_header_unk04_tooltip")}
                   withArrow
                   arrowSize={10}
                   openDelay={500}
                 >
                   <Group position={"apart"}>
-                    Unk04
+                    {locale("ui_irp_table_header_unk04")}
                     {getIcon(4)}
                   </Group>
                 </Tooltip>
               </th>
               <th style={{ width: "13.5%" }} className={classes.HeaderCell} onClick={() => requestSort("unk05", 5)}>
                 <Tooltip
-                  label={"(Hold) How long to keep sound effect around once audio is finished."}
+                  label={locale("ui_irp_table_header_unk05_tooltip")}
                   withArrow
                   arrowSize={10}
                   openDelay={500}
                 >
                   <Group position={"apart"}>
-                    Unk05
+                    {locale("ui_irp_table_header_unk05")}
                     {getIcon(5)}
                   </Group>
                 </Tooltip>
