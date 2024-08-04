@@ -32,9 +32,9 @@ jobs:
           echo "DATE=$(date + '%D')" >> $GITHUB_OUTPUT
 
       - name: Setup node
-        uses: actions/setup-node@v4.0.1
+        uses: actions/setup-node@v4.0.3
         with:
-          node-version: 16.x
+          node-version: 20.11.1
           cache: 'pnpm'
           cache-dependency-path: 'web/pnpm-lock.yaml'
 
