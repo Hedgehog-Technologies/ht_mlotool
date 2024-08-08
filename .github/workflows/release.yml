@@ -21,9 +21,9 @@ jobs:
           ref: ${{ github.event.repository.default_branch }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.4.0
+        uses: pnpm/action-setup@v4
         with:
-          version: 8.15.4
+          version: 9.4.0
 
       - name: Get variables
         id: get_vars
@@ -32,9 +32,9 @@ jobs:
           echo "DATE=$(date + '%D')" >> $GITHUB_OUTPUT
 
       - name: Setup node
-        uses: actions/setup-node@v4.0.1
+        uses: actions/setup-node@v4.0.3
         with:
-          node-version: 16.x
+          node-version: 20.11.1
           cache: 'pnpm'
           cache-dependency-path: 'web/pnpm-lock.yaml'
 
