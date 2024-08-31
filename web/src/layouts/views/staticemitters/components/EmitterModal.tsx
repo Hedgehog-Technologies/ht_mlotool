@@ -2,7 +2,7 @@ import { ActionIcon, Button, Divider, Group, InputBase, Modal, NumberInput, Pape
 import { useForm } from "@mantine/form";
 import { useEffect } from "react";
 import { LuLocate } from "react-icons/lu";
-import { DefaultStaticEmitter, useEmitterStore } from "@/stores";
+import { DefaultStaticEmitter, StaticEmitter, useEmitterStore } from "@/stores";
 
 interface Props {
   opened: boolean;
@@ -11,6 +11,7 @@ interface Props {
 
 export const EmitterModal: React.FC<Props> = (props) => {
   const modalIndex = useEmitterStore((state) => state.modalIndex);
+  const addEmitter = useEmitterStore((state) => state.addEmitter);
   let title = "Create New Emitter";
 
   const form = useForm({
@@ -30,6 +31,12 @@ export const EmitterModal: React.FC<Props> = (props) => {
     }
   }, [modalIndex]);
 
+  const handleSubmit = form.onSubmit((values) => {
+    addEmitter(values);
+    form.reset();
+    props.setOpened(false);
+  });
+
   return (
     <Modal
       opened={props.opened}
@@ -44,7 +51,7 @@ export const EmitterModal: React.FC<Props> = (props) => {
       size={"40%"}
     >
       <Paper p={"md"}>
-        <form>
+        <form onSubmit={handleSubmit}>
           <Group mt={"md"} grow>
             <TextInput label={"Name"} {...form.getInputProps("name")} />
             <TextInput label={"Flags"} {...form.getInputProps("flags")} />
@@ -110,7 +117,7 @@ export const EmitterModal: React.FC<Props> = (props) => {
           </Group>
 
           <Group mt={"lg"} position="right">
-            <Button onClick={() => console.log("cancel!")} color={"gray.7"}>Cancel</Button>
+            <Button onClick={() => { console.log("cancel!"); props.setOpened(false) }} color={"gray.7"}>Cancel</Button>
             <Button onClick={() => console.log("submit!")} type={"submit"}>Submit</Button>
           </Group>
         </form>

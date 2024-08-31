@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { Vector3 } from "@/types";
 
 export interface StaticEmitter {
   // <Name>hash_B217FE2C</Name>
@@ -89,15 +88,19 @@ export const DefaultStaticEmitter: StaticEmitter = {
 };
 
 export interface EmitterStoreState {
+  emitters: StaticEmitter[];
   modalIndex: number;
 
   // actions
+  addEmitter: (newEmitter: StaticEmitter) => void;
   setModalIndex: (val: number) => void;
 };
 
 export const useEmitterStore = create<EmitterStoreState>((set, get) => ({
+  emitters: [],
   modalIndex: -1,
 
   // actions
+  addEmitter: (newEmitter) => set((prev) => ({ emitters: [...prev.emitters, newEmitter] })),
   setModalIndex: (val) => set({ modalIndex: val })
 }));

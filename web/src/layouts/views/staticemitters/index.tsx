@@ -1,17 +1,37 @@
 import { ActionIcon, Button, Group, Stack, Table, Title } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaTrashCan } from "react-icons/fa6";
 import { MdModeEdit } from "react-icons/md";
 import { EmitterModal } from "./components";
-import { useSharedStore } from "@/stores/shared";
+import { useSharedStore, useEmitterStore } from "@/stores";
 
 export const StaticEmitters: React.FC = () => {
   const setIgnoreEscape = useSharedStore((state) => state.setIgnoreEscape);
+  const emitters = useEmitterStore((state) => state.emitters);
   const [modalOpened, setModalOpened] = useState(false);
 
   useEffect(() => {
     setIgnoreEscape(modalOpened);
   }, [modalOpened]);
+
+  const sortedEmitters = useMemo(() => {
+    let sortableEmitters = [...emitters];
+
+    sortableEmitters.sort((a, b) => {
+      if (a.name < b.name)
+      {
+        return -1;
+      }
+      else if (a.name > b.name)
+      {
+        return 1;
+      }
+
+      return 0;
+    });
+
+    return sortableEmitters;
+  }, [emitters]);
 
   return (
     <>
@@ -32,7 +52,12 @@ export const StaticEmitters: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            {sortedEmitters.map((emitter, idx) => (
+              <tr key={`emitter.${emitter.name}.${idx}`}>
+                
+              </tr>
+            ))}
+            {/* <tr>
               <td>{"Fake Emitter 1"}</td>
               <td>{"-1, -1, -1"}</td>
               <td align="center">
@@ -46,7 +71,7 @@ export const StaticEmitters: React.FC = () => {
                   </ActionIcon>
                 </Group>
               </td>
-            </tr>
+            </tr> */}
           </tbody>
         </Table>
       </Stack>
