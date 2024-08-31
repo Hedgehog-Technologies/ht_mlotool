@@ -49,18 +49,23 @@ export const Portals: React.FC = () => {
   }, [activeRoom]);
 
   return (
-    <Box h={"60vh"}>
+    <Box mah={"100%"}>
       <MemoRoomSelect />
       <Group position="apart" pt={20}>
         <Title order={4}>{locale("ui_portal_info")}</Title>
         <DebugMenu />
       </Group>
 
-      <ScrollArea h={"100%"} pt={5} onScrollPositionChange={setScrollState} viewportRef={viewport}>
+      <ScrollArea.Autosize
+        maxHeight={"62vh"}
+        pt={5}
+        onScrollPositionChange={setScrollState}
+        viewportRef={viewport}
+      >
         {activeRoom?.portalCount
           && filteredRooms?.map((portal) => <PortalInfo key={portal.mloPortalIndex} portal={portal} portalIndex={portal.mloPortalIndex} />)
           || <Alert>{locale("ui_portal_alert")}</Alert>}
-      </ScrollArea>
+      </ScrollArea.Autosize>
     </Box>
   );
 };

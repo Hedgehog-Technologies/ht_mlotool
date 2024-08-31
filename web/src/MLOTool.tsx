@@ -13,19 +13,19 @@ import { useSharedStore } from "./stores/shared";
 
 const useStyles = createStyles((theme) => ({
   container: {
-    width: "100%",
-    height: "100%",
+    width: "100vw",
+    height: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
 
   wrapper: {
-    width: "37.5%",
-    height: "90vh",
+    width: "37.5vw",
+    height: "80vh",
     position: "absolute",
-    top: "2%",
-    left: "2%",
+    top: "2vh",
+    left: "2vw",
     color: theme.colors.dark[0]
   }
 }));

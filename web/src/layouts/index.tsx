@@ -1,10 +1,7 @@
-import { AppShell } from "@mantine/core";
+import { AppShell, Box, Paper, ScrollArea } from "@mantine/core";
 import { Route, Routes } from "react-router-dom";
 import { Nav, MloHeader } from "./components";
 import { General, DoorTuning, InteriorRoomParams, Portals, Rooms, StaticEmitters } from "./views";
-import { useFocusWithin } from "@mantine/hooks";
-import { useEffect } from "react";
-import { useGeneralStore } from "@/stores";
 
 const MloShell: React.FC = () => {
   return (
@@ -13,6 +10,11 @@ const MloShell: React.FC = () => {
       fixed={false}
       navbar={<Nav />}
       header={<MloHeader />}
+      styles={{
+        main: {
+          height: "75vh"
+        }
+      }}
     >
       <Routes>
         <Route path={"/"} element={<General />} />

@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Group, Stack, Table, Title } from "@mantine/core";
+import { ActionIcon, Button, Group, Paper, ScrollArea, Stack, Table, Title } from "@mantine/core";
 import { useEffect, useMemo, useState } from "react";
 import { FaTrashCan } from "react-icons/fa6";
 import { MdModeEdit } from "react-icons/md";
@@ -43,37 +43,38 @@ export const StaticEmitters: React.FC = () => {
           <Button onClick={() => setModalOpened(true)}>{"Add New"}</Button>
         </Group>
 
-        <Table striped highlightOnHover withBorder withColumnBorders>
-          <thead>
-            <tr>
-              <th>{"Name"}</th>
-              <th>{"Location"}</th>
-              <th style={{ width: "15%"}} />
-            </tr>
-          </thead>
-          <tbody>
-            {sortedEmitters.map((emitter, idx) => (
-              <tr key={`emitter.${emitter.name}.${idx}`}>
-                
-              </tr>
-            ))}
-            {/* <tr>
-              <td>{"Fake Emitter 1"}</td>
-              <td>{"-1, -1, -1"}</td>
-              <td align="center">
-                <Group position="center" align="center">
-                  <ActionIcon size={18} onClick={() => console.log("edit")}>
-                    <MdModeEdit />
-                  </ActionIcon>
+        <ScrollArea.Autosize maxHeight={"67vh"} type={"auto"}>
+          <Paper>
+            <Table striped highlightOnHover withBorder withColumnBorders>
+              <thead>
+                <tr>
+                  <th>{"Name"}</th>
+                  <th>{"Location"}</th>
+                  <th style={{ width: "15%"}} />
+                </tr>
+              </thead>
+              <tbody>
+                {sortedEmitters.map((emitter, idx) => (
+                  <tr key={`emitter.${emitter.name}.${idx}`}>
+                    <td>{emitter.name}</td>
+                    <td>{emitter.position}</td>
+                    <td align={"center"}>
+                      <Group position={"center"}>
+                        <ActionIcon size={18} onClick={() => console.log("edit")}>
+                          <MdModeEdit />
+                        </ActionIcon>
 
-                  <ActionIcon size={18} onClick={() => console.log("delete")}>
-                    <FaTrashCan />
-                  </ActionIcon>
-                </Group>
-              </td>
-            </tr> */}
-          </tbody>
-        </Table>
+                        <ActionIcon size={18} onClick={() => console.log("delete")}>
+                          <FaTrashCan />
+                        </ActionIcon>
+                      </Group>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Paper>
+        </ScrollArea.Autosize>
       </Stack>
     </>
   );
