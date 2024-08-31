@@ -8,6 +8,8 @@ import { usePortalsStore } from "@/stores/portals";
 import { useRoomsStore } from "@/stores/rooms";
 import { MLODef } from "@/types/MLODef";
 import { RoomDef } from "@/types/RoomDef";
+import { useEmitterStore } from "./stores";
+import { useSharedStore } from "./stores/shared";
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -30,6 +32,7 @@ const useStyles = createStyles((theme) => ({
 
 const MLOTool: React.FC = () => {
   const { classes } = useStyles();
+  const ignoreEscape = useSharedStore((state) => state.ignoreEscape);
   const [visible, setVisible, exitUI] = useVisibility((state) => [state.visible, state.setVisible, state.exitUI]);
 
   useNuiEvent("ht_mlotool:openMLO", (data) => {
@@ -51,8 +54,14 @@ const MLOTool: React.FC = () => {
   useNuiEvent("ht_mlotool:cancelNavigation", () => setNavigatedPortal(null));
   useNuiEvent('ht_mlotool:cancelEntityDebug', resetDebugEntities);
 
+  const tryExitUI = () => {
+    if (!ignoreEscape) {
+      exitUI();
+    }
+  }
+
   useHotkeys([
-    ["Escape", exitUI]
+    ["Escape", tryExitUI]
   ]);
 
   return (

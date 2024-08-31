@@ -13,6 +13,7 @@ export interface GeneralStoreState {
 };
 
 export const useGeneralStore = create<GeneralStoreState>((set, get) => ({
+  appShellFocused: false,
   mlo: null,
   enableAudioOcclusion: true,
   enableDat151: true,

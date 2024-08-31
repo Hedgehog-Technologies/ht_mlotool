@@ -4,6 +4,7 @@ import { AiFillHome } from "react-icons/ai";
 import { FaDoorOpen } from "react-icons/fa";
 import { FaGun } from "react-icons/fa6";
 import { GiMagicPortal } from "react-icons/gi";
+import { HiSpeakerWave } from "react-icons/hi2";
 import { IoCubeSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 import { MemoNavIcon } from "./NavIcon";
@@ -15,6 +16,7 @@ export const Nav: React.FC = () => {
   const [generalVariant, setGeneralVariant] = useState<ActionIconVariant>();
   const [roomsVariant, setRoomsVariant] = useState<ActionIconVariant>();
   const [portalsVariant, setPortalsVariant] = useState<ActionIconVariant>();
+  const [staticEmitterVariant, setStaticEmitterVariant] = useState<ActionIconVariant>();
   const [doorTuningVariant, setDoorTuningVariant] = useState<ActionIconVariant>();
   const [irpVariant, setIRPVariant] = useState<ActionIconVariant>();
 
@@ -23,6 +25,7 @@ export const Nav: React.FC = () => {
     setGeneralVariant(undefined);
     setRoomsVariant(undefined);
     setPortalsVariant(undefined);
+    setStaticEmitterVariant(undefined);
     setDoorTuningVariant(undefined);
     setIRPVariant(undefined);
 
@@ -34,6 +37,10 @@ export const Nav: React.FC = () => {
     }
     else if (path === "/portals") {
       setPortalsVariant("filled");
+    }
+    else if (path === "/staticemitters")
+    {
+      setStaticEmitterVariant("filled");
     }
     else if (path === "/doortuning") {
       setDoorTuningVariant("filled");
@@ -83,6 +90,15 @@ export const Nav: React.FC = () => {
       <Navbar.Section pt={10}>
         <Stack justify="center" align="center" spacing={5}>
           <MemoNavIcon
+            label={"Static Emitters"}
+            destination={"/staticemitters"}
+            Icon={HiSpeakerWave}
+            color={"violet.6"}
+            variant={staticEmitterVariant}
+          />
+
+          {/* TODO: Re-enable for future weapon occlusion / door tuning features */}
+          {/* <MemoNavIcon
             label={"Interior Room Weapon Audio Tuning"}
             destination={"/interiorroomparams"}
             Icon={FaGun}
@@ -96,7 +112,7 @@ export const Nav: React.FC = () => {
             Icon={FaDoorOpen}
             color={"violet.6"}
             variant={doorTuningVariant}
-          />
+          /> */}
         </Stack>
       </Navbar.Section>
     </Navbar>

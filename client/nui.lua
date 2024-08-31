@@ -69,6 +69,21 @@ RegisterNUICallback('ht_mlotool:freeMove', function(enabled, cb)
     SetNuiFocusKeepInput(enabled)
 end)
 
+RegisterNUICallback('ht_mlotool:setEmitterPosition', function(data, cb)
+    cb({})
+    SetNuiFocus(false, false)
+
+    lib.requestModel(`prop_poolball_cue`)
+
+    local emitterBall = CreateObject(`prop_poolball_cue`, data.position.x, data.position.y, data.position.z, false, true, false)
+    SetModelAsNoLongerNeeded(`prop_poolball_cue`)
+
+    local result = UseGizmo(emitterBall)
+    DeleteObject(emitterBall)
+
+    SendReactMessage('ht_mlotool:returnEmitterPosition', { position = result.position })
+end)
+
 --- A simple wrapper around SendNUIMessage that you can use to
 --- dispatch actions to the React frame.
 ---
