@@ -73,14 +73,19 @@ RegisterNUICallback('ht_mlotool:setEmitterPosition', function(data, cb)
     cb({})
     SetNuiFocus(false, false)
 
+    local pos = data.position or GetEntityCoords(cache.ped)
+
     lib.requestModel(`prop_poolball_cue`)
 
-    local emitterBall = CreateObject(`prop_poolball_cue`, data.position.x, data.position.y, data.position.z, false, true, false)
+    local emitterBall = CreateObject(`prop_poolball_cue`, pos.x, pos.y, pos.z, false, true, false)
     SetModelAsNoLongerNeeded(`prop_poolball_cue`)
+    FreezeEntityPosition(emitterBall, true)
+    SetEntityCollision(emitterBall, false, false);
 
     local result = UseGizmo(emitterBall)
     DeleteObject(emitterBall)
 
+    SetNuiFocus(true, true)
     SendReactMessage('ht_mlotool:returnEmitterPosition', { position = result.position })
 end)
 

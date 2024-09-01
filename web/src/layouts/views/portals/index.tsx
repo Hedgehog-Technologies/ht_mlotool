@@ -56,8 +56,8 @@ export const Portals: React.FC = () => {
         <DebugMenu />
       </Group>
 
-      <ScrollArea.Autosize
-        maxHeight={"62vh"}
+      <ScrollArea
+        style={{ height: "62vh" }}
         pt={5}
         onScrollPositionChange={setScrollState}
         viewportRef={viewport}
@@ -65,7 +65,7 @@ export const Portals: React.FC = () => {
         {activeRoom?.portalCount
           && filteredRooms?.map((portal) => <PortalInfo key={portal.mloPortalIndex} portal={portal} portalIndex={portal.mloPortalIndex} />)
           || <Alert>{locale("ui_portal_alert")}</Alert>}
-      </ScrollArea.Autosize>
+      </ScrollArea>
     </Box>
   );
 };

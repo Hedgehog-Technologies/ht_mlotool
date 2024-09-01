@@ -18,12 +18,10 @@ export const StaticEmitters: React.FC = () => {
     let sortableEmitters = [...emitters];
 
     sortableEmitters.sort((a, b) => {
-      if (a.name < b.name)
-      {
+      if (a.name < b.name) {
         return -1;
       }
-      else if (a.name > b.name)
-      {
+      else if (a.name > b.name) {
         return 1;
       }
 
@@ -43,7 +41,7 @@ export const StaticEmitters: React.FC = () => {
           <Button onClick={() => setModalOpened(true)}>{"Add New"}</Button>
         </Group>
 
-        <ScrollArea.Autosize maxHeight={"67vh"} type={"auto"}>
+        <ScrollArea style={{ height: "67vh" }}>
           <Paper>
             <Table striped highlightOnHover withBorder withColumnBorders>
               <thead>
@@ -74,7 +72,7 @@ export const StaticEmitters: React.FC = () => {
               </tbody>
             </Table>
           </Paper>
-        </ScrollArea.Autosize>
+        </ScrollArea>
       </Stack>
     </>
   );

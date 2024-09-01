@@ -2,14 +2,18 @@ import { AppShell, Box, Paper, ScrollArea } from "@mantine/core";
 import { Route, Routes } from "react-router-dom";
 import { Nav, MloHeader } from "./components";
 import { General, DoorTuning, InteriorRoomParams, Portals, Rooms, StaticEmitters } from "./views";
+import { useSharedStore } from "@/stores";
 
 const MloShell: React.FC = () => {
+  const opacity = useSharedStore((state) => state.opacity);
+
   return (
     <AppShell
       padding="md"
       fixed={false}
       navbar={<Nav />}
       header={<MloHeader />}
+      style = {{ opacity: opacity }}
       styles={{
         main: {
           height: "75vh"

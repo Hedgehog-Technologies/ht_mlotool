@@ -2,7 +2,7 @@
 -- Andyyy7666: https://github.com/overextended/ox_lib/pull/453
 -- AvarianKnight: https://forum.cfx.re/t/allow-drawgizmo-to-be-used-outside-of-fxdk/5091845/8?u=demi-automatic
 
-local dataview = require 'client.dataview'
+local dataview = require 'client.gizmo.dataview'
 
 local enableScale = false -- allow scaling mode. doesnt scale collisions and resets when physics are applied it seems
 
@@ -84,7 +84,7 @@ local function gizmoLoop(entity)
         Wait(0)
 
         local coords = GetEntityCoords(entity)
-        DrawSphere(coords.x, coords.y, coords.z, 0.5, 255, 255, 0, 0.2)
+        DrawSphere(coords.x, coords.y, coords.z, 0.5, 255, 255, 0, 0.33)
 
         DisableControlAction(0, 24, true)  -- lmb
         DisableControlAction(0, 25, true)  -- rmb
@@ -126,6 +126,7 @@ local function textUILoop()
                 '[ENTER] - Done Editing  \n'
             )
         end
+
         lib.hideTextUI()
     end)
 end
@@ -148,6 +149,21 @@ end
 -- exports("useGizmo", useGizmo)
 
 -- CONTROLS these execute the existing gizmo commands but allow me to add additional logic to update the mode display.
+
+lib.addKeybind({
+    name = 'ht_mlotool_gizmofreelook',
+    description = 'Allows normal camera movement',
+    defaultMapper = 'MOUSE_BUTTON',
+    defaultKey = 'MOUSE_MIDDLE',
+    onPressed = function(self)
+        if not gizmoEnabled then return end
+        LeaveCursorMode()
+    end,
+    onReleased = function(self)
+        if not gizmoEnabled then return end
+        EnterCursorMode()
+    end
+})
 
 lib.addKeybind({
     name = 'ht_mlotool_gizmoSelect',

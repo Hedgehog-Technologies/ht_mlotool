@@ -1,8 +1,11 @@
-import { ActionIcon, Button, Divider, Group, InputBase, Modal, NumberInput, Paper, RangeSlider, Stack, TextInput } from "@mantine/core";
+import { ActionIcon, Button, Divider, Group, Modal, NumberInput, Paper, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useEffect } from "react";
 import { LuLocate } from "react-icons/lu";
-import { DefaultStaticEmitter, StaticEmitter, useEmitterStore } from "@/stores";
+import { DefaultStaticEmitter, useEmitterStore, useSharedStore } from "@/stores";
+import { fetchNui } from "@/utils";
+import { useNuiEvent } from "@/hooks/useNuiEvent";
+import { Vector3 } from "@/types";
 
 interface Props {
   opened: boolean;
@@ -10,6 +13,7 @@ interface Props {
 }
 
 export const EmitterModal: React.FC<Props> = (props) => {
+  const [opacity, setOpacity] = useSharedStore((state) => [state.opacity, state.setOpacity]);
   const modalIndex = useEmitterStore((state) => state.modalIndex);
   const addEmitter = useEmitterStore((state) => state.addEmitter);
   let title = "Create New Emitter";
@@ -18,7 +22,7 @@ export const EmitterModal: React.FC<Props> = (props) => {
     initialValues: DefaultStaticEmitter,
     validate: {
       name: (value) => (!value.length ? "Name is required" : null),
-      position: (value) => (/^((-?\d+(\.\d+)?)(,? *)){3}$/).test(value) ? null : "Invalid position"
+      position: (value) => (/^((-?\d+(\.\d+)?)(, )?){3}$/).test(value) ? null : "Invalid position"
     }
   });
 
@@ -37,6 +41,28 @@ export const EmitterModal: React.FC<Props> = (props) => {
     props.setOpened(false);
   });
 
+  const handlePlacement = () => {
+    console.log("place emitter");
+    setOpacity(0);
+    let formPos = form.values.position.split(", ", 3).map((val) => Number(val));
+    console.log(JSON.stringify(formPos));
+    let position: Vector3 | null;
+
+    if (formPos.length < 3 || (modalIndex === -1 && !form.isDirty("position"))) {
+      position = null;
+    }
+    else {
+      position = { x: formPos[0], y: formPos[1], z: formPos[2] };
+    }
+
+    fetchNui("ht_mlotool:setEmitterPosition", { position: position });
+  };
+
+  useNuiEvent("ht_mlotool:returnEmitterPosition", (data: { position: Vector3}) => {
+    form.setValues({ position: `${data.position.x.toFixed(2)}, ${data.position.y.toFixed(2)}, ${data.position.z.toFixed(2)}`})
+    setOpacity(1);
+  });
+
   return (
     <Modal
       opened={props.opened}
@@ -48,6 +74,7 @@ export const EmitterModal: React.FC<Props> = (props) => {
       overflow={"inside"}
       centered
       styles={{ title: { textAlign: "center", width: "100%", fontSize: 18 } }}
+      style={{ opacity: opacity }}
       size={"40%"}
     >
       <Paper p={"md"}>
@@ -62,7 +89,7 @@ export const EmitterModal: React.FC<Props> = (props) => {
             label={"Position"}
             {...form.getInputProps("position")}
             rightSection={
-              <ActionIcon variant={"filled"} color={"violet.6"} onClick={() => console.log("place emitter")}>
+              <ActionIcon variant={"filled"} color={"violet.6"} onClick={handlePlacement}>
                 <LuLocate size={20} />
               </ActionIcon>
             }
