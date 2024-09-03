@@ -2,7 +2,7 @@
 
 Shoutouts to:
 
-- [Demigo916](https://github.com/Demigod916) for the Lua code to use the FXDK Gizmo: [source](https://github.com/Demigod916/object_gizmo)
+- [Demigod916](https://github.com/Demigod916) for the Lua code to use the FXDK Gizmo: [source](https://github.com/Demigod916/object_gizmo)
 
 - CitizenFX for the dataview demo code: [source](https://github.com/citizenfx/lua/blob/luaglm-dev/cfx/libs/scripts/examples/dataview.lua)
 

@@ -89,18 +89,20 @@ export const DefaultStaticEmitter: StaticEmitter = {
 
 export interface EmitterStoreState {
   emitters: StaticEmitter[];
-  modalIndex: number;
+  emitterIndex: number;
 
   // actions
   addEmitter: (newEmitter: StaticEmitter) => void;
-  setModalIndex: (val: number) => void;
+  setEmitterIndex: (val: string | -1) => void;
+  removeEmitter: (val: string) => void;
 };
 
 export const useEmitterStore = create<EmitterStoreState>((set, get) => ({
   emitters: [],
-  modalIndex: -1,
+  emitterIndex: -1,
 
   // actions
   addEmitter: (newEmitter) => set((prev) => ({ emitters: [...prev.emitters, newEmitter] })),
-  setModalIndex: (val) => set({ modalIndex: val })
+  setEmitterIndex: (val) => set({ emitterIndex: typeof(val) === "string" ? get().emitters.findIndex((emitter) => emitter.name === val) : val }),
+  removeEmitter: (val) => set((prev) => ({ emitters: [...prev.emitters.filter((emitter) => emitter.name !== val)] }))
 }));

@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import { MdSave } from "react-icons/md";
 import { MemoStringInput } from "@/layouts/shared";
 import { useLocale } from "@/providers";
-import { useGeneralStore, useRoomsStore } from "@/stores";
+import { useEmitterStore, useGeneralStore, useRoomsStore } from "@/stores";
 import { fetchNui } from "@/utils";
 
 export const GeneralMlo: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const mlo = useGeneralStore((state) => state.mlo);
-  const roomList = useRoomsStore((state) => state.roomList);
   const updateMLOSaveName = useGeneralStore((state) => state.updateMLOSaveName);
   const [mloSaveName, setMLOSaveName] = useState(mlo?.saveName ?? "");
 
@@ -35,7 +34,7 @@ export const GeneralMlo: React.FC = () => {
   }, [mlo]);
 
   const handleSaveClick = () => {
-    let combinedMLO = { ...mlo, rooms: roomList };
+    let combinedMLO = { ...mlo, rooms: useRoomsStore.getState().roomList, staticEmitters: useEmitterStore.getState().emitters };
     fetchNui("ht_mlotool:saveMlo", combinedMLO, "1");
   }
 

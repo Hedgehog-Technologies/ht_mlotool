@@ -40,6 +40,7 @@ const MLOTool: React.FC = () => {
 
     const mloData = new MLODef(data.mloData);
     const roomSelectList =  mloData.rooms.map((room: RoomDef) => { return { value: room.index.toString(), label: `${room.index}. ${room.name}` } });
+    const emitters = Object.keys(data.mloData.staticEmitters).map((key: string) => data.mloData.staticEmitters[key]);
 
     useGeneralStore.setState({ mlo: mloData });
     useRoomsStore.setState({
@@ -48,6 +49,7 @@ const MLOTool: React.FC = () => {
       roomSelectList: roomSelectList,
       selectedRoom: data?.roomIndex ? roomSelectList[data.roomIndex].value : null
     });
+    useEmitterStore.setState({ emitters: emitters ?? [] });
   });
 
   const [setNavigatedPortal, resetDebugEntities] = usePortalsStore((state) => [state.setNavigatedPortal, state.resetDebugEntities]);

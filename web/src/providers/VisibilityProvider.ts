@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { fetchNui } from "@/utils";
+import { useEmitterStore } from "@/stores";
 import { useGeneralStore } from "@/stores/general";
 
 interface VisibilityState {
@@ -19,6 +20,6 @@ export const useVisibility = create<VisibilityState>((set, get) => ({
   setVisible: (value) => set({ visible: value }),
   exitUI: () => {
     get().setVisible(false);
-    fetchNui("ht_mlotool:exitMLO", { mloData: useGeneralStore.getState().mlo });
+    fetchNui("ht_mlotool:exitMLO", { mloData: { ...useGeneralStore.getState().mlo, staticEmitters: useEmitterStore.getState().emitters } });
   }
 }));

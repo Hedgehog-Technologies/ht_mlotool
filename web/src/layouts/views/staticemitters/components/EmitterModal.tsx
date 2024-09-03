@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Divider, Group, Modal, NumberInput, Paper, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { LuLocate } from "react-icons/lu";
 import { DefaultStaticEmitter, useEmitterStore, useSharedStore } from "@/stores";
 import { fetchNui } from "@/utils";
@@ -14,9 +14,9 @@ interface Props {
 
 export const EmitterModal: React.FC<Props> = (props) => {
   const [opacity, setOpacity] = useSharedStore((state) => [state.opacity, state.setOpacity]);
-  const modalIndex = useEmitterStore((state) => state.modalIndex);
-  const addEmitter = useEmitterStore((state) => state.addEmitter);
-  let title = "Create New Emitter";
+  const [emitters, addEmitter] = useEmitterStore((state) => [state.emitters, state.addEmitter]);
+  const [emitterIndex, setEmitterIndex] = useEmitterStore((state) => [state.emitterIndex, state.setEmitterIndex]);
+  const [title, setTitle] = useState("Create New Emitter");
 
   const form = useForm({
     initialValues: DefaultStaticEmitter,
@@ -27,28 +27,35 @@ export const EmitterModal: React.FC<Props> = (props) => {
   });
 
   useEffect(() => {
-    if (modalIndex > -1) {
-      title = "Edit Emitter";
+    if (emitterIndex > -1) {
+      setTitle("Edit Emitter");
+      form.setValues(emitters[emitterIndex]);
     }
     else {
-      title = "Create New Emitter";
+      setTitle("Create New Emitter");
+      form.reset();
     }
-  }, [modalIndex]);
+  }, [emitterIndex]);
 
   const handleSubmit = form.onSubmit((values) => {
-    addEmitter(values);
+    if (emitterIndex > -1) {
+      emitters[emitterIndex] = values;
+    } else {
+      addEmitter(values);
+    }
+
     form.reset();
     props.setOpened(false);
+    setEmitterIndex(-1);
   });
 
   const handlePlacement = () => {
     console.log("place emitter");
     setOpacity(0);
     let formPos = form.values.position.split(", ", 3).map((val) => Number(val));
-    console.log(JSON.stringify(formPos));
     let position: Vector3 | null;
 
-    if (formPos.length < 3 || (modalIndex === -1 && !form.isDirty("position"))) {
+    if (formPos.length < 3 || (emitterIndex === -1 && !form.isDirty("position"))) {
       position = null;
     }
     else {
@@ -144,7 +151,7 @@ export const EmitterModal: React.FC<Props> = (props) => {
           </Group>
 
           <Group mt={"lg"} position="right">
-            <Button onClick={() => { console.log("cancel!"); props.setOpened(false) }} color={"gray.7"}>Cancel</Button>
+            <Button onClick={() => { console.log("cancel!"); props.setOpened(false); setEmitterIndex(-1); }} color={"gray.7"}>Cancel</Button>
             <Button onClick={() => console.log("submit!")} type={"submit"}>Submit</Button>
           </Group>
         </form>
