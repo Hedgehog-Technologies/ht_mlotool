@@ -44,6 +44,7 @@ function MLO.new(interiorId)
     MLO.updateGlobalPortals(mlo)
 
     -- MLO Static Emitters
+    mlo.staticEmitterCount = 0
     mlo.staticEmitters = {}
 
     return mlo
@@ -84,12 +85,15 @@ function MLO.update(mlo, newData)
         Portal.update(mlo.portals[portalIndex], newData.portals[portalIndex])
     end
 
-    mlo.staticEmitters = {}
+    mlo.staticEmitterCount = 0
+    mlo.staticEmitters = table.wipe(mlo.staticEmitters)
     if newData.staticEmitters then
         for staticEmitterIndex = 1, #newData.staticEmitters do
             local staticEmitter = newData.staticEmitters[staticEmitterIndex]
 
             mlo.staticEmitters[staticEmitter.name] = StaticEmitter:new(staticEmitter)
+
+            mlo.staticEmitterCount += 1
         end
     end
 end

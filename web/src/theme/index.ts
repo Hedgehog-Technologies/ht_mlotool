@@ -61,5 +61,13 @@ export const customTheme: MantineThemeOverride = {
         }
       }
     },
+
+    Modal: {
+      styles: {
+        modal: {
+          borderRadius: radius
+        }
+      }
+    }
   }
 };

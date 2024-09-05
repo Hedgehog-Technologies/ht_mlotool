@@ -1,4 +1,4 @@
-import { AppShell, Box, Paper, ScrollArea } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import { Route, Routes } from "react-router-dom";
 import { Nav, MloHeader } from "./components";
 import { General, DoorTuning, InteriorRoomParams, Portals, Rooms, StaticEmitters } from "./views";

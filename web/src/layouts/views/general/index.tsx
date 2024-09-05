@@ -2,7 +2,7 @@ import { Box, Button, Stack } from "@mantine/core";
 import { useState } from "react";
 import { GenerationFileOptions, GeneralMlo, MloInfo } from "./components";
 import { useLocale } from "@/providers";
-import { useGeneralStore, useRoomsStore } from "@/stores";
+import { useEmitterStore, useGeneralStore, useRoomsStore } from "@/stores";
 import { fetchNui } from "@/utils";
 
 export const General: React.FC = () => {
@@ -23,7 +23,7 @@ export const General: React.FC = () => {
 
   const handleButtonClick = () => {
     if (dat151 || ao) {
-      let combinedMLO = { ...mlo, rooms: roomList }
+      let combinedMLO = { ...mlo, rooms: roomList, staticEmitters: useEmitterStore.getState().emitters };
       fetchNui("ht_mlotool:generateAudioFiles", { mlo: combinedMLO, generateOcclusion: ao, generateDat151: dat151, debug: debug });
       setButton("green.9", locale("ui_generate_button_success"));
       setTimeout(resetButton, 5000);

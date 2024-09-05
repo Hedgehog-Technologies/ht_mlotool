@@ -3,7 +3,7 @@ function EncodeDat151(mlo)
         {
             tagName = 'Dat151',
             content = {
-                { tagName = 'Version', attr = { value = '35636732' } },
+                { tagName = 'Version', attr = { value = '45897013' } },
                 {
                     tagName = 'Items',
                     content = {
@@ -14,7 +14,7 @@ function EncodeDat151(mlo)
                                 { tagName = 'Name', value = mlo.name },
                                 { tagName = 'Flags', attr = { value = '0xAAAAA044' } },
                                 { tagName = 'InteriorWallaSoundSet', value = '0xD4855127' },
-                                { tagName = 'InteriorReflection', value = '0x00000000' },
+                                { tagName = 'InteriorReflections' },
                                 { tagName = 'Rooms', content = {} }
                             }
                         }
@@ -58,6 +58,63 @@ function EncodeDat151(mlo)
 
             table.insert(datLua[1].content[2].content[1].content[5].content, roomItem)
             table.insert(datLua[1].content[2].content, interiorRoom)
+        end
+    end
+
+    print(mlo.staticEmitters, mlo.staticEmitterCount)
+    if mlo.staticEmitters and mlo.staticEmitterCount > 0 then
+        table.insert(datLua[1].content[2].content, {
+            tagName = 'Item',
+            attr = { type = 'StaticEmitterList', ntOffset = 0 },
+            content = {
+                { tagName = 'Name', value = ('%s_emitter_list'):format(mlo.name:gsub('hash_', '')) },
+                { tagName = 'Emitters', content = {} }
+            }
+        })
+
+        local emitterListIndex = #datLua[1].content[2].content
+
+        for name, emitter in pairs(mlo.staticEmitters) do
+            local emitterName = ('%s_%s'):format(mlo.name:gsub('hash_', ''), name)
+            local pos = StrSplit(emitter.position, ', ')
+
+            table.insert(
+                datLua[1].content[2].content[emitterListIndex].content[2].content,
+                { tagName = 'Item', value = emitterName })
+
+            table.insert(datLua[1].content[2].content, {
+                tagName = 'Item',
+                attr = { type = 'StaticEmitter', ntOffset = 0 },
+                content = {
+                    { tagName = 'Name', value = emitterName },
+                    { tagName = 'Flags', attr = { value = emitter.flags } },
+                    { tagName = 'ChildSound', value = emitter.childSound },
+                    { tagName = 'RadioStation', value = emitter.radioStation },
+                    { tagName = 'Position', attr = { x = pos[1], y = pos[2], z = pos[3] } },
+                    { tagName = 'MinDistance', attr = { value = emitter.minDistance } },
+                    { tagName = 'MaxDistance', attr = { value = emitter.maxDistance } },
+                    { tagName = 'EmittedVolume', attr = { value = emitter.emittedVolume } },
+                    { tagName = 'LPFCutoff', attr = { value = emitter.lpfCutoff } },
+                    { tagName = 'HPFCutoff', attr = { value = emitter.hpfCutoff } },
+                    { tagName = 'RolloffFactor', attr = { value = emitter.rolloffFactor } },
+                    { tagName = 'Interior', value = emitter.interior },
+                    { tagName = 'Room', value = emitter.room },
+                    { tagName = 'RadioStationForScore', value = emitter.radioStationForScore },
+                    { tagName = 'MaxLeakage', attr = { value = emitter.maxLeakage } },
+                    { tagName = 'MinLeakageDistance', attr = { value = emitter.minLeakageDistance } },
+                    { tagName = 'MaxLeakageDistance', attr = { value = emitter.maxLeakageDistance } },
+                    { tagName = 'Alarm', value = emitter.alarm },
+                    { tagName = 'OnBreakOneShot', value = emitter.onBreakOneShot },
+                    { tagName = 'MaxPathDepth', attr = { value = emitter.maxPathDepth } },
+                    { tagName = 'SmallReverbSend', attr = { value = emitter.smallReverbSend } },
+                    { tagName = 'MediumReverbSend', attr = { value = emitter.mediumReverbSend } },
+                    { tagName = 'LargeReverbSend', attr = { value = emitter.largeReverbSend } },
+                    { tagName = 'MinTimeMinutes', attr = { value = emitter.minTimeMinutes } },
+                    { tagName = 'MaxTimeMinutes', attr = { value = emitter.maxTimeMinutes } },
+                    { tagName = 'BrokenHealth', attr = { value = emitter.brokenHealth } },
+                    { tagName = 'UndamagedHealth', attr = { value = emitter.undamagedHealth } }
+                }
+            })
         end
     end
 

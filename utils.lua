@@ -24,6 +24,24 @@ function ToInt32(value)
     return value
 end
 
+function StrSplit(inStr, sep, nums)
+    if sep == nil then
+        sep = '%s'
+    end
+
+    local t = {}
+    for str in inStr:gmatch('[^' .. sep .. ']+') do
+        if nums then
+            local n = tonumber(str)
+            if n then str = n end
+        end
+
+        t[#t + 1] = str
+    end
+
+    return t
+end
+
 local function toXmlInternal(xmlTbl, valueTbl, level, debug)
     local spaces = level > 0 and string.rep(' ', 2 * level) or ''
     for _, value in ipairs(valueTbl) do
