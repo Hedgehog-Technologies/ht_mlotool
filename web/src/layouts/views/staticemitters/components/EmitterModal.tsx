@@ -91,16 +91,20 @@ export const EmitterModal: React.FC<Props> = (props) => {
             <TextInput label={"Flags"} {...form.getInputProps("flags")} />
           </Group>
 
-          <TextInput
-            mt={"md"}
-            label={"Position"}
-            {...form.getInputProps("position")}
-            rightSection={
-              <ActionIcon variant={"filled"} color={"violet.6"} onClick={handlePlacement}>
-                <LuLocate size={20} />
-              </ActionIcon>
-            }
-          />
+
+          <Group mt={"md"} grow>
+            <TextInput label={"Interior"} {...form.getInputProps("interior")} />
+            <TextInput label={"Room"} {...form.getInputProps("room")} />
+            <TextInput
+              label={"Position"}
+              {...form.getInputProps("position")}
+              rightSection={
+                <ActionIcon variant={"filled"} color={"violet.6"} onClick={handlePlacement}>
+                  <LuLocate size={20} />
+                </ActionIcon>
+              }
+            />
+          </Group>
 
           <Divider mt={"md"} />
 
