@@ -6,7 +6,7 @@
     "cmd_openmlo_force_help": "[İsteğe Bağlı] (1) Dosyadan yeniden yükle, (2) Sıfırdan oluştur veya <boş bırak> Varsa önbelleğe alınmış değeri kullan",
     "cmd_savemlo_help": "[Admin] Geçerli MLO'yu dosyaya kaydet",
     "cmd_savemlo_name_help": "[İsteğe Bağlı] Belirtilmişse dosya adı olarak kullanılacaktır",
-    "create_output_dir_fail": "^1HATA: Çıkış yolu ['%s'] oluşturulamadı: %s [%s]",
+    "create_output_dir_fail": "^1HATA: Çıkış yolu ['%s'] oluşturulamadı: %s [%s]^7",
     "data_generation_fail": "MLO verisi oluşturulamadı.",
     "debug_text_portal_id": "~b~Portal ~w~%s",
     "debug_text_conn_rooms": "~b~From ~w~%s~b~ To ~w~%s",

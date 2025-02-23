@@ -6,7 +6,7 @@
   "cmd_openmlo_force_help": "[Facultatif] (1) Recharger à partir du fichier, (2) Reconstruire à partir de zéro, ou <laisser vide> Utiliser la valeur mise en cache si disponible",
   "cmd_savemlo_help": "[Admin] Enregistrez l'objet MLO actuel dans un fichier",
   "cmd_savemlo_name_help": "[Facultatif] S'il est spécifié, il sera utilisé comme nom de fichier",
-  "create_output_dir_fail": "^1ERREUR : Le répertoire de sortie ['%s'] n'a pas pu être créé : %s [%s]",
+  "create_output_dir_fail": "^1ERREUR : Le répertoire de sortie ['%s'] n'a pas pu être créé : %s [%s]^7",
   "data_generation_fail": "Échec de la génération des données MLO",
   "debug_text_portal_id": "~b~Portail ~w~%s",
   "debug_text_conn_rooms": "~b~De ~w~%s~b~ À ~w~%s",

@@ -6,7 +6,7 @@
     "cmd_openmlo_force_help": "[Ei pakollinen] (1) Lataa tiedostosta, (2) Aloita kokonaan tyhjästä, tai <jätä tyhjäksi> Käyttää muistissa olevia tietoja",
     "cmd_savemlo_help": "[Admin] Tallenna nykyinen MLO tiedostoon",
     "cmd_savemlo_name_help": "[Ei pakollinen] Jos määritetty, käytetään tätä nimeä tallennettavalle tiedostolle",
-    "create_output_dir_fail": "^1ERROR: Hakemisto ['%s'] ei voitu luoda: %s [%s]",
+    "create_output_dir_fail": "^1ERROR: Hakemisto ['%s'] ei voitu luoda: %s [%s]^7",
     "data_generation_fail": "Ei voitu luoda MLO tietoja",
     "debug_text_portal_id": "~b~Portaali ~w~%s",
     "debug_text_conn_rooms": "~b~Kohteesta ~w~%s~b~ Kohteeseen ~w~%s",
