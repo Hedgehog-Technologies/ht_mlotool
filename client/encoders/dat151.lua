@@ -40,7 +40,7 @@ function EncodeDat151(mlo)
                     { tagName = 'Name', value = occlRoomName  },
                     { tagName = 'Flags', attr = { value = room.flags } },
                     { tagName = 'RoomName', value = string.lower(room.name) },
-                    { tagName = 'Ambientzone', value = (room.zone ~= '' and room.zone or nil) },
+                    { tagName = 'AmbientZone', value = (room.zone ~= '' and room.zone or nil) },
                     { tagName = 'InteriorType', attr = { value = room.unk02 } },
                     { tagName = 'ReverbSmall', attr = { value = room.unk03 } },
                     { tagName = 'ReverbMedium', attr = { value = room.reverb } },

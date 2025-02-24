@@ -67,7 +67,7 @@ end
 --- @param filepath string the relative path to the directory the file is in
 --- @param filename string the name of the file to read
 --- @param filetype string the type of the file to read
---- @return string data the contents of the file as a string; nil if the file doesn't exist
+--- @return string | nil data the contents of the file as a string; nil if the file doesn't exist
 function htio.readFile(source, filepath, filename, filetype)
     local fullPath = ('%s/%s.%s'):format(filepath, filename, filetype)
 
@@ -140,7 +140,7 @@ function htio.writeFile(source, filepath, filename, filetype, datastring)
 
     file:close()
 
-    return writeError ~= nil
+    return writeError == nil
 end
 
 return htio
