@@ -47,15 +47,38 @@ interface TooltipSwitchProps extends InputProps {
   labelPosition?: "left" | "right";
 }
 
+interface TooltipLabelProps {
+  label?: string;
+}
+
 const useInputStyles = createStyles((theme) => ({
   input: {
     "&:disabled, &[data-disabled]": {
       opacity: 1.0,
       color: theme.colors.violet[1],
       borderColor: "transparent",
-    }
+    },
+  },
+
+  label: {
+    paddingTop: '0.5rem',
+    paddingBottom: '0.1rem',
+    verticalAlign: 'bottom',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: 'inline-block',
+    width: '100%'
   }
 }));
+
+const TooltipLabel: React.FC<TooltipLabelProps> = (props) => {
+  return (
+    <Tooltip label={props.label} disabled={(props.label?.length ?? 0) < 20} openDelay={500}>
+      <span>{props.label}</span>
+    </Tooltip>
+  );
+}
 
 const NumInput: React.FC<NumberInputProps> = (props) => {
   const exitUi = useVisibility((state) => state.exitUI);
@@ -72,10 +95,10 @@ const NumInput: React.FC<NumberInputProps> = (props) => {
       step={props.step}
       // $TECH_DEBT - Revist for debouncing
       onChange={(value) => { if (props.setValue !== undefined) props.setValue(value)}}
-      label={props.label}
+      label={<TooltipLabel label={props.label} />}
       disabled={props.disabled}
       variant={variant}
-      classNames={{ input: classes.input }}
+      classNames={{ input: classes.input, label: classes.label }}
       rightSection={
         props.infoCircle && (
           <Tooltip
@@ -114,11 +137,11 @@ const StringInput: React.FC<StringInputProps> = (props) => {
         value={props.value ?? `[${locale("ui_missing_value")}]`}
         // $TECH_DEBT - Revisit for debouncing?
         onChange={(e) => { if (props.setValue !== undefined) props.setValue(e.target.value)}}
-        label={props.label}
+        label={<TooltipLabel label={props.label} />}
         placeholder={props.placeholder}
         disabled={props.disabled}
         variant={variant}
-        classNames={{ input: classes.input }}
+        classNames={{ input: classes.input, label: classes.label }}
         rightSection={
           props.infoCircle && (
             <Tooltip
