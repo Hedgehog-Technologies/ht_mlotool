@@ -25,3 +25,12 @@ This is meant as a guide for the post-generation import steps that will take the
 
    <img src="./images/codewalker/drag_n_drop_zone.png" width=500 /> 
 6. You can now use these files as described in steps 10 and 11 of the [Usage Guide](./usage-guide.md#usage-steps)
+
+## Version Support
+The following is some simple guidance 
+
+### MLO Tool v1.2.0 and later
+- Use [CodeWalker dev 47 or later](https://discord.com/channels/329138547833700352/351357358460370944/1270905539777269762)
+
+### MLO Tool v1.1.2 and ealier
+- Use [CodeWalker dev 46](https://discord.com/channels/329138547833700352/351357358460370944/1148210493958398073)
