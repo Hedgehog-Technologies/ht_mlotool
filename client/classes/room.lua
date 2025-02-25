@@ -16,19 +16,47 @@ function Room.new(interiodId, nameHash, proxyHash, roomIndex)
     --#region Dat151 Fields
     room.occlRoomName = ('%s_%s'):format(nameHash, room.name)
     room.flags = '0xAAAAAAAA'
+
+    -- AmbientZone
     room.zone = ''
+
+    -- InteriorType
     room.unk02 = 0
+
+    -- ReverbSmall
     room.unk03 = 0.35
+
+    -- ReverbMedium
     room.reverb = 0
+
+    -- ReverbLarge
     room.echo = 0
+
+    -- RoomToneSound
     room.sound = 'null_sound'
+
+    -- RainType
     room.unk07 = 0
+
+    -- ExteriorAudibility
     room.unk08 = 0
+
+    -- RoomOcclusionDamping
     room.unk09 = 0
+
+    -- NonMarkedPortalOcclusion
     room.unk10 = 0.7
+
+    -- DistanceFromPortalForOcclusion
     room.unk11 = 0
+
+    -- DistanceFromPortalFadeDistance
     room.unk12 = 50
+
+    -- WeaponMetrics
     room.unk13 = ''
+
+    -- InteriorWallaSoundSet
     room.soundSet = 'hash_D4855127'
     --#endregion
 
