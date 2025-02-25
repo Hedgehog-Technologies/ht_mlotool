@@ -22,7 +22,9 @@ client_scripts {
     'client/**/*.lua',
 }
 
-server_script 'server/server.lua'
+server_scripts {
+    'server/**/*.lua'
+}
 
 ox_libs {
     'locale'
@@ -37,5 +39,6 @@ files {
 ui_page 'web/build/index.html'
 
 dependencies {
+    '/server:12966',
     'ox_lib'
 }

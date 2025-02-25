@@ -6,7 +6,7 @@
     "cmd_openmlo_force_help": "[Valgfri] (1) Genindlæs fra fil, (2) Genopbyg fra bunden, eller <efterlad blank> Brug cachelagret værdi, hvis tilgængelig",
     "cmd_savemlo_help": "[Admin] Gem aktuel MLO-objekt til fil",
     "cmd_savemlo_name_help": "[Valgfri] Hvis angivet, vil det blive brugt som filnavn",
-    "create_output_dir_fail": "^1FEJL: Udgangsmappen ['%s'] kunne ikke oprettes: %s [%s]",
+    "create_output_dir_fail": "^1FEJL: Udgangsmappen ['%s'] kunne ikke oprettes: %s [%s]^7",
     "data_generation_fail": "Fejl ved generering af MLO-data",
     "debug_text_portal_id": "~b~Portal ~w~%s",
     "debug_text_conn_rooms": "~b~Fra ~w~%s~b~ Til ~w~%s",

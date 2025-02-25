@@ -1,19 +1,19 @@
 export interface Dat151Fields {
-  flags: string;
-  zone: string;
-  unk02: number;
-  unk03: number;
-  reverb: number;
-  echo: number;
-  sound: string;
-  unk07: number;
-  unk08: number;
-  unk09: number;
-  unk10: number;
-  unk11: number;
-  unk12: number;
-  unk13: string;
-  soundSet: string;  
+  flags: string;    // Flags
+  zone: string;     // AmbientZone
+  unk02: number;    // InteriorType
+  unk03: number;    // ReverbSmall
+  reverb: number;   // ReverbMedium
+  echo: number;     // ReverbLarge
+  sound: string;    // RoomToneSound
+  unk07: number;    // RainType
+  unk08: number;    // ExteriorAudibility
+  unk09: number;    // RoomOcclusionDamping
+  unk10: number;    // NonMarkedPortalOcclusion
+  unk11: number;    // DistanceFromPortalForOcclusion
+  unk12: number;    // DistanceFromPortalFadeDistance
+  unk13: string;    // WeaponMetrics
+  soundSet: string; // InteriorWallaSoundSet
 }
 
 export interface RoomDefConstructor {

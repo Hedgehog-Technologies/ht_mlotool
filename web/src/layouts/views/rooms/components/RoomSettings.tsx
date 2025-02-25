@@ -6,21 +6,21 @@ import { useRoomsStore } from "../../../../store/rooms";
 import { Dat151Fields } from "../../../../types/RoomDef";
 
 const defaultDat151Fields: Dat151Fields = {
-  flags: "0xAAAAAAAA",
-  zone: "",
-  unk02: 0,
-  unk03: 0.35,
-  reverb: 0,
-  echo: 0,
-  sound: "null_sound",
-  unk07: 0,
-  unk08: 0,
-  unk09: 0,
-  unk10: 0.7,
-  unk11: 0,
-  unk12: 50,
-  unk13: "",
-  soundSet: "hash_D4855127"
+  flags: "0xAAAAAAAA",      // Flags
+  zone: "",                 // AmbientZone
+  unk02: 0,                 // InteriorType
+  unk03: 0.35,              // ReverbSmall
+  reverb: 0,                // ReverbMedium
+  echo: 0,                  // ReverbLarge
+  sound: "null_sound",      // RoomToneSound
+  unk07: 0,                 // RainType
+  unk08: 0,                 // ExteriorAudibility
+  unk09: 0,                 // RoomOcclusionDamping
+  unk10: 0.7,               // NonMarkedPortalOcclusion
+  unk11: 0,                 // DistanceFromPortalForOcclusion
+  unk12: 50,                // DistanceFromPortalFadeDistance
+  unk13: "",                // WeaponMetrics
+  soundSet: "hash_D4855127" // InteriorWallaSoundSet
 };
 
 const RoomSettings: React.FC = () => {
@@ -91,6 +91,8 @@ const RoomSettings: React.FC = () => {
           label={locale("ui_room_dat_unk02")}
           value={fieldState.unk02}
           setValue={(value) => setFieldState({ ...fieldState, unk02: (value ?? defaultDat151Fields.unk02) })}
+          min={0}
+          max={255}
           infoCircle={locale("ui_room_dat_unk02_info")}
           icWidth={100}
           disabled={disabled}
@@ -100,6 +102,8 @@ const RoomSettings: React.FC = () => {
           value={fieldState.unk03}
           setValue={(value) => setFieldState({ ...fieldState, unk03: (value ?? defaultDat151Fields.unk03) })}
           precision={6}
+          min={0.0}
+          max={1.0}
           infoCircle={locale("ui_room_dat_unk03_info")}
           icWidth={125}
           disabled={disabled}
@@ -140,6 +144,8 @@ const RoomSettings: React.FC = () => {
           label={locale("ui_room_dat_unk07")}
           value={fieldState.unk07}
           setValue={(value) => setFieldState({ ...fieldState, unk07: (value ?? defaultDat151Fields.unk07) })}
+          min={0}
+          max={255}
           infoCircle={locale("ui_room_dat_unk07_info")}
           icWidth={100}
           disabled={disabled}

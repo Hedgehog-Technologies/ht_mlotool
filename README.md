@@ -76,9 +76,12 @@ Further build / development guidance can be viewed [here](./docs/development-gui
    - Closing the UI will cache your changes locally automatically, **no need to generate the files everytime you close it**
    - The resource should detect which room you are currently in and default to that room when you open the UI
    - *Note* - You can press and hold `right mouse button` with the UI open to be able to move around
-      - Try your best to not leave the MLO while doing so as this can lead to unaccounted for issues during file saving / generation
+      - Try your best to not leave the MLO while doing so as this can lead to undefined behavior during file saving / generation
 5. Press the `Generate Audio Occlusion Files` and wait for confirmation of generated XML file(s)
 6. Use [CodeWalker](https://github.com/dexyfex/CodeWalker) to convert the XML files to the proper GTAV format
+   - *Note* - CodeWalker Compatibility
+      - For mlotool v1.1.2 and earlier -> Use CodeWalker dev 46
+      - For mlotool v1.2.0 and later -> Use CodeWalker dev 47 or higher
 7. Move the converted XML files to a FiveM map resource
 8. Restart your FiveM server and enjoy occluded audio goodness
 

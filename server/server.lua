@@ -1,122 +1,35 @@
-local systemIsWindows <const> = (os.getenv('OS') or ''):lower():match('windows')
-local resourcePath <const> = GetResourcePath(cache.resource):gsub('//', '/')
-local savedMLODir <const> = 'saved_mlos'
-local savedMloDirectoryPath <const> = ('%s/%s'):format(resourcePath, savedMLODir)
-local generatedFilesDir <const> = 'generated_files'
-local generatedFilesDirectoryPath <const> = ('%s/%s'):format(resourcePath, generatedFilesDir)
+local constants = require 'server.constants'
+local htio = require 'server.fileio'
 
 local filenames = {}
 local mloFilenameLookup = {}
 
 -- ##### HELPER FUNCTIONS ##### --
 
+--- Checks if a player is allowed to open the MLO tool UI.
+--- @param playerId number | string The id of the player to check.
+--- @return boolean canUse True if the player is allowed to open the MLO tool, false otherwise.
 local function canUseMloTool(playerId)
     return IsPlayerAceAllowed(playerId, 'command.openmlo')
 end
 
+--- Checks if a player is allowed to save the MLO data.
+--- @param playerId number | string The id of the player to check.
+--- @return boolean canSave True if the player is allowed to save the MLO data, false otherwise.
 local function canUseSaveMlo(playerId)
     return IsPlayerAceAllowed(playerId, 'command.savemlo')
 end
 
-local function getFilesInDirectory(path, pattern)
-    local files = {}
-    local fileCount = 0
-    local command = 'ls "'
-    local suffix = '/"'
-    local dirPath = resourcePath .. '/' .. path
-
-    if systemIsWindows then
-        command = 'dir "'
-        dirPath = dirPath:gsub('/', '\\')
-        suffix = '\\" /b'
-    end
-
-    local dir = io.popen(command .. dirPath .. suffix)
-
-    if dir then
-        for line in dir:lines() do
-            if line:match(pattern) then
-                fileCount += 1
-                files[fileCount] = line:gsub(pattern, '')
-            end
-        end
-
-        dir:close()
-    end
-
-    return files, fileCount
-end
-
-local function readFile(source, filepath, filename, filetype)
-    local fullPath = ('%s/%s.%s'):format(filepath, filename, filetype)
-
-    if systemIsWindows then
-        fullPath = fullPath:gsub('/', '\\')
-    end
-
-    local file, err = io.open(fullPath, 'r')
-    local data = nil
-
-    if not file then
-        print('^1' .. err)
-
-        if source ~= nil then
-            lib.notify(source, {
-                type = 'error',
-                title = locale('open_file_fail'),
-                description = locale('check_server_logs')
-            })
-        end
-
-        return nil
-    end
-
-    data = file:read('a')
-    file:close()
-
-    return data
-end
-
-local function writeFile(source, filepath, filename, filetype, dataString)
-    local fullPath = ('%s/%s.%s'):format(filepath, filename, filetype)
-
-    if systemIsWindows then
-        fullPath = fullPath:gsub('/', '\\')
-    end
-
-    local file, openError = io.open(fullPath, 'w+')
-
-    if file == nil then
-        print('^1' .. openError)
-        lib.notify(source, {
-            type = 'error',
-            title = locale('open_output_file_fail'),
-            description = locale('check_server_logs')
-        })
-        return false
-    end
-
-    local _, writeError = file:write(dataString)
-
-    if writeError ~= nil then
-        print('^1' .. writeError)
-        lib.notify(source, {
-            type = 'error',
-            title = locale('write_output_fail'),
-            description = locale('check_server_logs')
-        })
-    end
-
-    file:close()
-
-    return writeError == nil
-end
-
+--- Loads MLO data from a saved file.
+--- @param source number The source of the request.
+--- @param filename string The name of the file to load.
+--- @param nameHashString string The name hash in string format.
+--- @param openUI boolean Whether to open the UI after loading.
 local function loadMLOData(source, filename, nameHashString, openUI)
     local data = nil
 
     if filename ~= nil and nameHashString ~= nil then
-        data = readFile(source, savedMloDirectoryPath, filename, 'json')
+        data = htio.readFile(source, constants.savedMloDirPath, filename, 'json')
 
         if data then data = json.decode(data) end
     end
@@ -131,68 +44,28 @@ local function loadMLOData(source, filename, nameHashString, openUI)
     end
 end
 
-local function pathExists(path)
-    local ok, err, code = os.rename(path, path)
-    if not ok then
-        -- Permission denied, but path exists
-        if code == 13 then
-            return true
-        end
-    end
-
-    return ok, err
-end
-
-local function verifyOrCreateOutputDirectory(pathToDir, dirName)
-    if systemIsWindows then
-        pathToDir = pathToDir:gsub('/', '\\')
-    end
-
-    if not pathExists(pathToDir) then
-        local ok, err, code = os.execute(('mkdir %s'):format(pathToDir))
-
-        if not ok then
-            print(locale('create_output_dir_fail', pathToDir, err, code))
-            return nil
-        end
-    end
-
-    local dirPath = ('%s/%s'):format(pathToDir, dirName)
-
-    if systemIsWindows then
-        dirPath = dirPath:gsub('/', '\\')
-    end
-
-    if not pathExists(dirPath) then
-        local ok, err, code = os.execute(('mkdir %s'):format(dirPath))
-
-        if not ok then
-            print(locale('create_output_dir_fail', dirPath, err, code))
-            return pathToDir
-        end
-    end
-
-    return dirPath
-end
-
 -- ##### EVENTS & CALLBACKS ##### --
 
 RegisterNetEvent('ht_mlotool:outputResultFile', function(saveFileName, filename, filetype, ymtData, debug)
     local source = source
     if not canUseMloTool(source) then
-        return print(locale('warning_server') .. locale('incorrect_perms', source, GetPlayerName(source)))
+        return print(locale('warning_server') .. locale('incorrect_perms', source, GetPlayerName(source)) .. '^7')
     end
 
     local mloDirName = type(saveFileName) ~= 'table' and saveFileName or mloFilenameLookup[tostring(saveFileName.nameHash)] or saveFileName.name:gsub('hash_', '')
-    local outputDirPath = verifyOrCreateOutputDirectory(generatedFilesDirectoryPath, mloDirName)
-    local success = outputDirPath ~= nil
-    success = success and writeFile(source, outputDirPath, filename, filetype, ToXml(ymtData, debug))
+    local outputDirPath = ('%s/%s'):format(constants.generatedFilesDirPath, mloDirName)
+    local success = htio.createDirectory(outputDirPath)
+    success = success and htio.writeFile(source, outputDirPath, filename, filetype, ToXml(ymtData, debug))
 
     local type = success and 'success' or 'error'
     local color = success and '^7' or '^1'
     local title = success and locale('file_save_success') or locale('file_save_fail')
-    print(color .. title .. (': %s.%s'):format(filename, filetype))
-    lib.notify(source, { type = type, title = title, description = ('%s.%s'):format(filename, filetype) })
+    print(color .. title .. (': %s.%s'):format(filename, filetype) .. '^7')
+    TriggerClientEvent('ox_lib:notify', source, {
+        type = type,
+        title = title,
+        description = ('%s.%s'):format(filename, filetype)
+    })
 end)
 
 RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
@@ -207,23 +80,23 @@ RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
     local filename = mloInfo.saveName ~= '' and mloInfo.saveName or mloFilenameLookup[tostring(mloInfo.nameHash)] or mloInfo.name:gsub('hash_', '')
     mloFilenameLookup[tostring(mloInfo.nameHash)] = filename
 
-    local outputPath = verifyOrCreateOutputDirectory(resourcePath, savedMLODir)
-    local success = outputPath ~= nil
-    success = success and writeFile(source, outputPath, filename, 'json', json.encode(mloInfo, { indent = true }))
+    local outputPath = constants.savedMLODirPath
+    local success = htio.createDirectory(outputPath)
+    success = success and htio.writeFile(source, outputPath, filename, 'json', json.encode(mloInfo, { indent = true }))
 
     if success then
-        print('^7' .. locale('save_mlo_success') .. (': %s/%s.json'):format(savedMLODir, filename))
-        lib.notify(source, {
+        print('^7' .. locale('save_mlo_success') .. (': %s/%s.json'):format(constants.savedMLODir, filename) .. '^7')
+        TriggerClientEvent('ox_lib:notify', source, {
             type = 'success',
             title = locale('save_mlo_success'),
-            description = ('%s/%s.json'):format(savedMLODir, filename)
+            description = ('%s/%s.json'):format(constants.savedMLODir, filename)
         })
     else
-        print('^1' .. locale('save_mlo_fail') .. (': %s/%s.json'):format(savedMLODir, filename))
-        lib.notify(source, {
+        print('^1' .. locale('save_mlo_fail') .. (': %s/%s.json'):format(constants.savedMLODir, filename) .. '^7')
+        TriggerClientEvent('ox_lib:notify', source, {
             type = 'error',
             title = locale('save_mlo_fail'),
-            description = ('%s/%s.json'):format(savedMLODir, filename)
+            description = ('%s/%s.json'):format(constants.savedMLODir, filename)
         })
     end
 end)
@@ -302,7 +175,7 @@ lib.addCommand('openmlo', {
                 local filename = mloFilenameLookup[tostring(nameHash)]
 
                 if filename then
-                    data = readFile(source, savedMloDirectoryPath, filename, 'json')
+                    data = htio.readFile(source, constants.savedMloDirPath, filename, 'json')
 
                     if data then
                         data = json.decode(data)
@@ -312,20 +185,21 @@ lib.addCommand('openmlo', {
                         data.globalPortalCount = nil
                     end
                 else
-                    print(locale('warning_server') .. locale('no_filename_name_hash', nameHash))
-                    lib.notify(source, {
+                    print(locale('warning_server') .. locale('no_filename_name_hash', nameHash) .. '^7')
+                    TriggerClientEvent('ox_lib:notify', source, {
                         type = 'warning',
                         title = locale('warning'),
                         description = locale('no_filename_name_hash', nameHash)
                     })
                 end
             else
-                print(locale('warning_server') .. locale('user_not_in_mlo'))
-                return lib.notify(source, {
+                print(locale('warning_server') .. locale('user_not_in_mlo') .. '^7')
+                TriggerClientEvent('ox_lib:notify', source, {
                     type = 'warning',
                     title = locale('warning'),
                     description = locale('user_not_in_mlo')
                 })
+                return
             end
         -- Force rebuild from scratch
         elseif args.force == 2 then
@@ -341,7 +215,7 @@ end)
 CreateThread(function()
     lib.versionCheck('Hedgehog-Technologies/ht_mlotool')
 
-    local files, fileCount = getFilesInDirectory(savedMLODir, '%.json')
+    local files, fileCount = htio.getFilesInDirectory(constants.savedMLODirPath, '%.json')
 
     if fileCount > 0 then
         print(locale('found_mlo_json_files', fileCount))
@@ -349,7 +223,7 @@ CreateThread(function()
 
     for i = 1, fileCount do
         local filename = files[i]
-        local mloDataString = readFile(nil, savedMloDirectoryPath, filename, 'json')
+        local mloDataString = htio.readFile(nil, constants.savedMloDirPath, filename, 'json')
 
         if mloDataString ~= nil then
             local mloData = json.decode(mloDataString)
