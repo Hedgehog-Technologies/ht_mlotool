@@ -26,7 +26,7 @@ const General: React.FC = () => {
   const handleButtonClick = () => {
     if (dat151 || ao) {
       let combinedMLO = { ...mlo, rooms: roomList }
-      fetchNui("ht_mlotool:generateAudioFiles", { mlo: combinedMLO, generateOcclusion: ao, generateDat151: dat151, debug: debug });
+      fetchNui("ht_mlotool:nui:generateAudioFiles", { mlo: combinedMLO, generateOcclusion: ao, generateDat151: dat151, debug: debug });
       setButton("green.9", locale("ui_generate_button_success"));
       setTimeout(resetButton, 5000);
     } else {

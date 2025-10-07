@@ -44,7 +44,7 @@ const PortalInfo: React.FC<Props> = (props) => {
     }
     else if (!navigate && navigatedPortal === props.portal.mloPortalIndex) {
       setNavigatedPortal(null);
-      fetchNui("ht_mlotool:debugDrawToggle", { info: enableInfo, outline: enableOutline, fill: enableFill, navigate: null }, "1");
+      fetchNui("ht_mlotool:nui:debugDrawToggle", { info: enableInfo, outline: enableOutline, fill: enableFill, navigate: null }, "1");
     }
   }, [navigate]);
 
@@ -53,7 +53,7 @@ const PortalInfo: React.FC<Props> = (props) => {
       setNavigate(false);
     }
     else if (navigatedPortal === props.portal.mloPortalIndex) {
-      fetchNui("ht_mlotool:debugDrawToggle", { info: enableInfo, outline: enableOutline, fill: enableFill, navigate: navigatedPortal }, "1");
+      fetchNui("ht_mlotool:nui:debugDrawToggle", { info: enableInfo, outline: enableOutline, fill: enableFill, navigate: navigatedPortal }, "1");
     }
   }, [navigatedPortal]);
 

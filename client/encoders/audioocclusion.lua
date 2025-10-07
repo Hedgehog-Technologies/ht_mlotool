@@ -38,7 +38,13 @@ function EncodeAudioOcclusion(mlo, paths, pathKeys)
                             { tagName = 'DestInteriorHash', attr = { value = mlo.proxyHash } },
                             { tagName = 'DestRoomIdx', attr = { value = destRoomIndex } }
                         },
-                        comment = ('(%s) %s %s -> %s %s'):format(globalPortalIndex, room.index, room.name, destRoom.index, destRoom.name)
+                        comment = ('(%s) %s %s -> %s %s'):format(
+                            globalPortalIndex,
+                            room.index,
+                            room.name,
+                            destRoom.index,
+                            destRoom.name
+                        )
                     }
 
                     local entityList = { tagName = 'PortalEntityList', attr = { itemType = 'naOcclusionPortalEntityMetadata' } }
@@ -84,7 +90,13 @@ function EncodeAudioOcclusion(mlo, paths, pathKeys)
                     { tagName = 'Key', attr = { value = pathNode.key } },
                     { tagName = 'PathNodeChildList', attr = { itemType = 'naOcclusionPathNodeChildMetadata' }, content = {} }
                 },
-                comment = ('(%s %s -> %s %s) + %s'):format(fromNodeIndex, pathNode.origin.name, toNodeIndex, pathNode.destination.name, pathNode.distance)
+                comment = ('(%s %s -> %s %s) + %s'):format(
+                    fromNodeIndex,
+                    pathNode.origin.name,
+                    toNodeIndex,
+                    pathNode.destination.name,
+                    pathNode.distance
+                )
             }
 
             table.sort(pathNode.childList, function(a,b) return a.globalPortalIndex < b.globalPortalIndex end)
@@ -96,7 +108,13 @@ function EncodeAudioOcclusion(mlo, paths, pathKeys)
                         { tagName = 'PathNodeKey', attr = { value = pathNodeChild.pathNode.key } },
                         { tagName = 'PortalInfoIdx', attr = { value = pathNodeChild.globalPortalIndex } }
                     },
-                    comment = ('(%s %s -> %s %s) + %s'):format(pathNodeChild.pathNode.origin.index, pathNodeChild.pathNode.origin.name, pathNodeChild.pathNode.destination.index, pathNodeChild.pathNode.destination.name, pathNodeChild.pathNode.distance)
+                    comment = ('(%s %s -> %s %s) + %s'):format(
+                        pathNodeChild.pathNode.origin.index,
+                        pathNodeChild.pathNode.origin.name,
+                        pathNodeChild.pathNode.destination.index,
+                        pathNodeChild.pathNode.destination.name,
+                        pathNodeChild.pathNode.distance
+                    )
                 }
                 table.insert(pathNodeItem.content[2].content, childItem)
             end

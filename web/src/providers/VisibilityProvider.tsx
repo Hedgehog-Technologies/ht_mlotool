@@ -19,6 +19,6 @@ export const useVisibility = create<VisibilityState>((set, get) => ({
   setVisible: (value) => set({ visible: value }),
   exitUI: () => {
     get().setVisible(false);
-    fetchNui("ht_mlotool:exitMLO", { mloData: useGeneralStore.getState().mlo });
+    fetchNui("ht_mlotool:nui:exitMLO", useGeneralStore.getState().mlo);
   }
 }));

@@ -12,7 +12,7 @@ const DebugMenu: React.FC = () => {
   const toggleSwitch = usePortalsStore((state) => state.toggleSwitch);
 
   useEffect(() => {
-    fetchNui("ht_mlotool:debugDrawToggle", { info: enableInfo, outline: enableOutline, fill: enableFill, navigate: navigatedPortal }, "1");
+    fetchNui("ht_mlotool:nui:debugDrawToggle", { info: enableInfo, outline: enableOutline, fill: enableFill, navigate: navigatedPortal }, "1");
   }, [enableInfo, enableOutline, enableFill]);
 
   return (

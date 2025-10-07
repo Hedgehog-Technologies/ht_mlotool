@@ -122,6 +122,6 @@ export const useLocale = create<LocaleState>((_, get) => ({
   }
 }));
 
-fetchNui('ht_mlotool:fetchLocales', null, defaultLocale).then((locales) => {
+fetchNui('ht_mlotool:nui:fetchLocales', null, defaultLocale).then((locales) => {
   useLocale.setState({ localeState: locales });
 });

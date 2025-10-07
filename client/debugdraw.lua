@@ -53,6 +53,7 @@ local function anyDebugEntitiesActive()
             break
         end
     end
+    lib.print.debug('Any debug entities active: %s', tostring(anyActive))
     return anyActive
 end
 
@@ -74,14 +75,6 @@ local function draw3dText(coords, text)
         AddTextComponentSubstringPlayerName(text) -- Leave this as player name?
         EndTextCommandDisplayText(screenX, screenY)
     end
-end
-
---- Vector3 Linear Interpolation
----@param a vector3 Starting position
----@param b vector3 Ending position
----@param t number value to interpolate between a and b
-local function lerp(a, b, t)
-    return a + (b - a) * t
 end
 
 --- Quaternion Multiplication
@@ -107,6 +100,8 @@ local function qMult(a, b)
 end
 
 local function resetMLODebugData()
+    lib.print.verbose('Resetting MLO debug data...')
+
     mloInteriorId = nil
     mloPosition = nil
     mloRotation = nil
@@ -165,7 +160,7 @@ local function updateDebugMLOInfo()
                 end
 
                 mloPortalCorners[portalId] = pCorners
-                mloPortalCrossVectors[portalId] = lerp(pCorners[0], pCorners[2], 0.5)
+                mloPortalCrossVectors[portalId] = lib.math.interp(pCorners[0], pCorners[2], 0.5)
 
                 mloPortalConnections[portalId] = { GetInteriorPortalRoomFrom(mloInteriorId, portalId), GetInteriorPortalRoomTo(mloInteriorId, portalId) }
             end
@@ -286,7 +281,6 @@ function UpdateDebugDraw(enablePortalInfo, enablePortalOutline, enablePortalFill
             mloInterval = nil
             resetMLODebugData()
         end
-
     end
 end
 

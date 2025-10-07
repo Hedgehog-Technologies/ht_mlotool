@@ -1,73 +1,115 @@
-function OpenMLO(mloData, currentRoomIndex)
+function OpenMLONui(mloData, currentRoomIndex)
+    lib.print.verbose('Opening MLO NUI for %s', mloData and mloData.saveName or 'nil')
     SetNuiFocus(true, true)
     SendReactMessage('ht_mlotool:openMLO', { mloData = mloData, roomIndex = currentRoomIndex })
 end
 
-RegisterNUICallback('ht_mlotool:exitMLO', function(data, cb)
+---@param debugDrawData DebugDrawData
+---@param cb function
+local function nuiDebugDrawToggle(debugDrawData, cb)
+    cb({})
+
+    lib.print.verbose('Toggling debug draw: info=%s, outline=%s, fill=%s, navigate=%s', tostring(debugDrawData.info), tostring(debugDrawData.outline), tostring(debugDrawData.fill), tostring(debugDrawData.navigate))
+
+    UpdateDebugDraw(debugDrawData.info, debugDrawData.outline, debugDrawData.fill, debugDrawData.navigate)
+end
+
+---@param debugEntityData DebugEntityData
+---@param cb function
+local function nuiDebugEntityToggle(debugEntityData, cb)
+    cb({})
+
+    lib.print.verbose('Debug for portal %s entity %s set to %s', debugEntityData.portalIndex, debugEntityData.entityIndex, tostring(debugEntityData.debug))
+
+    UpdateDebugEntities(debugEntityData.portalIndex, debugEntityData.entityIndex, debugEntityData.debug)
+end
+
+---@param mloData MLODef?
+---@param cb function
+local function nuiExitMLO (mloData, cb)
+    cb({})
+
     SetNuiFocus(false, false)
-    cb({})
-    if data and data.mloData then
-        UpdateMLOData(data.mloData)
+
+    lib.print.verbose('Exiting MLO NUI')
+
+    if mloData then
+        UpdateMLOData(mloData)
     end
-end)
+end
 
-RegisterNUICallback('ht_mlotool:generateAudioFiles', function(data, cb)
-    cb({})
-
-    local mloData = data.mlo
-    local generateAO = data.generateOcclusion
-    local generateDat151 = data.generateDat151
-    local debug = data.debug
-
-    GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
-end)
-
-RegisterNUICallback('ht_mlotool:saveMlo', function(mlo, cb)
-    cb({})
-
-    local updatedMlo = UpdateMLOData(mlo)
-    if updatedMlo then
-        TriggerLatentServerEvent('ht_mlotool:saveMLOData', 100000, updatedMlo)
-    end
-end)
-
-RegisterNUICallback('ht_mlotool:debugDrawToggle', function(data, cb)
-    cb({})
-
-    UpdateDebugDraw(data.info, data.outline, data.fill, data.navigate)
-end)
-
-RegisterNUICallback('ht_mlotool:debugEntityToggle', function(data, cb)
-    cb({})
-
-    UpdateDebugEntities(data.portalIndex, data.entityIndex, data.debug)
-end)
-
-RegisterNUICallback('ht_mlotool:fetchLocales', function(_, cb)
+---@param _ any
+---@param cb function
+local function nuiFetchLocales(_, cb)
     local lang = GetConvar('ox:locale', 'en')
-    local locales = json.decode(LoadResourceFile(cache.resource, ('locales/%s.json'):format(lang)))
+    lib.print.verbose('Fetching locales for language: %s', lang)
+
+    local locales = lib.loadJson('locales.' .. lang)
+    lib.print.debug('Found %s locales: %s', lang, locales and 'true' or 'false')
 
     if not locales then
         lib.notify({
             type = 'error',
             title = 'MLO Tool',
-            description = ('Locale file for "%s" could not be found, please consider contributing with a translation'),
+            description = ('Locale file for "%s" could not be found, please consider contributing a translation'):format(lang),
             duration = 12500
         })
 
         if lang ~= 'en' then
-            print('WARNING: Locale file for "%s" could not be found. Defaulting to "en"')
-            locales = json.decode(LoadResourceFile(cache.resource, 'locales/en.json'))
+            lib.print.warn('Locale file for "%s" could not be found. Defaulting to "en".\nPlease consider contributing a translation.', lang)
+            locales = lib.loadJson('locales.en')
         end
     end
 
     cb(locales)
-end)
+end
 
-RegisterNUICallback('ht_mlotool:freeMove', function(enabled, cb)
+---@param enabled boolean
+---@param cb function
+local function nuiFreeMove(enabled, cb)
     cb({})
+
+    lib.print.debug('Free move mode: %s', enabled and 'enabled' or 'disabled')
+
     SetNuiFocusKeepInput(enabled)
-end)
+end
+
+---@param generateAudioData GenerateAudioData
+---@param cb function
+local function nuiGenerateAudioFiles(generateAudioData, cb)
+    cb({})
+
+    local mloData = generateAudioData.mlo
+    local generateAO = generateAudioData.generateOcclusion
+    local generateDat151 = generateAudioData.generateDat151
+    local debug = generateAudioData.debug
+
+    lib.print.verbose('Generating audio files for MLO %s (AO: %s, Dat151: %s, Debug: %s)', mloData and mloData.saveName or 'nil', tostring(generateAO), tostring(generateDat151), tostring(debug))
+
+    GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
+end
+
+---@param mloData MLODef
+---@param cb function
+local function nuiSaveMLO(mloData, cb)
+    cb({})
+
+    lib.print.verbose('Updating data for MLO %s', mloData and mloData.saveName or 'nil')
+
+    local updatedMLO = UpdateMLOData(mloData)
+
+    if updatedMLO then
+        TriggerLatentServerEvent('ht_mlotool:saveMLOData', 100000, updatedMLO)
+    end
+end
+
+RegisterNUICallback('ht_mlotool:nui:debugDrawToggle', nuiDebugDrawToggle)
+RegisterNUICallback('ht_mlotool:nui:debugEntityToggle', nuiDebugEntityToggle)
+RegisterNUICallback('ht_mlotool:nui:exitMLO', nuiExitMLO)
+RegisterNUICallback('ht_mlotool:nui:fetchLocales', nuiFetchLocales)
+RegisterNUICallback('ht_mlotool:nui:freeMove', nuiFreeMove)
+RegisterNUICallback('ht_mlotool:nui:generateAudioFiles', nuiGenerateAudioFiles)
+RegisterNUICallback('ht_mlotool:nui:saveMlo', nuiSaveMLO)
 
 --- A simple wrapper around SendNUIMessage that you can use to
 --- dispatch actions to the React frame.
@@ -75,6 +117,8 @@ end)
 ---@param action string The action you wish to target
 ---@param data any The data you wish to send along with this action
 function SendReactMessage(action, data)
+    lib.print.debug('Sending NUI message: [%s] with %s', action, data)
+
     SendNUIMessage({
         action = action,
         data = data
