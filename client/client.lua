@@ -10,7 +10,7 @@ local function openMLOInterface(mloData)
     local currentRoomHash = GetRoomKeyFromEntity(cache.ped)
     local currentRoomIndex = GetInteriorRoomIndexByHash(mloData.interiorId, currentRoomHash)
 
-    OpenMLO(mloData, currentRoomIndex)
+    OpenMLONui(mloData, currentRoomIndex)
 end
 
 function UpdateMLOData(mloData)
@@ -31,7 +31,7 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
             local aoFileName = tostring(mlo.uintProxyHash)
             local aoFileType = 'ymt.pso.xml'
             local ymtData = EncodeAudioOcclusion(mlo, paths, pathKeys)
-            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 100000, saveDirName, aoFileName, aoFileType, ymtData, debug)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 25000, saveDirName, aoFileName, aoFileType, ymtData, debug)
         end
 
         if generateDat151 then

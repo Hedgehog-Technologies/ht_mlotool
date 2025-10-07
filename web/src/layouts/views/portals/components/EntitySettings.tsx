@@ -37,7 +37,7 @@ const EntitySettings: React.FC<Props> = (props) => {
     if (!debugEntities || !key) return;
 
     addDebugEntity(key, e.currentTarget.checked);
-    fetchNui("ht_mlotool:debugEntityToggle", { portalIndex: props.portalIndex, entityIndex: props.entityIndex, debug: e.currentTarget.checked }, "1")
+    fetchNui("ht_mlotool:nui:debugEntityToggle", { portalIndex: props.portalIndex, entityIndex: props.entityIndex, debug: e.currentTarget.checked }, "1")
   }
 
   return (
