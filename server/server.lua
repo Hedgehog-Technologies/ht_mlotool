@@ -62,12 +62,9 @@ RegisterNetEvent('ht_mlotool:outputResultFile', function(saveFileName, filename,
     local title = success and locale('file_save_success') or locale('file_save_fail')
     local fileString = ('%s.%s'):format(filename, filetype)
     local msg = ('%s: %s'):format(title, fileString)
+    local printFunc = success and lib.print.info or lib.print.error
 
-    if success then
-        lib.print.info(msg)
-    else
-        lib.print.error(msg)
-    end
+    printFunc(msg)
 
     TriggerClientEvent('ox_lib:notify', source, {
         type = type,
@@ -79,7 +76,8 @@ end)
 RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
     local source = source
     if not canUseMloTool(source) and not canUseSaveMlo(source) then
-        return print(locale('incorrect_perms', source, GetPlayerName(source)))
+        lib.print.warn(locale('incorrect_perms', source, GetPlayerName(source)))
+        return
     end
 
     -- This value changes across sessions, we'll need to regrab it
@@ -92,21 +90,19 @@ RegisterNetEvent('ht_mlotool:saveMLOData', function(mloInfo)
     local success = htio.createDirectory(outputPath)
     success = success and htio.writeFile(source, outputPath, filename, 'json', json.encode(mloInfo, { indent = true }))
 
-    if success then
-        print('^7' .. locale('save_mlo_success') .. (': %s/%s.json'):format(constants.savedMLODir, filename) .. '^7')
-        TriggerClientEvent('ox_lib:notify', source, {
-            type = 'success',
-            title = locale('save_mlo_success'),
-            description = ('%s/%s.json'):format(constants.savedMLODir, filename)
-        })
-    else
-        print('^1' .. locale('save_mlo_fail') .. (': %s/%s.json'):format(constants.savedMLODir, filename) .. '^7')
-        TriggerClientEvent('ox_lib:notify', source, {
-            type = 'error',
-            title = locale('save_mlo_fail'),
-            description = ('%s/%s.json'):format(constants.savedMLODir, filename)
-        })
-    end
+    local type = success and 'success' or 'error'
+    local title = success and locale('save_mlo_success') or locale('save_mlo_fail')
+    local fileString = ('%s/%s.json'):format(constants.savedMLODir, filename)
+    local msg = ('%s: %s'):format(title, fileString)
+    local printFunc = success and lib.print.info or lib.print.error
+
+    printFunc(msg)
+
+    TriggerClientEvent('ox_lib:notify', source, {
+        type = type,
+        title = title,
+        description = fileString
+    })
 end)
 
 lib.callback.register('ht_mlotool:requestMLOSaveData', function(source, nameHashString)
@@ -193,19 +189,23 @@ lib.addCommand('openmlo', {
                         data.globalPortalCount = nil
                     end
                 else
-                    print(locale('warning_server') .. locale('no_filename_name_hash', nameHash) .. '^7')
+                    local msg = locale('no_filename_name_hash', nameHash)
+
+                    lib.print.warn(msg)
                     TriggerClientEvent('ox_lib:notify', source, {
                         type = 'warning',
                         title = locale('warning'),
-                        description = locale('no_filename_name_hash', nameHash)
+                        description = msg
                     })
                 end
             else
-                print(locale('warning_server') .. locale('user_not_in_mlo') .. '^7')
+                local msg = locale('user_not_in_mlo')
+
+                lib.print.warn(msg)
                 TriggerClientEvent('ox_lib:notify', source, {
                     type = 'warning',
                     title = locale('warning'),
-                    description = locale('user_not_in_mlo')
+                    description = msg
                 })
                 return
             end

@@ -31,7 +31,7 @@ function htio.createDirectory(path)
     local success, err, code = pcall(os.createdir, path)
 
     if not success and not err:match(dirExists) then
-        print(lib.locale('fail_create_directory', code, err))
+        lib.print.error(locale('fail_create_directory', code, err))
     end
 
     return success or (err:match(dirExists) and code == 1)
@@ -79,7 +79,7 @@ function htio.readFile(source, filepath, filename, filetype)
     local data = nil
 
     if not file then
-        print('^1' .. err .. '^7')
+        lib.print.error(err)
 
         if source ~= nil then
             TriggerClientEvent('ox_lib:notify', source, {
@@ -115,7 +115,7 @@ function htio.writeFile(source, filepath, filename, filetype, datastring)
     local file, openError = io.open(fullPath, 'w+')
 
     if not file then
-        print('^1' .. openError .. '^7')
+        lib.print.error(openError)
 
         TriggerClientEvent('ox_lib:notify', source, {
             type = 'error',
@@ -129,7 +129,7 @@ function htio.writeFile(source, filepath, filename, filetype, datastring)
     local _, writeError = file:write(datastring)
 
     if writeError ~= nil then
-        print('^1' .. writeError .. '^7')
+        lib.print.error(writeError)
 
         TriggerClientEvent('ox_lib:notify', source, {
             type = 'error',
