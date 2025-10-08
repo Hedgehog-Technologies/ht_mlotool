@@ -49,7 +49,8 @@ end
 RegisterNetEvent('ht_mlotool:outputResultFile', function(saveFileName, filename, filetype, ymtData, debug)
     local source = source
     if not canUseMloTool(source) then
-        return print(locale('warning_server') .. locale('incorrect_perms', source, GetPlayerName(source)) .. '^7')
+        lib.print.warn(locale('incorrect_perms', source, GetPlayerName(source)))
+        return
     end
 
     local mloDirName = type(saveFileName) ~= 'table' and saveFileName or mloFilenameLookup[tostring(saveFileName.nameHash)] or saveFileName.name:gsub('hash_', '')
@@ -58,13 +59,20 @@ RegisterNetEvent('ht_mlotool:outputResultFile', function(saveFileName, filename,
     success = success and htio.writeFile(source, outputDirPath, filename, filetype, ToXml(ymtData, debug))
 
     local type = success and 'success' or 'error'
-    local color = success and '^7' or '^1'
     local title = success and locale('file_save_success') or locale('file_save_fail')
-    print(color .. title .. (': %s.%s'):format(filename, filetype) .. '^7')
+    local fileString = ('%s.%s'):format(filename, filetype)
+    local msg = ('%s: %s'):format(title, fileString)
+
+    if success then
+        lib.print.info(msg)
+    else
+        lib.print.error(msg)
+    end
+
     TriggerClientEvent('ox_lib:notify', source, {
         type = type,
         title = title,
-        description = ('%s.%s'):format(filename, filetype)
+        description = fileString
     })
 end)
 
@@ -218,7 +226,7 @@ CreateThread(function()
     local files, fileCount = htio.getFilesInDirectory(constants.savedMLODirPath, '%.json')
 
     if fileCount > 0 then
-        print(locale('found_mlo_json_files', fileCount))
+        lib.print.info(locale('found_mlo_json_files', fileCount))
     end
 
     for i = 1, fileCount do
