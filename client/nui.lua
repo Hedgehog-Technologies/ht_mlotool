@@ -1,5 +1,5 @@
 function OpenMLONui(mloData, currentRoomIndex)
-    lib.print.verbose('Opening MLO NUI for %s', mloData and mloData.saveName or 'nil')
+    lib.print.verbose(('Opening MLO NUI for %s'):format(mloData and mloData.saveName or 'nil'))
     SetNuiFocus(true, true)
     SendReactMessage('ht_mlotool:openMLO', { mloData = mloData, roomIndex = currentRoomIndex })
 end
@@ -9,7 +9,7 @@ end
 local function nuiDebugDrawToggle(debugDrawData, cb)
     cb({})
 
-    lib.print.verbose('Toggling debug draw: info=%s, outline=%s, fill=%s, navigate=%s', tostring(debugDrawData.info), tostring(debugDrawData.outline), tostring(debugDrawData.fill), tostring(debugDrawData.navigate))
+    lib.print.verbose(('Toggling debug draw: info=%s, outline=%s, fill=%s, navigate=%s'):format(tostring(debugDrawData.info), tostring(debugDrawData.outline), tostring(debugDrawData.fill), tostring(debugDrawData.navigate)))
 
     UpdateDebugDraw(debugDrawData.info, debugDrawData.outline, debugDrawData.fill, debugDrawData.navigate)
 end
@@ -19,7 +19,7 @@ end
 local function nuiDebugEntityToggle(debugEntityData, cb)
     cb({})
 
-    lib.print.verbose('Debug for portal %s entity %s set to %s', debugEntityData.portalIndex, debugEntityData.entityIndex, tostring(debugEntityData.debug))
+    lib.print.verbose(('Debug for portal %s entity %s set to %s'):format(debugEntityData.portalIndex, debugEntityData.entityIndex, tostring(debugEntityData.debug)))
 
     UpdateDebugEntities(debugEntityData.portalIndex, debugEntityData.entityIndex, debugEntityData.debug)
 end
@@ -42,10 +42,10 @@ end
 ---@param cb function
 local function nuiFetchLocales(_, cb)
     local lang = GetConvar('ox:locale', 'en')
-    lib.print.verbose('Fetching locales for language: %s', lang)
+    lib.print.verbose(('Fetching locales for language: %s'):format(lang))
 
     local locales = lib.loadJson('locales.' .. lang)
-    lib.print.debug('Found %s locales: %s', lang, locales and 'true' or 'false')
+    lib.print.debug(('Found %s locales: %s'):format(lang, locales and 'true' or 'false'))
 
     if not locales then
         lib.notify({
@@ -56,7 +56,7 @@ local function nuiFetchLocales(_, cb)
         })
 
         if lang ~= 'en' then
-            lib.print.warn('Locale file for "%s" could not be found. Defaulting to "en".\nPlease consider contributing a translation.', lang)
+            lib.print.warn(('Locale file for "%s" could not be found. Defaulting to "en".\nPlease consider contributing a translation.'):format(lang))
             locales = lib.loadJson('locales.en')
         end
     end
@@ -69,7 +69,7 @@ end
 local function nuiFreeMove(enabled, cb)
     cb({})
 
-    lib.print.debug('Free move mode: %s', enabled and 'enabled' or 'disabled')
+    lib.print.debug(('Free move mode: %s'):format(enabled and 'enabled' or 'disabled'))
 
     SetNuiFocusKeepInput(enabled)
 end
@@ -84,7 +84,7 @@ local function nuiGenerateAudioFiles(generateAudioData, cb)
     local generateDat151 = generateAudioData.generateDat151
     local debug = generateAudioData.debug
 
-    lib.print.verbose('Generating audio files for MLO %s (AO: %s, Dat151: %s, Debug: %s)', mloData and mloData.saveName or 'nil', tostring(generateAO), tostring(generateDat151), tostring(debug))
+    lib.print.verbose(('Generating audio files for MLO %s (AO: %s, Dat151: %s, Debug: %s)'):format(mloData and mloData.saveName or 'nil', tostring(generateAO), tostring(generateDat151), tostring(debug)))
 
     GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
 end
@@ -94,7 +94,7 @@ end
 local function nuiSaveMLO(mloData, cb)
     cb({})
 
-    lib.print.verbose('Updating data for MLO %s', mloData and mloData.saveName or 'nil')
+    lib.print.verbose(('Updating data for MLO %s'):format(mloData and mloData.saveName or 'nil'))
 
     local updatedMLO = UpdateMLOData(mloData)
 
@@ -117,7 +117,7 @@ RegisterNUICallback('ht_mlotool:nui:saveMlo', nuiSaveMLO)
 ---@param action string The action you wish to target
 ---@param data any The data you wish to send along with this action
 function SendReactMessage(action, data)
-    lib.print.debug('Sending NUI message: [%s] with %s', action, data)
+    lib.print.debug(('Sending NUI message: [%s] with %s'):format(action, json.encode(data, { indent = true })))
 
     SendNUIMessage({
         action = action,
