@@ -17,6 +17,7 @@
 ---@field interiorWallaSoundSet string
 
 ---@class CInteriorRoom : OxClass
+---@field private private { roomKey: number }
 ---@field interiorId number
 ---@field index number
 ---@field name string
@@ -44,6 +45,8 @@ function CInteriorRoom:constructor(interiorId, nameHash, proxyHash, roomIndex)
     self.uintRoomKey = ToUInt32(self.roomKey)
     self.portalCount = 0
 
+    self.private.roomKey = self.roomKey
+
     self.dat151 = {
         occlRoomName = ('%s_%s'):format(nameHash, self.name),
         flags = '0xAAAAAAAA',                   -- Pre-CodeWalker 47 names
@@ -62,6 +65,24 @@ function CInteriorRoom:constructor(interiorId, nameHash, proxyHash, roomIndex)
         weaponMetrics = '',                     -- unk13
         interiorWallaSoundSet = 'hash_D4855127' -- soundSet
     }
+end
+
+function CInteriorRoom:updateRoomKey(newHash)
+    if self.name == 'limbo' then return end
+
+    self.roomKey = newHash ~ self.nameHash
+    self.uintRoomKey = ToUInt32(self.roomKey)
+
+    lib.print.info(('Updated Room [%s] key: %s (%s)'):format(self.name, self.roomKey, self.uintRoomKey))
+end
+
+function CInteriorRoom:resetRoomKey()
+    if self.name == 'limbo' then return end
+
+    self.roomKey = self.private.roomKey
+    self.uintRoomKey = ToUInt32(self.roomKey)
+
+    lib.print.info(('Reset Room [%s] key: %s (%s)'):format(self.name, self.roomKey, self.uintRoomKey))
 end
 
 return CInteriorRoom

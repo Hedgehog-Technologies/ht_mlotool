@@ -2,15 +2,15 @@
 local CEntity = require 'client.new_classes.CInteriorPortalEntity'
 
 ---@class CInteriorPortal : OxClass
----@field isEnabled Array<boolean>
+---@field isEnabled boolean[]
 ---@field mloPortalIndex number
----@field globalPortalIndices Array<number>
+---@field globalPortalIndices number[]
 ---@field fromRoomIndex number
 ---@field toRoomIndex number
 ---@field flags number
 ---@field isMirror boolean
 ---@field entityCount number
----@field entities Array<CInteriorPortalEntity>
+---@field entities CInteriorPortalEntity[]
 local CInteriorPortal = lib.class('CInteriorPortal')
 
 ---@param interiorId number
