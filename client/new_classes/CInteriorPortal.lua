@@ -2,9 +2,9 @@
 local CEntity = require 'client.new_classes.CInteriorPortalEntity'
 
 ---@class CInteriorPortal : OxClass
----@field isEnabled boolean[]
+---@field isEnabled [boolean, boolean]
 ---@field mloPortalIndex number
----@field globalPortalIndices number[]
+---@field globalPortalIndices [number, number]
 ---@field fromRoomIndex number
 ---@field toRoomIndex number
 ---@field flags number
