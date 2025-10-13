@@ -141,6 +141,8 @@ end
     SOFTWARE.
 ]]--
 
+---@return table<number, CAudioOcclusionPath>
+---@return table<number, number[]>
 function CInterior:calculateAudioOcclusionPaths()
     local nodes = self:calculateAudioOcclusionNodes()
     local paths, pathKeys = CNode.calculateAudioOcclusionPaths(nodes)

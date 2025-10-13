@@ -30,9 +30,26 @@ function CAudioOcclusionNode:constructor(room, activePortals)
     self.edges = {}
 end
 
+---@return CAudioOcclusionNode[]
+function CAudioOcclusionNode:getNonLimboEdges()
+    local nlEdges = {}
+    local nlEdgeCount = 0
+
+    for edgeIndex = 1, #self.edges do
+        local edge = self.edges[edgeIndex]
+
+        if edge.index ~= 0 then
+            nlEdgeCount += 1
+            nlEdges[nlEdgeCount] = edge
+        end
+    end
+
+    return nlEdges
+end
+
 ---@param nodes CAudioOcclusionNode[]
 ---@return table<number, CAudioOcclusionPath>
----@return number[][]
+---@return table<number, number[]>
 function CAudioOcclusionNode.calculateAudioOcclusionPaths(nodes)
     ---@type table<number, CAudioOcclusionPath>
     local pathList = {}

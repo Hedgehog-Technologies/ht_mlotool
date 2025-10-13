@@ -1,5 +1,8 @@
 --- Algorithm based on / translated from pedr0fontoura's audio occlusion tool (https://github.com/pedr0fontoura/gtav-audio-occlusion)
 
+---@type CAudioOcclusionNodePair
+local CNodePair = require 'client.new_classes.CAudioOcclusionNodePair'
+
 ---@class CAudioOcclusionPath : OxClass
 ---@field distance number
 ---@field origin CAudioOcclusionNode
@@ -44,12 +47,72 @@ function CAudioOcclusionPath:addChild(originNode, destinationNode, distance, glo
     self.childList[self.childCount] = pathChild
 end
 
+---@param fromNode CAudioOcclusionNode
+---@param toNode CAudioOcclusionNode
+---@return boolean
+function CAudioOcclusionPath:isRelevant(fromNode, toNode)
+    return self.origin.index == fromNode.index
+        and self.destination.index == toNode.index
+end
+
+---@param pathList table<number, CAudioOcclusionPath>
+---@param fromNodeKey number
+---@param toNodeKey number
+---@param distance number
+local function findPathInList(pathList, fromNodeKey, toNodeKey, distance)
+    local nodePairKey = ToUInt32(fromNodeKey - toNodeKey) + distance
+    return pathList[nodePairKey]
+end
+
 ---@param pathList table<number, CAudioOcclusionPath>
 ---@param pathKeys table<number, number[]>
 ---@param pair CAudioOcclusionNodePair
 ---@param distance number
 local function generateRoutes(pathList, pathKeys, pair, distance)
+    local edges = pair.isLimboPair and pair.fromNode.edges or pair.fromNode:getNonLimboEdges()
+    -- Because I'll forget, DMO == distance minus one
+    local dmoPathKeys = pathKeys[distance - 1]
 
+    for keyIndex = 1, #dmoPathKeys do
+        local path = pathList[dmoPathKeys[keyIndex]]
+
+        if distance == 1 or distance == 2 or distance == 3 then
+            if path:isRelevant(pair.fromNode, pair.toNode) then
+                local curPath = findPathInList(pathList, pair.fromNode.key, pair.toNode.key, distance)
+
+                local new = false
+                if not curPath then
+                    curPath = CAudioOcclusionPath:new(pair.fromNode, pair.toNode, distance)
+                    new = true
+                end
+
+                for portalIndex = 1, pair.fromNode.activePortalCount do
+                    local portal = pair.fromNode.activePortals[portalIndex]
+
+                    if not portal.isMirror then
+                        local globalPortalIndex = nil
+
+                        if portal.toRoomIndex == pair.toNode.index then
+                            globalPortalIndex = portal.globalPortalIndices[1]
+                        elseif portal.fromRoomIndex == pair.toNode.index then
+                            globalPortalIndex = portal.globalPortalIndices[2]
+                        end
+
+                        if globalPortalIndex ~= nil then
+                            curPath:addChild(pair.fromNode, pair.fromNode, distance - 1, globalPortalIndex)
+                        end
+                    end
+                end
+
+                if new and curPath.childCount > 0 then
+                    pathList[curPath.uintKey] = curPath
+                    table.insert(pathKeys[distance], curPath.uintKey)
+                end
+            else
+                
+            end
+        end
+    end
 end
 
 ---@param pathList table<number, CAudioOcclusionPath>
@@ -92,6 +155,8 @@ function CAudioOcclusionPath.calculateAudioOcclusionPathsForDistance(pathList, p
             end
         end
     else
+        nodePairList = nodePairList or CNodePair.generateNodePairs(nodes)
+
         for pairIndex = 1, #nodePairList do
             local pair = nodePairList[pairIndex]
             generateRoutes(pathList, pathKeys, pair, distance)
