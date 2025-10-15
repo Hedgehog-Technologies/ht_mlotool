@@ -4,11 +4,7 @@ local CRoom = require 'client.new_classes.CInteriorRoom'
 ---@type CInteriorPortal
 local CPortal = require 'client.new_classes.CInteriorPortal'
 
----@type CAudioOcclusionNode
-local CNode = require 'client.new_classes.CAudioOcclusionNode'
-
 ---@class CInterior : OxClass
----@field private private { proxyHash: number }
 ---@field interiorId number
 ---@field location vector3
 ---@field nameHash number
@@ -21,6 +17,8 @@ local CNode = require 'client.new_classes.CAudioOcclusionNode'
 ---@field rooms CInteriorRoom[]
 ---@field portalCount number
 ---@field portals CInteriorPortal[]
+---@field globalPortalCount number
+---@field private private { proxyHash: number }
 local CInterior = lib.class('CInterior')
 
 ---@param interiorId number
@@ -68,6 +66,7 @@ function CInterior:constructor(interiorId)
         toRoom.portalCount += 1
     end
 
+    self.globalPortalCount = 0
     self:updateGlobalPortals()
 end
 
@@ -114,114 +113,18 @@ function CInterior:updateGlobalPortals()
     end
 end
 
---[[
-    The following algorithm to generate nodes and paths is originally sourced and translated from pedr0fontoura's gtav-audio-occlusion tool.
-    https://github.com/pedr0fontoura/gtav-audio-occlusion
-
-    MIT License
-
-    Copyright (c) 2021 snakewiz
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
-]]--
-
----@return table<number, CAudioOcclusionPath>
----@return table<number, number[]>
-function CInterior:calculateAudioOcclusionPaths()
-    local nodes = self:calculateAudioOcclusionNodes()
-    local paths, pathKeys = CNode.calculateAudioOcclusionPaths(nodes)
-    return paths, pathKeys
-end
-
----@return CAudioOcclusionNode[]
-function CInterior:calculateAudioOcclusionNodes()
-    ---@type CAudioOcclusionNode[]
-    local nodes = {}
-    local nodeCount = 0
-
-    for roomIndex = 1, self.roomCount do
-        local room = self.rooms[roomIndex]
-        local activePortals = self:getActivePortalsForRoom(roomIndex - 1)
-        local node = CNode:new(room, activePortals)
-
-        nodeCount += 1
-        nodes[nodeCount] = node
-    end
-
-    for nodeIndex = 1, nodeCount do
-        local node = nodes[nodeIndex]
-
-        ---@type CAudioOcclusionNode[]
-        local edges = {}
-        local edgeCount = 0
-        ---@type table<number, boolean>
-        local addedIndices = {}
-
-        for nodePortalIndex = 1, node.activePortalCount do
-            local portal = node.activePortals[nodePortalIndex]
-            local fromIndex = portal.fromRoomIndex
-            local toIndex = portal.toRoomIndex
-
-            local checkIndex = nil
-            if fromIndex == node.index then
-                checkIndex = toIndex
-            elseif toIndex == node.index then
-                checkIndex = fromIndex
-            end
-
-            if checkIndex then
-                for edgeNodeIndex = 1, nodeCount do
-                    local edgeNode = nodes[edgeNodeIndex]
-
-                    if not addedIndices[edgeNode.index]
-                        and edgeNode.index == checkIndex
-                    then
-                        addedIndices[edgeNode.index] = true
-
-                        edgeCount += 1
-                        edges[edgeCount] = edgeNode
-                        break
-                    end
-                end
-            end
-        end
-
-        node.edges = edges
-    end
-
-    return nodes
-end
-
--- Get all active portals for a given room
--- Active Portal = what can I hear if I were standing in this room
 ---@param roomIndex number
 ---@return CInteriorPortal[]
 function CInterior:getActivePortalsForRoom(roomIndex)
-    ---@type CInteriorPortal[]
     local activePortals = {}
     local portalCount = 0
 
     for portalIndex = 1, self.portalCount do
         local portal = self.portals[portalIndex]
 
-        if not portal.isMirror and (portal.fromRoomIndex == roomIndex and portal.isEnabled[2])
-            or (portal.toRoomIndex == roomIndex and portal.isEnabled[1])
+        if not portal.isMirror
+            and (portal.fromRoomIndex == roomIndex and portal.isEnabled[2]
+                or portal.toRoomIndex == roomIndex and portal.isEnabled[1])
         then
             portalCount += 1
             activePortals[portalCount] = portal
@@ -231,4 +134,10 @@ function CInterior:getActivePortalsForRoom(roomIndex)
     return activePortals
 end
 
-return CInterior
+---@param interiorId number
+---@return CInterior
+function CInterior.create(interiorId)
+    return CInterior:new(interiorId)
+end
+
+return CInterior.create

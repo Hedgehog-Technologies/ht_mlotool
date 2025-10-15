@@ -6,7 +6,7 @@ function EncodeAudioOcclusion(mlo, paths, pathKeys)
                 { tagName = 'PortalInfoList', attr = { itemType = 'naOcclusionPortalInfoMetadata' }, content = {} },
                 { tagName = 'PathNodeList', attr = { itemType = 'naOcclusionPathNodeMetadata' }, content = {} }
             },
-            comment = mlo.archetypeName
+            comment = mlo.name
         }
     }
 

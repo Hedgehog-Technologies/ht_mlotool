@@ -1,5 +1,11 @@
 local mloCache = {}
 
+---@type fun(interiorId: number): CInterior
+local CreateCInterior = require 'client.new_classes.CInterior'
+
+---@type fun(interior: CInterior): CAudioOcclusion
+local CreateCAudioOcclusion = require 'client.new_classes.CAudioOcclusion'
+
 -- ##### FUNCTIONS ##### --
 
 local function openMLOInterface(mloData)
@@ -23,6 +29,7 @@ end
 
 function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
     local mlo = UpdateMLOData(mloData)
+    local interior = CreateCInterior(mloData.interiorId)
 
     if mlo then
         local saveDirName = mlo.saveName ~= '' and mlo.saveName or { mlo.nameHash, mlo.name }
@@ -32,6 +39,10 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
             local aoFileType = 'ymt.pso.xml'
             local ymtData = EncodeAudioOcclusion(mlo, paths, pathKeys)
             TriggerLatentServerEvent('ht_mlotool:outputResultFile', 25000, saveDirName, aoFileName, aoFileType, ymtData, debug)
+
+            local aoObj = CreateCAudioOcclusion(interior)
+            local ymtData2 = EncodeAudioOcclusion(interior, aoObj.paths, aoObj.pathKeys)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 25000, saveDirName, 'TEST_' .. aoFileName, aoFileType, ymtData2, debug)
         end
 
         if generateDat151 then
