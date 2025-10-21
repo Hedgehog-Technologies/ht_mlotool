@@ -1,76 +1,63 @@
 ---@meta
 
----@class DebugDrawData
----@field info? boolean
----@field outline? boolean
----@field fill? boolean
----@field navigate? number
+---@class TXmlTag
+---@field tagName string
+---@field attr TXmlAttr?
+---@field value any?
+---@field content TXmlTag[]?
+---@field comment any?
 
----@class DebugEntityData
+---@class TXmlAttr
+---@field itemType string?
+---@field type string?
+---@field ntOffset number?
+---@field value any?
+
+---@class TDrawEntityData
+---@field entity number?
 ---@field portalIndex number
 ---@field entityIndex number
 ---@field debug boolean
+---@field position vector3
+---@field archetype number
 
----@class MLODef
----@field interiorId number
----@field saveName string
----@field nameHash number
----@field uintNameHash number
----@field location vector3
----@field locationString string
----@field proxyHash number
----@field uintProxyHash number
----@field rooms RoomDef[]
----@field portals PortalDef[]
+---@alias DDrawEntityTracking { [string]: TDrawEntityData }
 
----@class Data151Def
----@field occlRoomName string
----@field flags string
----@field zone string
----@field unk02 number
----@field unk03 number
----@field reverb number
----@field echo number
----@field sound string
----@field unk07 number
----@field unk08 number
----@field unk09 number
----@field unk10 number
----@field unk11 number
----@field unk12 number
----@field unk13 string
----@field soundSet string
+---@alias TPortalCorners table<number, table<number, vector3>>
+---@alias TPortalCrossVectors table<number, vector3>
+---@alias TPortalConnections table<number, [ number, number ]>
 
----@class RoomDef: Data151Def
----@field index number
----@field name string
----@field displayName string
----@field nameHash number
----@field uintNameHash number
----@field roomKey number
----@field uintRoomKey number
----@field portalCount number
+---@class ServerConstants
+---@field systemIsWindows boolean
+---@field resourcePath string
+---@field savedInteriorDir string
+---@field savedInteriorDirPath string
+---@field generatedFilesDir string
+---@field generatedFilesDirPath string
 
----@class PortalDef
----@field mloPortalIndex number
----@field fromRoomIndex number
----@field toRoomIndex number
----@field flags number
----@field isMirror boolean
----@field isEnabled boolean[]
----@field entities EntityDef[]
+-- ##### APIs ##### --
 
----@class EntityDef
----@field index number
----@field linkType number
----@field maxOcclusion number
----@field modelHashKey number
----@field modelName string
----@field isDoor boolean
----@field isGlass boolean
+---@class DebugDrawApi
+---@field updateDebugDraw fun(enablePortalInfo: boolean, enablePortalOutline: boolean, enablePortalFill: boolean, navigatedPortal: number)
+---@field updateDebugEntities fun(portalIndex: number, entityIndex: number, debug: boolean)
 
----@class GenerateAudioData
----@field mlo MLODef
----@field generateOcclusion boolean
----@field generateDat151 boolean
----@field debug boolean
+---@class EncodersApi
+---@field encodeAudioOcclusion fun(interior: CInterior, audioOcclusion: CAudioOcclusion): [ TXmlTag ]
+---@field encodeDat151 fun(interior: CInterior): [ TXmlTag ]
+
+---@class HTFileApi
+---@field createDirectory fun(path: string): boolean
+---@field getFilesInDirectory fun(path: string, pattern: string): string[]|nil, number
+---@field readFile fun(source: number?, filepath: string, filename: string, filetype: string): string|nil
+---@field writeFile fun(source: number?, filepath: string, filename: string, filetype: string, data: string): boolean
+
+---@class InteriorCacheApi
+---@field generateInteriorFiles fun(interiorData: table, generateAO: boolean, generateDat151: boolean, debug: boolean)
+---@field getInterior fun(interiorId: number): CInterior
+---@field updateInteriorData fun(interiorData: table): CInterior
+
+---@class UtilsApi
+---@field sendReactMessage fun(action: string, data: any) Client only
+---@field toInt32 fun(value: number): number
+---@field toUInt32 fun(value: number): number
+---@field toXml fun(tbl: [ TXmlTag ], debug: boolean): string[]
