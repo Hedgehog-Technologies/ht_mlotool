@@ -33,7 +33,8 @@ ox_libs {
 files {
     'web/build/index.html',
     'web/build/**/*',
-    'locales/*.json'
+    'locales/*.json',
+    'new_client/**/*.lua'
 }
 
 ui_page 'web/build/index.html'
