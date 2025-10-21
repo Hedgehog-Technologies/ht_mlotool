@@ -57,7 +57,13 @@
 ---@field updateInteriorData fun(interiorData: table): CInterior
 
 ---@class UtilsApi
----@field sendReactMessage fun(action: string, data: any) Client only
 ---@field toInt32 fun(value: number): number
 ---@field toUInt32 fun(value: number): number
 ---@field toXml fun(tbl: [ TXmlTag ], debug: boolean): string[]
+
+---@class ClientUtilsApi : UtilsApi
+---@field sendReactMessage fun(action: string, data: any)
+
+---@class ServerUtilsApi : UtilsApi
+---@field canUseOpenMloCmd fun(playerId: number|string): boolean
+---@field canUseSaveMloCmd fun(playerId: number|string): boolean

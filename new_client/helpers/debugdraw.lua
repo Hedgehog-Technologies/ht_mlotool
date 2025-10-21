@@ -1,5 +1,5 @@
 ---@type UtilsApi
-local Utils = require 'shared.utils'
+local Utils = require 'new_client.helpers.utils'
 
 -- ##### Local Variables ##### --
 
