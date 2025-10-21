@@ -5,6 +5,7 @@
 ---@field fromNode CAudioOcclusionNode
 ---@field toNode CAudioOcclusionNode
 ---@field isLimboPair boolean
+---@field new fun(self: CAudioOcclusionNodePair, fromNode: CAudioOcclusionNode, toNode: CAudioOcclusionNode): CAudioOcclusionNodePair
 local CAudioOcclusionNodePair = lib.class('CAudioOcclusionNodePair')
 
 ---@param fromNode CAudioOcclusionNode

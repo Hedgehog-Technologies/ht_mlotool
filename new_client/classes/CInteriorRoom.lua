@@ -17,7 +17,7 @@
 ---@field interiorWallaSoundSet string
 
 ---@class CInteriorRoom : OxClass
----@field private private { roomKey: number }
+---@field version number
 ---@field interiorId number
 ---@field index number
 ---@field name string
@@ -28,6 +28,8 @@
 ---@field uintRoomKey number
 ---@field portalCount number
 ---@field dat151 RoomDat151Fields
+---@field private private { roomKey: number }
+---@field new fun(self: CInteriorRoom, interiorId: number, nameHash: number, proxyHash: number, roomIndex: number): CInteriorRoom
 local CInteriorRoom = lib.class('CInteriorRoom')
 
 ---@param interiorId number
@@ -35,6 +37,9 @@ local CInteriorRoom = lib.class('CInteriorRoom')
 ---@param proxyHash number
 ---@param roomIndex number
 function CInteriorRoom:constructor(interiorId, nameHash, proxyHash, roomIndex)
+    -- Represents the version of the class structure for save data decoding purposes
+    self.version = 2
+
     self.interiorId = interiorId
     self.index = roomIndex
     self.name = GetInteriorRoomName(interiorId, roomIndex)

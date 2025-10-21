@@ -1,10 +1,11 @@
 ---@type CInteriorRoom
-local CRoom = require 'client.new_classes.CInteriorRoom'
+local CRoom = require 'new_client.classes.CInteriorRoom'
 
 ---@type CInteriorPortal
-local CPortal = require 'client.new_classes.CInteriorPortal'
+local CPortal = require 'new_client.classes.CInteriorPortal'
 
 ---@class CInterior : OxClass
+---@field version number
 ---@field interiorId number
 ---@field location vector3
 ---@field nameHash number
@@ -19,10 +20,14 @@ local CPortal = require 'client.new_classes.CInteriorPortal'
 ---@field portals CInteriorPortal[]
 ---@field globalPortalCount number
 ---@field private private { proxyHash: number }
+---@field new fun(self: CInterior, interiorId: number): CInterior
 local CInterior = lib.class('CInterior')
 
 ---@param interiorId number
 function CInterior:constructor(interiorId)
+    -- Represents the version of the class structure for save data decoding purposes
+    self.version = 2
+
     self.interiorId = interiorId
     self.location, self.nameHash = GetInteriorLocationAndNamehash(interiorId)
     self.uintNameHash = ToUInt32(self.nameHash)
@@ -30,6 +35,7 @@ function CInterior:constructor(interiorId)
     lib.print.debug(('Interior Location: %f, %f, %f'):format(self.location.x, self.location.y, self.location.z))
 
     self.saveName = ('%X'):format(self.uintNameHash)
+    -- Maybe someday we'll be able to query the game for the actual mlo archetype name, until then we can utilize the hash_hex value
     self.name = ('hash_%s'):format(self.saveName)
 
     local x, y, z = self.location.x * 100, self.location.y * 100, self.location.z * 100
@@ -134,10 +140,4 @@ function CInterior:getActivePortalsForRoom(roomIndex)
     return activePortals
 end
 
----@param interiorId number
----@return CInterior
-function CInterior.create(interiorId)
-    return CInterior:new(interiorId)
-end
-
-return CInterior.create
+return CInterior

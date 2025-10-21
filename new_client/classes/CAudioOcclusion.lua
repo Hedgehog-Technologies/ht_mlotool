@@ -26,13 +26,13 @@
 ]]--
 
 ---@type CAudioOcclusionNode
-local CNode = require 'client.new_classes.CAudioOcclusionNode'
+local CNode = require 'new_client.classes.CAudioOcclusionNode'
 
 ---@type CAudioOcclusionNodePair
-local CNodePair = require 'client.new_classes.CAudioOcclusionNodePair'
+local CNodePair = require 'new_client.classes.CAudioOcclusionNodePair'
 
 ---@type CAudioOcclusionPath
-local CPath = require 'client.new_classes.CAudioOcclusionPath'
+local CPath = require 'new_client.classes.CAudioOcclusionPath'
 
 ---@class CAudioOcclusion : OxClass
 ---@field nodes CAudioOcclusionNode[]
@@ -41,6 +41,7 @@ local CPath = require 'client.new_classes.CAudioOcclusionPath'
 ---@field pairCount number
 ---@field paths table<number, CAudioOcclusionPath>
 ---@field pathKeys table<number, number[]>
+---@field new fun(self: CAudioOcclusion, interior: CInterior): CAudioOcclusion
 local CAudioOcclusion = lib.class('CAudioOcclusion')
 
 ---@param interior CInterior
@@ -58,6 +59,7 @@ function CAudioOcclusion:constructor(interior)
     self:calculatePaths()
 end
 
+---@package
 ---@param interior CInterior
 function CAudioOcclusion:generateNodes(interior)
     for roomIndex = 1, interior.roomCount do
@@ -111,6 +113,7 @@ function CAudioOcclusion:generateNodes(interior)
     end
 end
 
+---@package
 function CAudioOcclusion:generateNodePairs()
     for fromIndex = 1, #self.nodes do
         local fromNode = self.nodes[fromIndex]
@@ -126,6 +129,7 @@ function CAudioOcclusion:generateNodePairs()
     end
 end
 
+---@package
 function CAudioOcclusion:calculatePaths()
     for i = 1, 5 do
         self.pathKeys[i] = {}
@@ -134,6 +138,7 @@ function CAudioOcclusion:calculatePaths()
     end
 end
 
+---@package
 ---@param distance number
 function CAudioOcclusion:calculatePathsForDistance(distance)
     if distance == 1 then
@@ -160,6 +165,7 @@ function CAudioOcclusion:calculatePathsForDistance(distance)
     end
 end
 
+---@package
 ---@param pair CAudioOcclusionNodePair
 ---@param distance number
 function CAudioOcclusion:calculateRoutes(pair, distance)
@@ -229,6 +235,7 @@ function CAudioOcclusion:calculateRoutes(pair, distance)
     end
 end
 
+---@package
 ---@param fromNode CAudioOcclusionNode
 ---@param toNode CAudioOcclusionNode
 ---@param distance number
@@ -246,6 +253,7 @@ function CAudioOcclusion:getOrCreatePath(fromNode, toNode, distance)
     return curPath, isNew
 end
 
+---@package
 ---@param fromNodeKey number
 ---@param toNodeKey number
 ---@param distance number
@@ -255,6 +263,7 @@ function CAudioOcclusion:findPathInList(fromNodeKey, toNodeKey, distance)
     return self.paths[nodePairKey]
 end
 
+---@package
 ---@param fromNodeKey number
 ---@param toNodeKey number
 ---@param distance number
@@ -271,9 +280,4 @@ function CAudioOcclusion:hasFoundPath(fromNodeKey, toNodeKey, distance)
     return false
 end
 
----@param interior CInterior
-function CAudioOcclusion.create(interior)
-    return CAudioOcclusion:new(interior)
-end
-
-return CAudioOcclusion.create
+return CAudioOcclusion

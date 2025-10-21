@@ -8,6 +8,7 @@
 ---@field activePortals CInteriorPortal[]
 ---@field activePortalCount number
 ---@field edges CAudioOcclusionNode[]
+---@field new fun(self: CAudioOcclusionNode, room: CInteriorRoom, activePortals: CInteriorPortal[]): CAudioOcclusionNode
 local CAudioOcclusionNode = lib.class('CAudioOcclusionNode')
 
 ---@param room CInteriorRoom

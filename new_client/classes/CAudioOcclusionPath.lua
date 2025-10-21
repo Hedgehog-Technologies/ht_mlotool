@@ -12,6 +12,7 @@
 ---@field uintKey number
 ---@field childList PathChild[]
 ---@field childCount number
+---@field new fun(self: CAudioOcclusionPath, originNode: CAudioOcclusionNode, destinationNode: CAudioOcclusionNode, distance: number): CAudioOcclusionPath
 local CAudioOcclusionPath = lib.class('CAudioOcclusionPath')
 
 ---@param originNode CAudioOcclusionNode
@@ -35,6 +36,7 @@ function CAudioOcclusionPath:constructor(originNode, destinationNode, distance)
     self.childCount = 0
 end
 
+---@package
 ---@param originNode CAudioOcclusionNode
 ---@param destinationNode CAudioOcclusionNode
 ---@param distance number
