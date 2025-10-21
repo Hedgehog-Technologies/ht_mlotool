@@ -2,6 +2,8 @@ local INT32MIN <const> = -2147483648
 local INT32MAX <const> = 2147483647
 local UINT32MAX <const> = 4294967295
 
+---@param value number
+---@return number
 function ToUInt32(value)
     if value >= 0 and value <= UINT32MAX then
         return value
@@ -10,6 +12,8 @@ function ToUInt32(value)
     end
 end
 
+---@param value number
+---@return number
 function ToInt32(value)
     if value > INT32MAX then
         repeat
@@ -24,6 +28,10 @@ function ToInt32(value)
     return value
 end
 
+---@param xmlTbl string[]
+---@param valueTbl any
+---@param level number
+---@param debug boolean
 local function toXmlInternal(xmlTbl, valueTbl, level, debug)
     local spaces = level > 0 and string.rep(' ', 2 * level) or ''
     for _, value in ipairs(valueTbl) do
@@ -52,6 +60,9 @@ local function toXmlInternal(xmlTbl, valueTbl, level, debug)
     end
 end
 
+---@param tbl any
+---@param debug boolean
+---@return string[]
 function ToXml(tbl, debug)
     local xml = { '<?xml version="1.0" encoding="UTF-8"?>' }
     toXmlInternal(xml, tbl, 0, debug)
