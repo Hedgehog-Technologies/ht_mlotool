@@ -1,4 +1,4 @@
-local utils = {}
+local UtilsApi = {}
 
 local INT32MIN <const> = -2147483648
 local INT32MAX <const> = 2147483647
@@ -8,7 +8,7 @@ local UINT32MAX <const> = 4294967295
 
 ---@param value number
 ---@return number
-function utils.toUInt32(value)
+function UtilsApi.toUInt32(value)
     if value >= 0 and value <= UINT32MAX then
         return value
     else
@@ -18,7 +18,7 @@ end
 
 ---@param value number
 ---@return number
-function utils.toInt32(value)
+function UtilsApi.toInt32(value)
     if value > INT32MAX then
         repeat
             value = value - UINT32MAX - 1
@@ -67,28 +67,10 @@ end
 ---@param tbl any
 ---@param debug boolean
 ---@return string[]
-function utils.toXml(tbl, debug)
+function UtilsApi.toXml(tbl, debug)
     local xml = { '<?xml version="1.0" encoding="UTF-8"?>' }
     toXmlInternal(xml, tbl, 0, debug)
     return table.concat(xml, '\n')
 end
 
--- ##### CLIENT ONLY ##### --
-
-if not IsDuplicityVersion() then
-
-    --- `client`
-    ---@param action string The action you wish to target
-    ---@param data any The data you wish to send along with this action
-    function utils.sendReactMessage(action, data)
-        lib.print.debug(('Sending NUI message: [%s] with %s'):format(action, json.encode(data, { indent = true })))
-
-        SendNUIMessage({
-            action = action,
-            data = data
-        })
-    end
-
-end
-
-return utils --[[@as UtilsApi]]
+return UtilsApi --[[@as UtilsApi]]
