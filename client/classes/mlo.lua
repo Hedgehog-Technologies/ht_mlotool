@@ -29,14 +29,15 @@ function MLO.new(interiorId)
     -- Maybe someday we'll be able to query the game for the actual mlo archetype name, until then we can utilize the hash_hex value
     mlo.name = string.format('hash_%s', mlo.saveName)
 
-    lib.print.debug('fmt', round_sig_fmt(mlo.location.x, 6), round_sig_fmt(mlo.location.y, 6), round_sig_fmt(mlo.location.z, 6))
-    lib.print.debug('math', vector3(round_sig_math(mlo.location.x, 6), round_sig_math(mlo.location.y, 6), round_sig_math(mlo.location.z, 6)))
+    -- lib.print.debug('fmt', round_sig_fmt(mlo.location.x, 6), round_sig_fmt(mlo.location.y, 6), round_sig_fmt(mlo.location.z, 6))
+    -- lib.print.debug('math', vector3(round_sig_math(mlo.location.x, 6), round_sig_math(mlo.location.y, 6), round_sig_math(mlo.location.z, 6)))
     
-    local x, y, z = round_sig_math(mlo.location.x, 6), round_sig_math(mlo.location.y, 6), round_sig_math(mlo.location.z, 6)
-    lib.print.debug('rounded1', x, y, z)
+    -- local x, y, z = round_sig_math(mlo.location.x, 6), round_sig_math(mlo.location.y, 6), round_sig_math(mlo.location.z, 6)
+    -- lib.print.debug('rounded1', x, y, z)
 
-    mlo.location = vec3(round_sig_fmt(mlo.location.x, 6), round_sig_fmt(mlo.location.y, 6), round_sig_fmt(mlo.location.z, 6))
-    x, y, z = x * 100, y * 100, z * 100
+    -- mlo.location = vec3(round_sig_fmt(mlo.location.x, 6), round_sig_fmt(mlo.location.y, 6), round_sig_fmt(mlo.location.z, 6))
+    -- x, y, z = x * 100, y * 100, z * 100
+    local x, y, z = mlo.location.x * 100, mlo.location.y * 100, mlo.location.z * 100
 
     lib.print.debug(mlo.nameHash)
     lib.print.debug('Location: ', mlo.location)

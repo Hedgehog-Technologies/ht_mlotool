@@ -1,10 +1,12 @@
 local mloCache = {}
 
----@type fun(interiorId: number): CInterior
-local CreateCInterior = require 'client.new_classes.CInterior'
+local encoders = require 'new_client.helpers.encoders'
 
----@type fun(interior: CInterior): CAudioOcclusion
-local CreateCAudioOcclusion = require 'client.new_classes.CAudioOcclusion'
+---@type CInterior
+local CInterior = require 'new_client.classes.CInterior'
+
+---@type CAudioOcclusion
+local CAudioOcclusion = require 'new_client.classes.CAudioOcclusion'
 
 -- ##### FUNCTIONS ##### --
 
@@ -29,7 +31,7 @@ end
 
 function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
     local mlo = UpdateMLOData(mloData)
-    local interior = CreateCInterior(mloData.interiorId)
+    local interior = CInterior:new(mloData.interiorId)
 
     if mlo then
         local saveDirName = mlo.saveName ~= '' and mlo.saveName or { mlo.nameHash, mlo.name }
@@ -38,11 +40,11 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
             local aoFileName = tostring(mlo.uintProxyHash)
             local aoFileType = 'ymt.pso.xml'
             local ymtData = EncodeAudioOcclusion(mlo, paths, pathKeys)
-            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 25000, saveDirName, aoFileName, aoFileType, ymtData, debug)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 50000, saveDirName, aoFileName, aoFileType, ymtData, debug)
 
-            local aoObj = CreateCAudioOcclusion(interior)
-            local ymtData2 = EncodeAudioOcclusion(interior, aoObj.paths, aoObj.pathKeys)
-            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 25000, saveDirName, 'TEST_' .. aoFileName, aoFileType, ymtData2, debug)
+            local aoObj = CAudioOcclusion:new(interior)
+            local ymtData2 = encoders.encodeAudioOcclusion(interior, aoObj)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 50000, saveDirName, 'TEST_' .. aoFileName, aoFileType, ymtData2, debug)
         end
 
         if generateDat151 then
@@ -59,10 +61,20 @@ function GenerateMLOFiles(mloData, generateAO, generateDat151, debug)
             local datFileName = ('%s_game'):format(mloName)
             local datFileType = 'dat151.rel.xml'
             local dat151Data = EncodeDat151(mlo)
-            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 100000, saveDirName, datFileName, datFileType, dat151Data, debug)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 50000, saveDirName, datFileName, datFileType, dat151Data, debug)
+
+            local dat151Data2 = encoders.encodeDat151(interior)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 50000, saveDirName, 'TEST_' .. datFileName, datFileType, dat151Data2, debug)
         end
 
-        TriggerLatentServerEvent('ht_mlotool:saveMLOData', 100000, mlo)
+        local interiorJson = json.encode(interior)
+        local interiorPacked = msgpack.pack_args(interior)
+        local jsonPacked = msgpack.pack_args(interiorJson)
+        lib.print.error(('Data Packed: %s; Str Packed: %s'):format(interiorPacked:len(), jsonPacked:len()))
+
+        TriggerLatentServerEvent('ht_mlotool:saveMLOData', 50000, mlo)
+        interior.saveName = 'TEST_SAVE'
+        TriggerLatentServerEvent('ht_mlotool:saveMLOData', 50000, interior)
     end
 end
 
