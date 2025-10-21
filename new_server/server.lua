@@ -1,23 +1,11 @@
 ---@type ServerConstants
-local Constants = require 'new_server.constants'
+local Constants = require 'new_server.helpers.constants'
 
 ---@type HTFileApi
-local HTFile = require 'new_server.fileio'
+local HTFile = require 'new_server.helpers.fileio'
 
 ---@type { [string]: string }
 local interiorFilenameLookup = {}
-
----@param playerId number|string
----@return boolean
-local function canUseMloTool(playerId)
-    return IsPlayerAceAllowed(playerId, 'command.openmlo')
-end
-
----@param playerId number|string
----@retrun boolean
-local function canUseSaveMlo(playerId)
-    return IsPlayerAceAllowed(playerId, 'command.savemlo')
-end
 
 ---@param source number|string
 ---@param filename string
@@ -42,6 +30,8 @@ local function loadSavedInteriorData(source, filename, nameHashString, openUI)
         TriggerLatentClientEvent('ht_mlotool:loadInteriorData', source, 50000, interiorData, openUI)
     end
 end
+
+-- ##### Initialization Thread ##### --
 
 CreateThread(function()
     lib.versionCheck('Hedgehog-Technologies/ht_mlotool')
