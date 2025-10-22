@@ -5,9 +5,9 @@
 ---@field linkType number
 ---@field maxOcclusion number
 ---@field modelHashKey number
+---@field modelName string
 ---@field isDoor boolean
 ---@field isGlass boolean
----@field modelName string
 ---@field new fun(self: CInteriorPortalEntity, interiorId: number, interiorPortalIndex: number, entityIndex: number, interiorLocation: vector3): CInteriorPortalEntity
 local CInteriorPortalEntity = lib.class('CInteriorPortalEntity')
 
@@ -32,6 +32,22 @@ function CInteriorPortalEntity:constructor(interiorId, interiorPortalIndex, enti
     local entityPosition = interiorLocation + relativePosition
     local entityInstance = GetClosestObjectOfType(entityPosition.x, entityPosition.y, entityPosition.z, 2.0, self.modelHashKey, false, false, false)
     self.modelName = DoesEntityExist(entityInstance) and GetEntityArchetypeName(entityInstance) or tostring(self.modelHashKey)
+end
+
+---@return TInteriorPortalEntityData
+function CInteriorPortalEntity:getSaveData()
+    local data = {}
+
+    data.version = self.version
+    data.index = self.index
+    data.linkType = self.linkType
+    data.maxOcclusion = self.maxOcclusion
+    data.modelHashKey = self.modelHashKey
+    data.modelName = self.modelName
+    data.isDoor = self.isDoor
+    data.isGlass = self.isGlass
+
+    return data --[[@as TInteriorPortalEntityData]]
 end
 
 return CInteriorPortalEntity

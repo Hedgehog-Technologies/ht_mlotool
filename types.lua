@@ -35,6 +35,55 @@
 ---@field generatedFilesDir string
 ---@field generatedFilesDirPath string
 
+---@class TInteriorData
+---@field version number?
+---@field location vector3
+---@field nameHash number
+---@field uintNameHash number
+---@field saveName string
+---@field name string
+---@field originalProxyHash number
+---@field proxyHash number
+---@field uintProxyHash number
+---@field roomCount number
+---@field rooms TInteriorRoomData[]
+---@field portalCount number
+---@field portals TInteriorPortalData[]
+
+---@class TinteriorRoomData
+---@field version number?
+---@field index number
+---@field name string
+---@field displayName string
+---@field nameHash number
+---@field uintNameHash number
+---@field originalRoomKey number
+---@field roomKey number
+---@field uintRoomKey number
+---@field portalCount number
+---@field dat151 RoomDat151Fields
+
+---@class TInteriorPortalData
+---@field version number?
+---@field isEnabled [boolean, boolean]
+---@field interiorPortalIndex number
+---@field fromRoomIndex number
+---@field toRoomIndex number
+---@field flags number
+---@field isMirror boolean
+---@field entityCount number
+---@field entities TInteriorPortalEntityData[]
+
+---@class TInteriorPortalEntityData
+---@field version number?
+---@field index number
+---@field linkType number
+---@field maxOcclusion number
+---@field modelHashKey number
+---@field modelName string
+---@field isDoor boolean
+---@field isGlass boolean
+
 -- ##### APIs ##### --
 
 ---@class DebugDrawApi
@@ -55,6 +104,9 @@
 ---@field generateInteriorFiles fun(interiorData: table, generateAO: boolean, generateDat151: boolean, debug: boolean)
 ---@field getInterior fun(interiorId: number): CInterior
 ---@field updateInteriorData fun(interiorData: table): CInterior
+
+---@class InteriorFileCacheApi
+---@field initializeCache fun()
 
 ---@class UtilsApi
 ---@field toInt32 fun(value: number): number

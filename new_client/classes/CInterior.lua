@@ -96,6 +96,37 @@ function CInterior:resetProxyHash()
     end
 end
 
+---@return TInteriorData
+function CInterior:getSaveData()
+    local data = {}
+
+    data.version = self.version
+    data.location = self.location
+    data.nameHash = self.nameHash
+    data.uintNameHash = self.uintNameHash
+    data.saveName = self.saveName
+    data.name = self.name
+    data.originalProxyHash = self.private.proxyHash
+    data.proxyHash = self.proxyHash
+    data.uintProxyHash = self.uintProxyHash
+    data.roomCount = self.roomCount
+    data.rooms = {}
+    data.portalCount = self.portalCount
+    data.portals = {}
+
+    for i = 1, self.roomCount do
+        local room = self.rooms[i]
+        data.rooms[i] = room:getSaveData()
+    end
+
+    for i = 1, self.portalCount do
+        local portal = self.portals[i]
+        data.portals[i] = portal:getSaveData()
+    end
+
+    return data --[[@as TInteriorData]]
+end
+
 function CInterior:updateGlobalPortals()
     self.globalPortalCount = 0
 

@@ -90,4 +90,23 @@ function CInteriorRoom:resetRoomKey()
     lib.print.info(('Reset Room [%s] key: %s (%s)'):format(self.name, self.roomKey, self.uintRoomKey))
 end
 
+---@return TinteriorRoomData
+function CInteriorRoom:getSaveData()
+    local data = {}
+
+    data.version = self.version
+    data.index = self.index
+    data.name = self.name
+    data.displayName = self.displayName
+    data.nameHash = self.nameHash
+    data.uintNameHash = self.uintNameHash
+    data.originalRoomKey = self.private.roomKey
+    data.roomKey = self.roomKey
+    data.uintRoomKey = self.uintRoomKey
+    data.portalCount = self.portalCount
+    data.dat151 = table.clone(self.dat151)
+
+    return data --[[@as TinteriorRoomData]]
+end
+
 return CInteriorRoom

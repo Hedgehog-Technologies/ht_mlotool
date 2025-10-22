@@ -43,4 +43,26 @@ function CInteriorPortal:constructor(interiorId, fromRoomIndex, toRoomIndex, int
     end
 end
 
+---@return TInteriorPortalData
+function CInteriorPortal:getSaveData()
+    local data = {}
+
+    data.version = self.version
+    data.isEnabled = table.clone(self.isEnabled)
+    data.interiorPortalIndex = self.interiorPortalIndex
+    data.fromRoomIndex = self.fromRoomIndex
+    data.toRoomIndex = self.toRoomIndex
+    data.flags = self.flags
+    data.isMirror = self.isMirror
+    data.entityCount = self.entityCount
+    data.entities = {}
+
+    for i = 1, self.entityCount do
+        local entity = self.entities[i]
+        data.entities[i] = entity:getSaveData()
+    end
+
+    return data --[[@as TInteriorPortalData]]
+end
+
 return CInteriorPortal
