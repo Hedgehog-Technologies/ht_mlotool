@@ -27,6 +27,10 @@
 ---@alias TPortalCrossVectors table<number, vector3>
 ---@alias TPortalConnections table<number, [ number, number ]>
 
+---@class Config
+---@field serverToClientBPS number
+---@field clientToServerBPS number
+
 ---@class ServerConstants
 ---@field systemIsWindows boolean
 ---@field resourcePath string
@@ -37,6 +41,7 @@
 
 ---@class TInteriorData
 ---@field version number?
+---@field interiorId number?
 ---@field location vector3
 ---@field nameHash number
 ---@field uintNameHash number
@@ -49,6 +54,7 @@
 ---@field rooms TInteriorRoomData[]
 ---@field portalCount number
 ---@field portals TInteriorPortalData[]
+---@field globalPortalCount number?
 
 ---@class TinteriorRoomData
 ---@field version number?
@@ -107,6 +113,7 @@
 
 ---@class InteriorFileCacheApi
 ---@field initializeCache fun()
+---@field getDataForInterior fun(source: number|string|nil, nameHash: number|string, forceReload: boolean?): TInteriorData?
 
 ---@class UtilsApi
 ---@field toInt32 fun(value: number): number

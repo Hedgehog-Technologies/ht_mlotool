@@ -1,3 +1,8 @@
+local Config = require 'shared.config'
+
+---@type InteriorFileCacheApi
+local FileCache = require 'new_server.helpers.interiorfilecache'
+
 lib.addCommand('openmlo', {
     help = locale('cmd_openmlo_help'),
     restricted = 'group.admin',
@@ -18,8 +23,23 @@ lib.addCommand('openmlo', {
             local nameHash = lib.callback.await('ht_mlotool:getInteriorNameHash', source)
     
             if nameHash ~= nil then
-                
+                data = FileCache.getDataForInterior(source, nameHash, true)
+            else
+                local msg = locale('user_not_in_mlo')
+
+                lib.print.warn(msg)
+                TriggerClientEvent('ox_lib:notify', source, {
+                    type = 'warning',
+                    title = locale('warning'),
+                    description = msg
+                })
+
+                return
             end
+        elseif args.force == 2 then
+            data = false
         end
     end
+
+    TriggerLatentClientEvent('ht_mlotool:openInterior', source, Config.serverToClientBPS, data)
 end)

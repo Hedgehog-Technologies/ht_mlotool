@@ -7,15 +7,12 @@ local HTFile = require 'new_server.helpers.fileio'
 ---@type InteriorFileCacheApi
 local FileCache = require 'new_server.helpers.interiorfilecache'
 
----@type { [string]: string }
-local interiorFilenameLookup = {}
-
 ---@param source number|string
 ---@param filename string
 ---@param nameHashString string
 ---@param openUI boolean
 local function loadSavedInteriorData(source, filename, nameHashString, openUI)
-    ---@type CInterior?
+    ---@type TInteriorData?
     local interiorData = nil
 
     if filename ~= nil and nameHashString ~= nil then
