@@ -4,6 +4,9 @@ local Constants = require 'new_server.helpers.constants'
 ---@type HTFileApi
 local HTFile = require 'new_server.helpers.fileio'
 
+---@type InteriorFileCacheApi
+local FileCache = require 'new_server.helpers.interiorfilecache'
+
 ---@type { [string]: string }
 local interiorFilenameLookup = {}
 
@@ -36,23 +39,5 @@ end
 CreateThread(function()
     lib.versionCheck('Hedgehog-Technologies/ht_mlotool')
 
-    local files, fileCount = HTFile.getFilesInDirectory(Constants.savedInteriorDirPath, '%.json')
-
-    if fileCount > 0 then
-        lib.print.info(locale('found_mlo_json_files', fileCount))
-    end
-
-    for i = 1, fileCount do
-        local filename = files[i]
-        local interiorDataString = HTFile.readFile(nil, Constants.savedInteriorDirPath, filename, 'json')
-
-        if interiorDataString ~= nil then
-            ---@type CInterior
-            local interiorData = json.decode(interiorDataString)
-
-            if interiorData and interiorData.nameHash then
-                interiorFilenameLookup[tostring(interiorData.nameHash)] = filename
-            end
-        end
-    end
+    FileCache.initializeCache()
 end)

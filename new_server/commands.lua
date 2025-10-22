@@ -18,7 +18,7 @@ lib.addCommand('openmlo', {
             local nameHash = lib.callback.await('ht_mlotool:getInteriorNameHash', source)
     
             if nameHash ~= nil then
-                local filename
+                
             end
         end
     end
