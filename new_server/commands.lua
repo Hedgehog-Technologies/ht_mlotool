@@ -21,7 +21,7 @@ lib.addCommand('openmlo', {
         -- Force reload from file, if it exists
         if args.force == 1 then
             local nameHash = lib.callback.await('ht_mlotool:getInteriorNameHash', source)
-    
+
             if nameHash ~= nil then
                 data = FileCache.getDataForInterior(source, nameHash, true)
             else
@@ -42,4 +42,55 @@ lib.addCommand('openmlo', {
     end
 
     TriggerLatentClientEvent('ht_mlotool:openInterior', source, Config.serverToClientBPS, data)
+end)
+
+lib.addCommand('loadmlo', {
+    help = locale('cmd_loadmlo_help'),
+    restricted = 'group.admin',
+    params = {
+        {
+            name = 'name',
+            help = locale('cmd_loadmlo_name_help'),
+            type = 'string',
+            optional = true
+        }
+    }
+}, function(source, args, raw)
+    local filename = args and args.name
+
+    if not filename then
+        local nameHash = lib.callback.await('ht_mlotool:getInteriorNameHash', source)
+
+        if nameHash ~= nil then
+            filename = FileCache.getFilenameForInterior(nameHash)
+        else
+            -- TODO Warning about no name and not in an mlo
+        end
+    end
+
+    if filename then
+        local data = FileCache.loadDataFromFile(source, filename)
+
+        if data then
+            TriggerLatentClientEvent('ht_mlotool:loadInteriorData', source, Config.serverToClientBPS, data, false)
+        else
+            -- TODO Warning about failure to load data
+        end
+    end
+end)
+
+lib.addCommand('savemlo', {
+    help = locale('cmd_savemlo_help'),
+    restricted = 'group.admin',
+    params = {
+        {
+            name = 'name',
+            help = locale('cmd_savemlo_name_help'),
+            type = 'string',
+            optional = true
+        }
+    }
+}, function(source, args, raw)
+    local name = args and args.name
+    TriggerClientEvent('ht_mlotool:saveCurrentInterior', source, name)
 end)

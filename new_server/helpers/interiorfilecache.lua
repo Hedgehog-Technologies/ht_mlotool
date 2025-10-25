@@ -39,6 +39,36 @@ function InteriorFileCacheApi.initializeCache()
 end
 
 ---@param source number|string|nil
+---@param filename string
+---@return TInteriorData?
+function InteriorFileCacheApi.loadDataFromFile(source, filename)
+    if filename == nil then return nil end
+
+    ---@type TInteriorData?
+    local data = nil
+
+    local dataString = HTFile.readFile(source, Constants.savedInteriorDirPath, filename, 'json')
+
+    if dataString then
+        data = json.decode(dataString)
+
+        -- This value changes across sessions, we'll need to regrab it
+        data.interiorId = nil
+        -- Force regeneration of global portals when reloading from save file
+        data.globalPortalCount = nil
+
+        if data.nameHash then
+            local nameHash = type(data.nameHash) == 'number' and tostring(data.nameHash) or data.nameHash
+
+            _interiorDataCache[nameHash] = data
+            _interiorFilenameLookup[nameHash] = filename
+        end
+    end
+
+    return data
+end
+
+---@param source number|string|nil
 ---@param nameHash number | string
 ---@param forceReload boolean?
 ---@return TInteriorData?
@@ -64,21 +94,18 @@ function InteriorFileCacheApi.getDataForInterior(source, nameHash, forceReload)
     local data = nil
 
     if forceReload then
-        local dataString = HTFile.readFile(source, Constants.savedInteriorDirPath, filename, 'json')
-
-        if dataString then
-            data = json.decode(dataString)
-
-            -- This value changes across sessions, we'll need to regrab it
-            data.interiorId = nil
-            -- Force regeneration of global portals when reloading from save file
-            data.globalPortalCount = nil
-        end
+        data = InteriorFileCacheApi.loadDataFromFile(source, filename)
     else
         data = _interiorDataCache[nameHash]
     end
 
     return data
+end
+
+function InteriorFileCacheApi.getFilenameForInterior(nameHash)
+    if type(nameHash) == 'number' then nameHash = tostring(nameHash) end
+
+    return _interiorFilenameLookup[nameHash]
 end
 
 return InteriorFileCacheApi --[[@as InteriorFileCacheApi]]
