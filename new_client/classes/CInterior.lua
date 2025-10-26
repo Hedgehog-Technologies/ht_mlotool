@@ -1,3 +1,6 @@
+---@type ClientConstants
+local Constants = require 'new_client.helpers.constants'
+
 ---@type CInteriorRoom
 local CRoom = require 'new_client.classes.CInteriorRoom'
 
@@ -20,13 +23,18 @@ local CPortal = require 'new_client.classes.CInteriorPortal'
 ---@field portals CInteriorPortal[]
 ---@field globalPortalCount number
 ---@field private private { proxyHash: number }
----@field new fun(self: CInterior, interiorId: number): CInterior
+---@field new fun(self: CInterior, interiorId: number?, interiorData: TInteriorData|table|nil): CInterior
 local CInterior = lib.class('CInterior')
 
----@param interiorId number
-function CInterior:constructor(interiorId)
+---@param interiorId number?
+---@param interiorData TInteriorData?
+function CInterior:constructor(interiorId, interiorData)
     -- Represents the version of the class structure for save data decoding purposes
-    self.version = 2
+    self.version = Constants.cInteriorSchemaVersion
+
+    if interiorData then
+        return self:parseInteriorData(interiorData)
+    end
 
     self.interiorId = interiorId
     self.location, self.nameHash = GetInteriorLocationAndNamehash(interiorId)
@@ -76,8 +84,48 @@ function CInterior:constructor(interiorId)
     self:updateGlobalPortals()
 end
 
+---@package
+---@param interiorData TInteriorData
+function CInterior:parseInteriorData(interiorData)
+    if interiorData.version then
+        -- TODO - Parse v2
+    else
+        self:parseInteriorDataV1(interiorData)
+    end
+
+    self:updateGlobalPortals()
+end
+
+---@package
+---@param interiorData table
+function CInterior:parseInteriorDataV1(interiorData)
+    self.interiorId = GetInteriorAtCoords(interiorData.location.x, interiorData.location.y, interiorData.location.z)
+    self.location = vec3(interiorData.location.x, interiorData.location.y, interiorData.location.z)
+    self.nameHash = interiorData.nameHash
+    self.uintNameHash = interiorData.uintNameHash
+    self.saveName = interiorData.saveName
+    self.name = interiorData.name
+    self.proxyHash = interiorData.proxyHash
+    self.uintProxyHash = interiorData.uintProxyHash
+    self.private.proxyHash = interiorData.proxyHash
+
+    self.roomCount = interiorData.roomCount
+    self.rooms = {}
+    for i = 1, self.roomCount do
+        self.rooms[i] = CRoom:new(self.interiorId, nil, nil, nil, interiorData.rooms[i])
+    end
+
+    self.portalCount = interiorData.portalCount
+    self.portals = {}
+    for i = 1, self.portalCount do
+        self.portals[i] = CPortal:new(self.interiorId, nil, nil, nil, self.location, interiorData.portals[i])
+    end
+
+    self.globalPortalCount = 0
+end
+
 function CInterior:overrideProxyHash(newHash)
-    lib.print.info(('Updating Interior Proxy Hash to: %s'):format(newHash))
+    lib.print.info(('Updating interior proxy hash to: %s'):format(newHash))
 
     self.proxyHash = newHash
 
@@ -87,7 +135,7 @@ function CInterior:overrideProxyHash(newHash)
 end
 
 function CInterior:resetProxyHash()
-    lib.print.info(('Resetting Interior Proxy hash to: %s'):format(self.private.proxyHash))
+    lib.print.info(('Resetting interior proxy hash to: %s'):format(self.private.proxyHash))
 
     self.proxyHash = self.private.proxyHash
 

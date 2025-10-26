@@ -69,7 +69,7 @@ function InteriorFileCacheApi.loadDataFromFile(source, filename)
 end
 
 ---@param source number|string|nil
----@param nameHash number | string
+---@param nameHash number|string
 ---@param forceReload boolean?
 ---@return TInteriorData?
 function InteriorFileCacheApi.getDataForInterior(source, nameHash, forceReload)

@@ -1,3 +1,6 @@
+---@type ClientConstants
+local Constants = require 'new_client.helpers.constants'
+
 ---@class CInteriorPortalEntity : OxClass
 ---@field version number
 ---@field interiorId number
@@ -8,18 +11,23 @@
 ---@field modelName string
 ---@field isDoor boolean
 ---@field isGlass boolean
----@field new fun(self: CInteriorPortalEntity, interiorId: number, interiorPortalIndex: number, entityIndex: number, interiorLocation: vector3): CInteriorPortalEntity
+---@field new fun(self: CInteriorPortalEntity, interiorId: number, interiorPortalIndex: number, entityIndex: number, interiorLocation: vector3, entityData: TInteriorPortalEntityData|table|nil): CInteriorPortalEntity
 local CInteriorPortalEntity = lib.class('CInteriorPortalEntity')
 
 ---@param interiorId number
----@param interiorPortalIndex number
----@param entityIndex number
----@param interiorLocation vector3
-function CInteriorPortalEntity:constructor(interiorId, interiorPortalIndex, entityIndex, interiorLocation)
+---@param interiorPortalIndex number?
+---@param entityIndex number?
+---@param interiorLocation vector3?
+---@param entityData TInteriorPortalEntityData|table|nil
+function CInteriorPortalEntity:constructor(interiorId, interiorPortalIndex, entityIndex, interiorLocation, entityData)
     -- Represents the version of the class structure for save data decoding purposes
-    self.version = 2
-
+    self.version = Constants.cInteriorPortalEntitySchemaVersion
     self.interiorId = interiorId
+
+    if entityData then
+        return self:parseEntityData(entityData)
+    end
+
     self.index = entityIndex
     -- This is what we need to work with to handle Interior <-> Interior portals
     self.linkType = 1
@@ -32,6 +40,28 @@ function CInteriorPortalEntity:constructor(interiorId, interiorPortalIndex, enti
     local entityPosition = interiorLocation + relativePosition
     local entityInstance = GetClosestObjectOfType(entityPosition.x, entityPosition.y, entityPosition.z, 2.0, self.modelHashKey, false, false, false)
     self.modelName = DoesEntityExist(entityInstance) and GetEntityArchetypeName(entityInstance) or tostring(self.modelHashKey)
+end
+
+---@package
+---@param entityData TInteriorPortalEntityData|table
+function CInteriorPortalEntity:parseEntityData(entityData)
+    if entityData.version then
+        -- TODO - Parse v2
+    else
+        self:parseEntityDataV1(entityData)
+    end
+end
+
+---@package
+---@param entityData table
+function CInteriorPortalEntity:parseEntityDataV1(entityData)
+    self.index = entityData.index
+    self.linkType = entityData.linkType
+    self.maxOcclusion = entityData.maxOcclusion
+    self.modelHashKey = entityData.modelHashKey
+    self.modelName = entityData.modelName
+    self.isDoor = entityData.isDoor
+    self.isGlass = entityData.isGlass
 end
 
 ---@return TInteriorPortalEntityData

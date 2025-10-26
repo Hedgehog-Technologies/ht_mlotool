@@ -51,6 +51,11 @@ function InteriorCacheApi.generateInteriorFiles(interiorData, generateAO, genera
     end
 end
 
+---@param interior CInterior
+function InteriorCacheApi.addInterior(interior)
+    _interiorCache[interior.interiorId] = interior
+end
+
 ---@param interiorId number
 ---@return CInterior
 function InteriorCacheApi.getInterior(interiorId)

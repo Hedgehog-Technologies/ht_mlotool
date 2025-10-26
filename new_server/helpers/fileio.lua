@@ -74,7 +74,7 @@ end
 ---@param filepath string The relative path to the directory the file is in
 ---@param filename string The name of the file to read
 ---@param filetype string The type of the file to read
----@return string | nil data The contents of the file as a string; nil if the file doesn't exist
+---@return string? data The contents of the file as a string; nil if the file doesn't exist
 function HTFileApi.readFile(source, filepath, filename, filetype)
     local fullPath = ('%s/%s.%s'):format(filepath, filename, filetype)
 

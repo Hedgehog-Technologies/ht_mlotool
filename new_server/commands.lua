@@ -1,3 +1,4 @@
+---@type Config
 local Config = require 'shared.config'
 
 ---@type InteriorFileCacheApi

@@ -31,6 +31,12 @@
 ---@field serverToClientBPS number
 ---@field clientToServerBPS number
 
+---@class ClientConstants
+---@field cInteriorSchemaVersion number
+---@field cInteriorRoomSchemaVersion number
+---@field cInteriorPortalSchemaVersion number
+---@field cInteriorPortalEntitySchemaVersion number
+
 ---@class ServerConstants
 ---@field systemIsWindows boolean
 ---@field resourcePath string
@@ -56,7 +62,7 @@
 ---@field portals TInteriorPortalData[]
 ---@field globalPortalCount number?
 
----@class TinteriorRoomData
+---@class TInteriorRoomData
 ---@field version number?
 ---@field index number
 ---@field name string
