@@ -41,16 +41,19 @@ lib.callback.register('ht_mlotool:getInteriorNameHash', function()
     return nameHash
 end)
 
----@param interiorData TInteriorData?
+---@param interiorData TInteriorData|table
 ---@param shouldOpenUI boolean?
 RegisterNetEvent('ht_mlotool:loadInteriorData', function(interiorData, shouldOpenUI)
     if interiorData == nil then return end
+
+    InteriorCache.addInterior(CInterior:new(nil, interiorData))
 
     if shouldOpenUI then
         local interiorId = GetInteriorFromEntity(cache.ped)
         if interiorId == 0 or not IsValidInterior(interiorId) then return end
 
-        
+        local interior = InteriorCache:getInterior(interiorId)
+        openToolInterface(interior)
     end
 end)
 

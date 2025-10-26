@@ -113,6 +113,7 @@
 ---@field writeFile fun(source: number?, filepath: string, filename: string, filetype: string, data: string): boolean
 
 ---@class InteriorCacheApi
+---@field addInterior fun(interior: CInterior)
 ---@field generateInteriorFiles fun(interiorData: table, generateAO: boolean, generateDat151: boolean, debug: boolean)
 ---@field getInterior fun(interiorId: number): CInterior
 ---@field updateInteriorData fun(interiorData: table): CInterior
