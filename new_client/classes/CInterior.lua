@@ -87,19 +87,46 @@ end
 ---@package
 ---@param interiorData TInteriorData
 function CInterior:parseInteriorData(interiorData)
+    self.interiorId = GetInteriorAtCoords(interiorData.location.x, interiorData.location.y, interiorData.location.z)
+
     if interiorData.version then
-        -- TODO - Parse v2
+        self:parseInteriorDataV2(interiorData)
     else
         self:parseInteriorDataV1(interiorData)
     end
 
+    self.globalPortalCount = 0
     self:updateGlobalPortals()
+end
+
+---@package
+---@param interiorData TInteriorData
+function CInterior:parseInteriorDataV2(interiorData)
+    self.location = vec3(interiorData.location.x, interiorData.location.y, interiorData.location.z)
+    self.nameHash = interiorData.nameHash
+    self.uintNameHash = interiorData.uintNameHash
+    self.saveName = interiorData.saveName
+    self.name = interiorData.name
+    self.proxyHash = interiorData.proxyHash
+    self.uintProxyHash = interiorData.uintProxyHash
+    self.private.proxyHash = interiorData.originalProxyHash
+
+    self.roomCount = interiorData.roomCount
+    self.rooms = {}
+    for i = 1, self.roomCount do
+        self.rooms[i] = CRoom:new(self.interiorId, nil, nil, nil, interiorData.rooms[i])
+    end
+
+    self.portalCount = interiorData.portalCount
+    self.portals = {}
+    for i = 1, self.portalCount do
+        self.portals[i] = CPortal:new(self.interiorId, nil, nil, nil, nil, interiorData.portals[i])
+    end
 end
 
 ---@package
 ---@param interiorData table
 function CInterior:parseInteriorDataV1(interiorData)
-    self.interiorId = GetInteriorAtCoords(interiorData.location.x, interiorData.location.y, interiorData.location.z)
     self.location = vec3(interiorData.location.x, interiorData.location.y, interiorData.location.z)
     self.nameHash = interiorData.nameHash
     self.uintNameHash = interiorData.uintNameHash
@@ -118,10 +145,23 @@ function CInterior:parseInteriorDataV1(interiorData)
     self.portalCount = interiorData.portalCount
     self.portals = {}
     for i = 1, self.portalCount do
-        self.portals[i] = CPortal:new(self.interiorId, nil, nil, nil, self.location, interiorData.portals[i])
+        self.portals[i] = CPortal:new(self.interiorId, nil, nil, nil, nil, interiorData.portals[i])
+    end
+end
+
+---@param interiorData NInteriorData
+function CInterior:update(interiorData)
+    self.saveName = interiorData.saveName ~= ''
+        and interiorData.saveName:gsub(' ', '_')
+        or self.saveName
+
+    for i = 1, self.roomCount do
+        self.rooms[i]:update(interiorData.rooms[i])
     end
 
-    self.globalPortalCount = 0
+    for i = 1, self.portalCount do
+        self.portals[i]:update(interiorData.portals[i])
+    end
 end
 
 function CInterior:overrideProxyHash(newHash)

@@ -1,3 +1,6 @@
+---@type Config
+local Config = require 'shared.config'
+
 ---@type DebugDrawApi
 local DebugDraw = require 'new_client.helpers.debugdraw'
 
@@ -122,7 +125,7 @@ local function nuiSaveInterior(interiorData, cb)
     local interior = InteriorCache.updateInteriorData(interiorData)
 
     if interior then
-        TriggerLatentServerEvent('ht_mlotool:saveInteriorData', 50000, interior)
+        TriggerLatentServerEvent('ht_mlotool:saveInteriorData', Config.clientToServerBPS, interior:getSaveData())
     end
 end
 

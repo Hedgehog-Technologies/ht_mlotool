@@ -84,10 +84,27 @@ end
 ---@param roomData TInteriorRoomData|table
 function CInteriorRoom:parseRoomData(roomData)
     if roomData.version then
-        -- TODO - Parse v2
+        self:parseRoomDataV2(roomData)
     else
         self:parseRoomDataV1(roomData)
     end
+end
+
+---@package
+---@param roomData TInteriorRoomData
+function CInteriorRoom:parseRoomDataV2(roomData)
+    self.index = roomData.index
+    self.name = roomData.name
+    self.displayName = roomData.displayName
+    self.nameHash = roomData.nameHash
+    self.uintNameHash = roomData.uintNameHash
+    self.roomKey = roomData.roomKey
+    self.uintRoomKey = roomData.uintRoomKey
+    self.portalCount = roomData.portalCount
+
+    self.private.roomKey = roomData.originalRoomKey
+
+    self.dat151 = table.clone(roomData.dat151)
 end
 
 ---@package
@@ -122,6 +139,11 @@ function CInteriorRoom:parseRoomDataV1(roomData)
         weaponMetrics = roomData.unk13,
         interiorWallaSoundSet = roomData.soundSet
     }
+end
+
+---@param roomData NInteriorRoomData
+function CInteriorRoom:update(roomData)
+    self.dat151 = table.clone(roomData.dat151)
 end
 
 ---@param newHash number

@@ -1,3 +1,6 @@
+---@type Config
+local Config = require 'shared.config'
+
 ---@type CAudioOcclusion
 local CAudioOcclusion = require 'new_client.classes.CAudioOcclusion'
 
@@ -26,7 +29,7 @@ function InteriorCacheApi.generateInteriorFiles(interiorData, generateAO, genera
             local aoFileType = 'ymt.pso.xml'
             local aoObj = CAudioOcclusion:new(interior)
             local ymtData = Encoders.encodeAudioOcclusion(interior, aoObj)
-            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 50000, saveDirName, aoFileName, aoFileType, ymtData, debug)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', Config.clientToServerBPS, saveDirName, aoFileName, aoFileType, ymtData, debug)
         end
 
         if generateDat151 then
@@ -44,10 +47,10 @@ function InteriorCacheApi.generateInteriorFiles(interiorData, generateAO, genera
             local datFileName = ('%s_game'):format(interiorName)
             local datFileType = 'dat151.rel.xml'
             local dat151Data = Encoders.encodeDat151(interior)
-            TriggerLatentServerEvent('ht_mlotool:outputResultFile', 50000, saveDirName, datFileName, datFileType, dat151Data, debug)
+            TriggerLatentServerEvent('ht_mlotool:outputResultFile', Config.clientToServerBPS, saveDirName, datFileName, datFileType, dat151Data, debug)
         end
 
-        TriggerLatentServerEvent('ht_mlotool:saveInteriorData', 50000, interior)
+        TriggerLatentServerEvent('ht_mlotool:saveInteriorData', Config.clientToServerBPS, interior:getSaveData())
     end
 end
 
@@ -57,13 +60,13 @@ function InteriorCacheApi.addInterior(interior)
 end
 
 ---@param interiorId number
----@return CInterior
+---@return CInterior?
 function InteriorCacheApi.getInterior(interiorId)
     return _interiorCache[interiorId]
 end
 
----@param interiorData table
----@return CInterior
+---@param interiorData TInteriorData
+---@return CInterior?
 function InteriorCacheApi.updateInteriorData(interiorData)
     local interior = _interiorCache[interiorData.interiorId]
 

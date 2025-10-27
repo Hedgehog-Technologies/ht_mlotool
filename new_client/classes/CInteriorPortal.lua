@@ -23,7 +23,7 @@ local CInteriorPortal = lib.class('CInteriorPortal')
 ---@param fromRoomIndex number?
 ---@param toRoomIndex number?
 ---@param interiorPortalIndex number?
----@param interiorLocation vector3
+---@param interiorLocation vector3?
 ---@param portalData TInteriorPortalData|table|nil
 function CInteriorPortal:constructor(interiorId, fromRoomIndex, toRoomIndex, interiorPortalIndex, interiorLocation, portalData)
     -- Represents the version of the class structure for save data decoding purposes
@@ -54,23 +54,37 @@ function CInteriorPortal:constructor(interiorId, fromRoomIndex, toRoomIndex, int
 end
 
 ---@package
----@param interiorLocation vector3
 ---@param portalData TInteriorPortalData|table
-function CInteriorPortal:parsePortalData(interiorLocation, portalData)
+function CInteriorPortal:parsePortalData(portalData)
     if portalData.version then
-        -- TODO - Parse v2
+        self:parsePortalDataV2(portalData)
     else
-        self:parsePortalDataV1(interiorLocation, portalData)
+        self:parsePortalDataV1(portalData)
+    end
+
+    self.globalPortalIndices = { -1, -1 }
+end
+
+---@package
+---@param portalData TInteriorPortalData
+function CInteriorPortal:parsePortalDataV2(portalData)
+    self.isEnabled = table.clone(portalData.isEnabled)
+    self.interiorPortalIndex = portalData.interiorPortalIndex
+    self.fromRoomIndex = portalData.fromRoomIndex
+    self.toRoomIndex = portalData.toRoomIndex
+
+    self.entityCount = portalData.entityCount
+    self.entities = {}
+    for i = 1, self.entityCount do
+        self.entities[i] = CEntity:new(self.interiorId, nil, nil, nil, portalData.entities[i])
     end
 end
 
 ---@package
----@param interiorLocation vector3
 ---@param portalData table
-function CInteriorPortal:parsePortalDataV1(interiorLocation, portalData)
-    self.isEnabled = portalData.isEnabled
+function CInteriorPortal:parsePortalDataV1(portalData)
+    self.isEnabled = table.clone(portalData.isEnabled)
     self.interiorPortalIndex = portalData.mloPortalIndex
-    self.globalPortalIndices = { -1, -1 }
     self.fromRoomIndex = portalData.fromRoomIndex
     self.toRoomIndex = portalData.toRoomIndex
     self.flags = portalData.flags
@@ -79,7 +93,16 @@ function CInteriorPortal:parsePortalDataV1(interiorLocation, portalData)
     self.entityCount = portalData.entityCount
     self.entities = {}
     for i = 1, self.entityCount do
-        self.entities[i] = CEntity:new(self.interiorId, nil, nil, nil, portalData)
+        self.entities[i] = CEntity:new(self.interiorId, nil, nil, nil, portalData.entities[i])
+    end
+end
+
+---@param portalData NInteriorPortalData
+function CInteriorPortal:update(portalData)
+    self.isEnabled = table.clone(portalData.isEnabled)
+
+    for i = 1, self.entityCount do
+        self.entities[i]:update(portalData.entities[i])
     end
 end
 

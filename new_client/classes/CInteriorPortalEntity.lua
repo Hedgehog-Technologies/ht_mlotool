@@ -46,10 +46,22 @@ end
 ---@param entityData TInteriorPortalEntityData|table
 function CInteriorPortalEntity:parseEntityData(entityData)
     if entityData.version then
-        -- TODO - Parse v2
+        self:parseEntityDataV2(entityData)
     else
         self:parseEntityDataV1(entityData)
     end
+end
+
+---@package
+---@param entityData TInteriorPortalEntityData
+function CInteriorPortalEntity:parseEntityDataV2(entityData)
+    self.index = entityData.index
+    self.linkType = entityData.linkType
+    self.maxOcclusion = entityData.maxOcclusion
+    self.modelHashKey = entityData.modelHashKey
+    self.modelName = entityData.modelName
+    self.isDoor = entityData.isDoor
+    self.isGlass = entityData.isGlass
 end
 
 ---@package
@@ -60,6 +72,13 @@ function CInteriorPortalEntity:parseEntityDataV1(entityData)
     self.maxOcclusion = entityData.maxOcclusion
     self.modelHashKey = entityData.modelHashKey
     self.modelName = entityData.modelName
+    self.isDoor = entityData.isDoor
+    self.isGlass = entityData.isGlass
+end
+
+---@param entityData NInteriorPortalEntityData
+function CInteriorPortalEntity:update(entityData)
+    self.maxOcclusion = entityData.maxOcclusion
     self.isDoor = entityData.isDoor
     self.isGlass = entityData.isGlass
 end

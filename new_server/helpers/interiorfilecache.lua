@@ -102,10 +102,19 @@ function InteriorFileCacheApi.getDataForInterior(source, nameHash, forceReload)
     return data
 end
 
+---@param nameHash string|number
 function InteriorFileCacheApi.getFilenameForInterior(nameHash)
     if type(nameHash) == 'number' then nameHash = tostring(nameHash) end
 
     return _interiorFilenameLookup[nameHash]
+end
+
+---@param nameHash string|number
+---@param filename string
+function InteriorFileCacheApi.addFilenameForInterior(nameHash, filename)
+    if type(nameHash) == 'number' then nameHash = tostring(nameHash) end
+
+    _interiorFilenameLookup[nameHash] = filename
 end
 
 return InteriorFileCacheApi --[[@as InteriorFileCacheApi]]

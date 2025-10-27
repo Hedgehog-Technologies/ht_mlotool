@@ -1,3 +1,6 @@
+---@type Config
+local Config = require 'shared.config'
+
 ---@type ClientUtilsApi
 local Utils = require 'new_client.helpers.utils'
 
@@ -55,6 +58,33 @@ RegisterNetEvent('ht_mlotool:loadInteriorData', function(interiorData, shouldOpe
         local interior = InteriorCache:getInterior(interiorId)
         openToolInterface(interior)
     end
+end)
+
+---@param name string?
+RegisterNetEvent('ht_mlotool:saveCurrentInterior', function(name)
+    local interiorId = GetInteriorFromEntity(cache.ped)
+    local interior = InteriorCache.getInterior(interiorId)
+
+    if interiorId == 0 or not IsValidInterior(interiorId) then
+        return lib.notify({
+            type = 'error',
+            title = locale('unrecognized_interior')
+        })
+    elseif not interior then
+        interior = CInterior:new(interiorId)
+        InteriorCache.addInterior(interior)
+    end
+
+    if interior == nil then
+        return lib.notify({
+            type = 'error',
+            title = locale('save_mlo_fail_invalid')
+        })
+    end
+
+    if name ~= nil then interior.saveName = name end
+
+    TriggerLatentServerEvent('ht_mlotool:saveInteriorData', Config.clientToServerBPS, interior:getSaveData())
 end)
 
 ---@param interiorData TInteriorData|false|nil

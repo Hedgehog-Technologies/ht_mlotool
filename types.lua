@@ -96,6 +96,23 @@
 ---@field isDoor boolean
 ---@field isGlass boolean
 
+---@class NInteriorData
+---@field saveName string
+---@field rooms NInteriorRoomData[]
+---@field portals NInteriorPortalData[]
+
+---@class NInteriorRoomData
+---@field dat151 RoomDat151Fields
+
+---@class NInteriorPortalData
+---@field isEnabled [boolean, boolean]
+---@field entities NInteriorPortalEntityData[]
+
+---@class NInteriorPortalEntityData
+---@field maxOcclusion number
+---@field isDoor boolean
+---@field isGlass boolean
+
 -- ##### APIs ##### --
 
 ---@class DebugDrawApi
