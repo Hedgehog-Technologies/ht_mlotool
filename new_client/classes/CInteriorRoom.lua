@@ -1,24 +1,6 @@
 ---@type ClientConstants
 local Constants = require 'new_client.helpers.constants'
 
----@class RoomDat151Fields
----@field occlRoomName string
----@field flags string
----@field ambientZone string
----@field interiorType number
----@field reverbSmall number
----@field reverbMedium number
----@field reverbLarge number
----@field roomToneSound string
----@field rainType number
----@field exteriorAudibility number
----@field roomOcclusionDamping number
----@field nonMarkedPortalOcclusion number
----@field distanceFromPortalForOcclusion number
----@field distanceFromPortalFadeDistance number
----@field weaponMetrics string
----@field interiorWallaSoundSet string
-
 ---@class CInteriorRoom : OxClass
 ---@field version number
 ---@field interiorId number
@@ -30,7 +12,7 @@ local Constants = require 'new_client.helpers.constants'
 ---@field roomKey number
 ---@field uintRoomKey number
 ---@field portalCount number
----@field dat151 RoomDat151Fields
+---@field dat151 TRoomDat151Fields
 ---@field private private { roomKey: number }
 ---@field new fun(self: CInteriorRoom, interiorId: number, nameHash: number, proxyHash: number, roomIndex: number, roomData: TInteriorRoomData|table|nil): CInteriorRoom
 local CInteriorRoom = lib.class('CInteriorRoom')

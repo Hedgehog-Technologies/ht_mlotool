@@ -73,7 +73,25 @@
 ---@field roomKey number
 ---@field uintRoomKey number
 ---@field portalCount number
----@field dat151 RoomDat151Fields
+---@field dat151 TRoomDat151Fields
+
+---@class TRoomDat151Fields
+---@field occlRoomName string
+---@field flags string
+---@field ambientZone string
+---@field interiorType number
+---@field reverbSmall number
+---@field reverbMedium number
+---@field reverbLarge number
+---@field roomToneSound string
+---@field rainType number
+---@field exteriorAudibility number
+---@field roomOcclusionDamping number
+---@field nonMarkedPortalOcclusion number
+---@field distanceFromPortalForOcclusion number
+---@field distanceFromPortalFadeDistance number
+---@field weaponMetrics string
+---@field interiorWallaSoundSet string
 
 ---@class TInteriorPortalData
 ---@field version number?
@@ -102,7 +120,7 @@
 ---@field portals NInteriorPortalData[]
 
 ---@class NInteriorRoomData
----@field dat151 RoomDat151Fields
+---@field dat151 TRoomDat151Fields
 
 ---@class NInteriorPortalData
 ---@field isEnabled [boolean, boolean]
