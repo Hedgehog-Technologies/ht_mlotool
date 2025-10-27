@@ -118,7 +118,7 @@ RegisterNetEvent('ht_mlotool:openInterior', function(interiorData)
     local hasData = nil
     if interior == nil then
         local _, nameHash = GetInteriorLocationAndNamehash(interiorId)
-        hasData = lib.callback.await('ht_mlotool:requestInteriorSavedData', false, nameHash)
+        hasData = lib.callback.await('ht_mlotool:requestInteriorSaveData', false, nameHash)
 
         -- Data was found, we'll end execution here and handle the soon-to-be-incoming latent net event elsewhere
         -- TODO - Look into a latent callback for ox_lib
