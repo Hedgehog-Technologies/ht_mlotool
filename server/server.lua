@@ -29,7 +29,7 @@ local function loadMLOData(source, filename, nameHashString, openUI)
     local data = nil
 
     if filename ~= nil and nameHashString ~= nil then
-        data = htio.readFile(source, constants.savedMloDirPath, filename, 'json')
+        data = htio.readFile(source, constants.savedMLODirPath, filename, 'json')
 
         if data then data = json.decode(data) end
     end
@@ -175,7 +175,7 @@ lib.addCommand('openmlo', {
                 local filename = mloFilenameLookup[tostring(nameHash)]
 
                 if filename then
-                    data = htio.readFile(source, constants.savedMloDirPath, filename, 'json')
+                    data = htio.readFile(source, constants.savedMLODirPath, filename, 'json')
 
                     if data then
                         data = json.decode(data)
@@ -223,7 +223,7 @@ CreateThread(function()
 
     for i = 1, fileCount do
         local filename = files[i]
-        local mloDataString = htio.readFile(nil, constants.savedMloDirPath, filename, 'json')
+        local mloDataString = htio.readFile(nil, constants.savedMLODirPath, filename, 'json')
 
         if mloDataString ~= nil then
             local mloData = json.decode(mloDataString)
