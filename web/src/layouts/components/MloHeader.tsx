@@ -2,13 +2,13 @@ import { Group, Header, Title } from "@mantine/core";
 import { AiFillGithub, AiOutlineCloseSquare } from "react-icons/ai";
 import { BsDiscord } from "react-icons/bs";
 import { MemoHeaderIcon } from "./HeaderIcon";
-import { useLocale } from "../../providers/LocaleProvider";
-import { useVisibility } from "../../providers/VisibilityProvider";
-import { useGeneralStore } from "../../store/general";
+import { useLocale } from "@/providers/LocaleProvider";
+import { useVisibility } from "@/providers/VisibilityProvider";
+import { useGeneralStore } from "@/store/general";
 
 const MloHeader: React.FC = () => {
   const locale = useLocale((state) => state.locale);
-  const mlo = useGeneralStore((state) => state.mlo);
+  const interior = useGeneralStore((state) => state.interior);
   const exitUI = useVisibility((state) => state.exitUI);
 
   const openUrl = (url: string) => {
@@ -25,7 +25,7 @@ const MloHeader: React.FC = () => {
     <Header height={""}>
       <Group p="1%" px="2.5%" position="apart" sx={{ alignContent: "center" }}>
         <Title order={4} color={"violet.1"}>MLO Tool</Title>
-        <Title order={3} color={"violet.1"}>{mlo?.saveName.toUpperCase() ?? locale("ui_save_name_unknown")}</Title>
+        <Title order={3} color={"violet.1"}>{interior?.saveName.toUpperCase() ?? locale("ui_save_name_unknown")}</Title>
         <Group>
           <MemoHeaderIcon
             label={locale("ui_open_discord")}

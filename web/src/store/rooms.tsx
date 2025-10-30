@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { SelectData, StringField } from ".";
-import { RoomDef } from "../types/RoomDef";
+import { InteriorRoom } from "@/types";
 
 export interface RoomsStoreState {
   // RoomSelect
@@ -8,12 +8,14 @@ export interface RoomsStoreState {
   selectedRoom: StringField;
 
   // Room Tracking
-  roomList: RoomDef[];
-  activeRoom: RoomDef | null;
+  roomList: InteriorRoom[];
+  activeRoom: InteriorRoom | null;
+  // roomList: RoomDef[];
+  // activeRoom: RoomDef | null;
 
   // Actions
   setSelectedRoom: (value: StringField) => void;
-  setActiveRoom: (value: RoomDef | null) => void;
+  setActiveRoom: (value: InteriorRoom | null) => void;
 };
 
 export const useRoomsStore = create<RoomsStoreState>((set) => ({

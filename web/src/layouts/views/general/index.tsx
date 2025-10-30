@@ -2,14 +2,14 @@ import { Button, Stack } from "@mantine/core";
 import { useState } from "react";
 import GenerationFileOptions from "./components/GeneralFileOptions";
 import GeneralMlo from "./components/GeneralMlo";
-import { useLocale } from "../../../providers/LocaleProvider";
-import { useGeneralStore } from "../../../store/general";
-import { useRoomsStore } from "../../../store/rooms";
-import { fetchNui } from "../../../utils/fetchNui";
+import { useLocale } from "@/providers/LocaleProvider";
+import { useGeneralStore } from "@/store/general";
+import { useRoomsStore } from "@/store/rooms";
+import { fetchNui } from "@/utils/fetchNui";
 
 const General: React.FC = () => {
   const locale = useLocale((state) => state.locale);
-  const [mlo, debug, ao, dat151] = useGeneralStore((state) => [state.mlo, state.enableDebug, state.enableAudioOcclusion, state.enableDat151]);
+  const [interior, debug, ao, dat151] = useGeneralStore((state) => [state.interior, state.enableDebug, state.enableAudioOcclusion, state.enableDat151]);
   const roomList = useRoomsStore((state) => state.roomList);
   const [color, setColor] = useState("violet.9");
   const [buttonText, setButtonText] = useState(locale("ui_generate_button_default"))
@@ -25,8 +25,8 @@ const General: React.FC = () => {
 
   const handleButtonClick = () => {
     if (dat151 || ao) {
-      let combinedMLO = { ...mlo, rooms: roomList }
-      fetchNui("ht_mlotool:nui:generateAudioFiles", { mlo: combinedMLO, generateOcclusion: ao, generateDat151: dat151, debug: debug });
+      let combinedMLO = { ...interior, rooms: roomList }
+      fetchNui("ht_mlotool:nui:generateAudioFiles", { interior: combinedMLO, generateOcclusion: ao, generateDat151: dat151, debug: debug });
       setButton("green.9", locale("ui_generate_button_success"));
       setTimeout(resetButton, 5000);
     } else {

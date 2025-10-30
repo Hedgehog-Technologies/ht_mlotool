@@ -2,42 +2,42 @@ import { ActionIcon, Box, Flex, Stack, Title, Tooltip } from "@mantine/core"
 import { useEffect, useState } from "react"
 import { MdSave } from "react-icons/md";
 import MloInfo from "./MloInfo"
-import { MemoStringInput } from "../../../shared/Inputs"
-import { useLocale } from "../../../../providers/LocaleProvider"
-import { useGeneralStore } from "../../../../store/general"
-import { useRoomsStore } from "../../../../store/rooms";
-import { fetchNui } from "../../../../utils/fetchNui";
+import { MemoStringInput } from "@/layouts/shared/Inputs"
+import { useLocale } from "@/providers/LocaleProvider"
+import { useGeneralStore } from "@/store/general"
+import { useRoomsStore } from "@/store/rooms";
+import { fetchNui } from "@/utils/fetchNui";
 
 const GeneralMlo: React.FC = () => {
   const locale = useLocale((state) => state.locale);
-  const mlo = useGeneralStore((state) => state.mlo);
+  const interior = useGeneralStore((state) => state.interior);
   const roomList = useRoomsStore((state) => state.roomList);
-  const updateMLOSaveName = useGeneralStore((state) => state.updateMLOSaveName);
-  const [mloSaveName, setMLOSaveName] = useState(mlo?.saveName ?? "");
+  const updateInteriorSaveName = useGeneralStore((state) => state.updateInteriorSaveName);
+  const [mloSaveName, setMLOSaveName] = useState(interior?.saveName ?? "");
 
   let timer: NodeJS.Timeout;
   useEffect(() => {
     clearTimeout(timer);
-    if (mlo === null) return;
+    if (interior === null) return;
 
     timer = setTimeout(() => {
       const trimmedName = mloSaveName.trim();
-      updateMLOSaveName(trimmedName);
+      updateInteriorSaveName(trimmedName);
     }, 1000);
 
     return () => clearTimeout(timer);
   }, [mloSaveName]);
 
   useEffect(() => {
-    if (mlo === null) {
+    if (interior === null) {
       setMLOSaveName("");
     } else {
-      setMLOSaveName(mlo.saveName);
+      setMLOSaveName(interior.saveName);
     }
-  }, [mlo]);
+  }, [interior]);
 
   const handleSaveClick = () => {
-    let combinedMLO = { ...mlo, rooms: roomList };
+    let combinedMLO = { ...interior, rooms: roomList };
     fetchNui("ht_mlotool:nui:saveMlo", combinedMLO, "1");
   }
 

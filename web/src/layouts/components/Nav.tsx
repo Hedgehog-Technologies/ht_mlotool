@@ -5,7 +5,7 @@ import { FaDoorOpen } from "react-icons/fa";
 import { IoCubeSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 import { MemoNavIcon } from "./NavIcon";
-import { useLocale } from "../../providers/LocaleProvider";
+import { useLocale } from "@/providers/LocaleProvider";
 
 const Nav: React.FC = () => {
   const locale = useLocale((state) => state.locale);

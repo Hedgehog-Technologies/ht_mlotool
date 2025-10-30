@@ -1,7 +1,7 @@
 import { Group, Stack, Title } from "@mantine/core"
-import { MemoTooltipCheckbox } from "../../../shared/Inputs";
-import { useLocale } from "../../../../providers/LocaleProvider";
-import { useGeneralStore } from "../../../../store/general";
+import { MemoTooltipCheckbox } from "@/layouts/shared/Inputs";
+import { useLocale } from "@/providers/LocaleProvider";
+import { useGeneralStore } from "@/store/general";
 
 const GenerationFileOptions: React.FC = () => {
   const locale = useLocale((state) => state.locale);

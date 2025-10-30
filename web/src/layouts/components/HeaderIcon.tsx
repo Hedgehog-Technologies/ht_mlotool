@@ -1,4 +1,4 @@
-import { ActionIcon, Header, Tooltip } from "@mantine/core";
+import { ActionIcon, Tooltip } from "@mantine/core";
 import React from "react";
 import { IconType } from "react-icons";
 

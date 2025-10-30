@@ -3,11 +3,11 @@ import { useHotkeys } from "@mantine/hooks";
 import { useNuiEvent } from "./hooks/useNuiEvent";
 import MloShell from "./layouts";
 import { useVisibility } from "./providers/VisibilityProvider";
+import { SelectData } from "./store";
 import { useGeneralStore } from "./store/general";
 import { usePortalsStore } from "./store/portals";
 import { useRoomsStore } from "./store/rooms";
-import { MLODef } from "./types/MLODef";
-import { RoomDef } from "./types/RoomDef";
+import { Interior, InteriorRoom } from "./types";
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -41,16 +41,16 @@ const App: React.FC = () => {
   const { classes } = useStyles();
   const [visible, setVisible, exitUI] = useVisibility((state) => [state.visible, state.setVisible, state.exitUI]);
 
-  useNuiEvent("ht_mlotool:openMLO", (data) => {
+  useNuiEvent("ht_mlotool:openTool", (data) => {
     setVisible(true);
 
-    const mloData = new MLODef(data.mloData);
-    const roomSelectList =  mloData.rooms.map((room: RoomDef) => { return { value: room.index.toString(), label: `${room.index}. ${room.name}` } });
+    const interiorData: Interior = data.interiorData;
+    const roomSelectList: SelectData[] = interiorData.rooms.map((room: InteriorRoom) => ({ value: room.index.toString(), label: `${room.index}. ${room.name}` }));
 
-    useGeneralStore.setState({ mlo: mloData });
+    useGeneralStore.setState({ interior: interiorData });
     useRoomsStore.setState({
-      roomList: mloData.rooms,
-      activeRoom: data?.roomIndex ? mloData.rooms[data.roomIndex] : null,
+      roomList: interiorData.rooms,
+      activeRoom: data?.roomIndex ? interiorData.rooms[data.roomIndex] : null,
       roomSelectList: roomSelectList,
       selectedRoom: data?.roomIndex ? roomSelectList[data.roomIndex].value : null
     });

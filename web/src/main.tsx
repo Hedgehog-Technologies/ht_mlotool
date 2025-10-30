@@ -9,6 +9,7 @@ import { debugData } from "./utils/debugData";
 import { fetchNui } from "./utils/fetchNui";
 import { isEnvBrowser } from "./utils/misc";
 
+// TODO - Update with new interior values
 debugData([
   {
     action: "ht_mlotool:openMLO",

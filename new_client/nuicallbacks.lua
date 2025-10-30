@@ -95,7 +95,7 @@ local function nuiToggleFreeMove(enabled, cb)
     SetNuiFocusKeepInput(enabled)
 end
 
----@param generateAudioData table
+---@param generateAudioData { interior: TInteriorData, generateOcclusion: boolean?, generateDat151: boolean?, debug: boolean? }
 ---@param cb function
 local function nuiGenerateAudioFiles(generateAudioData, cb)
     cb({})
