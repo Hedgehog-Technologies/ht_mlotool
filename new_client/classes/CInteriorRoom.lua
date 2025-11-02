@@ -1,6 +1,9 @@
 ---@type ClientConstants
 local Constants = require 'new_client.helpers.constants'
 
+---@type ClientUtilsApi
+local Utils = require 'new_client.helpers.utils'
+
 ---@class CInteriorRoom : OxClass
 ---@field version number
 ---@field interiorId number
@@ -35,9 +38,9 @@ function CInteriorRoom:constructor(interiorId, nameHash, proxyHash, roomIndex, r
     self.name = GetInteriorRoomName(interiorId, roomIndex)
     self.displayName = self.name:gsub('^%l', string.upper)
     self.nameHash = self.name == 'limbo' and `outside` or joaat(self.name)
-    self.uintNameHash = ToUInt32(self.nameHash)
+    self.uintNameHash = Utils.toUInt32(self.nameHash)
     self.roomKey = self.name == 'limbo' and self.nameHash or proxyHash ~ self.nameHash
-    self.uintRoomKey = ToUInt32(self.roomKey)
+    self.uintRoomKey = Utils.toUInt32(self.roomKey)
     self.portalCount = 0
 
     self.private.roomKey = self.roomKey

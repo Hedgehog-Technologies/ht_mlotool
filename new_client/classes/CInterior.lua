@@ -1,6 +1,9 @@
 ---@type ClientConstants
 local Constants = require 'new_client.helpers.constants'
 
+---@type ClientUtilsApi
+local Utils = require 'new_client.helpers.utils'
+
 ---@type CInteriorRoom
 local CRoom = require 'new_client.classes.CInteriorRoom'
 
@@ -38,7 +41,7 @@ function CInterior:constructor(interiorId, interiorData)
 
     self.interiorId = interiorId
     self.location, self.nameHash = GetInteriorLocationAndNamehash(interiorId)
-    self.uintNameHash = ToUInt32(self.nameHash)
+    self.uintNameHash = Utils.toUInt32(self.nameHash)
 
     lib.print.debug(('Interior Location: %f, %f, %f'):format(self.location.x, self.location.y, self.location.z))
 
@@ -53,7 +56,7 @@ function CInterior:constructor(interiorId, interiorData)
     z = z > 0 and math.floor(z) or math.ceil(z)
 
     self.proxyHash = self.nameHash ~ x ~ y ~ z    -- Signed Hash
-    self.uintProxyHash = ToUInt32(self.proxyHash) -- Unsigned Hash
+    self.uintProxyHash = Utils.toUInt32(self.proxyHash) -- Unsigned Hash
 
     self.private.proxyHash = self.proxyHash
 

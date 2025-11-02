@@ -160,7 +160,7 @@ local function updateDebugInteriorInfo()
                 end
 
                 table.wipe(drawEntities)
-                SendReactMessage('ht_mlotool:nui:cancelEntityDebug', {})
+                Utils.sendReactMessage('ht_mlotool:nui:cancelEntityDebug', {})
             end
 
             interiorId = currentInteriorId
@@ -242,7 +242,7 @@ local function drawDebug()
                 DrawLine(corners[1].x, corners[1].y, corners[1].z, corners[2].x, corners[2].y, corners[2].z, 0, 255, 0, 255)
                 DrawLine(corners[2].x, corners[2].y, corners[2].z, corners[3].x, corners[3].y, corners[3].z, 0, 255, 0, 255)
                 DrawLine(corners[3].x, corners[3].y, corners[3].z, corners[0].x, corners[0].y, corners[0].z, 0, 255, 0, 255)
-                
+
                 -- Middle cross lines
                 DrawLine(corners[0].x, corners[0].y, corners[0].z, corners[2].x, corners[2].y, corners[2].z, 0, 255, 0, 255)
                 DrawLine(corners[1].x, corners[1].y, corners[1].z, corners[3].x, corners[3].y, corners[3].z, 0, 255, 0, 255)
@@ -303,7 +303,7 @@ function DebugDrawApi.updateDebugDraw(enablePortalInfo, enablePortalOutline, ena
     then
         if not interiorIntervalId then
             updateDebugInteriorInfo()
-            interiorId = SetInterval(updateDebugInteriorInfo, 1000)
+            interiorIntervalId = SetInterval(updateDebugInteriorInfo, 1000)
         end
 
         drawIntervalId = SetInterval(drawDebug, 0)
