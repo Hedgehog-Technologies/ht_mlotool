@@ -1,32 +1,34 @@
 import { Box, Group, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { MemoNumberInput, MemoStringInput } from "../../../shared/Inputs";
-import { useLocale } from "../../../../providers/LocaleProvider";
-import { useRoomsStore } from "../../../../store/rooms";
-import { Dat151Fields } from "../../../../types/RoomDef";
+import { MemoNumberInput, MemoStringInput } from "@/layouts/shared/Inputs";
+import { useLocale } from "@/providers/LocaleProvider";
+import { useRoomsStore } from "@/store/rooms";
+import { RoomDat151Fields } from "@/types";
 
-const defaultDat151Fields: Dat151Fields = {
-  flags: "0xAAAAAAAA",      // Flags
-  zone: "",                 // AmbientZone
-  unk02: 0,                 // InteriorType
-  unk03: 0.35,              // ReverbSmall
-  reverb: 0,                // ReverbMedium
-  echo: 0,                  // ReverbLarge
-  sound: "null_sound",      // RoomToneSound
-  unk07: 0,                 // RainType
-  unk08: 0,                 // ExteriorAudibility
-  unk09: 0,                 // RoomOcclusionDamping
-  unk10: 0.7,               // NonMarkedPortalOcclusion
-  unk11: 0,                 // DistanceFromPortalForOcclusion
-  unk12: 50,                // DistanceFromPortalFadeDistance
-  unk13: "",                // WeaponMetrics
-  soundSet: "hash_D4855127" // InteriorWallaSoundSet
+const defaultDat151Fields: RoomDat151Fields = {
+  occlRoomName: "",                      // OcclRoomName
+  flags: "0xAAAAAAAA",                   // Flags
+  ambientZone: "",                       // zone
+  interiorType: 0,                       // unk02
+  reverbSmall: 0.35,                     // unk03
+  reverbMedium: 0,                       // reverb
+  reverbLarge: 0,                        // echo
+  roomToneSound: "null_sound",           // sound
+  rainType: 0,                           // unk07
+  exteriorAudibility: 0,                 // unk08
+  roomOcclusionDamping: 0,               // unk09
+  nonMarkedPortalOcclusion: 0.7,         // unk10
+  distanceFromPortalForOcclusion: 0,     // unk11
+  distanceFromPortalFadeDistance: 50,    // unk12
+  weaponMetrics: "",                     // unk13
+  interiorWallaSoundSet: "hash_D4855127" // soundSet
 };
 
 const RoomSettings: React.FC = () => {
   const locale = useLocale((state) => state.locale);
   const activeRoom = useRoomsStore((state) => state.activeRoom);
-  const [fieldState, setFieldState] = useState<Dat151Fields>(defaultDat151Fields);
+  const setDat151Fields = useRoomsStore((state) => state.setDat151Fields);
+  const [fieldState, setFieldState] = useState<RoomDat151Fields>(defaultDat151Fields);
   const [disabled, setDisabled] = useState<boolean>(true);
 
   let timer: NodeJS.Timeout;
@@ -35,7 +37,7 @@ const RoomSettings: React.FC = () => {
     if (activeRoom === null) return;
 
     timer = setTimeout(() => {
-      activeRoom.SetDat151Fields(fieldState);
+      setDat151Fields(fieldState);
     }, 500);
 
     return () => clearTimeout(timer);
@@ -46,21 +48,22 @@ const RoomSettings: React.FC = () => {
       setFieldState(defaultDat151Fields);
     } else {
       setFieldState({
-        flags: activeRoom.flags,
-        zone: activeRoom.zone,
-        unk02: activeRoom.unk02,
-        unk03: activeRoom.unk03,
-        reverb: activeRoom.reverb,
-        echo: activeRoom.echo,
-        sound: activeRoom.sound,
-        unk07: activeRoom.unk07,
-        unk08: activeRoom.unk08,
-        unk09: activeRoom.unk09,
-        unk10: activeRoom.unk10,
-        unk11: activeRoom.unk11,
-        unk12: activeRoom.unk12,
-        unk13: activeRoom.unk13,
-        soundSet: activeRoom.soundSet
+        occlRoomName: activeRoom.dat151.occlRoomName,
+        flags: activeRoom.dat151.flags,
+        ambientZone: activeRoom.dat151.ambientZone,
+        interiorType: activeRoom.dat151.interiorType,
+        reverbSmall: activeRoom.dat151.reverbSmall,
+        reverbMedium: activeRoom.dat151.reverbMedium,
+        reverbLarge: activeRoom.dat151.reverbLarge,
+        roomToneSound: activeRoom.dat151.roomToneSound,
+        rainType: activeRoom.dat151.rainType,
+        exteriorAudibility: activeRoom.dat151.exteriorAudibility,
+        roomOcclusionDamping: activeRoom.dat151.roomOcclusionDamping,
+        nonMarkedPortalOcclusion: activeRoom.dat151.nonMarkedPortalOcclusion,
+        distanceFromPortalForOcclusion: activeRoom.dat151.distanceFromPortalForOcclusion,
+        distanceFromPortalFadeDistance: activeRoom.dat151.distanceFromPortalFadeDistance,
+        weaponMetrics: activeRoom.dat151.weaponMetrics,
+        interiorWallaSoundSet: activeRoom.dat151.interiorWallaSoundSet
       });
     }
 
@@ -81,16 +84,16 @@ const RoomSettings: React.FC = () => {
         <MemoStringInput
           label={locale("ui_room_dat_zone")}
           placeholder={locale("ui_blank")}
-          value={fieldState.zone}
-          setValue={(value) => setFieldState({ ...fieldState, zone: value })}
+          value={fieldState.ambientZone}
+          setValue={(value) => setFieldState({ ...fieldState, ambientZone: value })}
           infoCircle={locale("ui_room_dat_zone_info")}
           icWidth={125}
           disabled={disabled}
         />
         <MemoNumberInput
           label={locale("ui_room_dat_unk02")}
-          value={fieldState.unk02}
-          setValue={(value) => setFieldState({ ...fieldState, unk02: (value ?? defaultDat151Fields.unk02) })}
+          value={fieldState.interiorType}
+          setValue={(value) => setFieldState({ ...fieldState, interiorType: (value ?? defaultDat151Fields.interiorType) })}
           min={0}
           max={255}
           infoCircle={locale("ui_room_dat_unk02_info")}
@@ -99,8 +102,8 @@ const RoomSettings: React.FC = () => {
         />
         <MemoNumberInput
           label={locale("ui_room_dat_unk03")}
-          value={fieldState.unk03}
-          setValue={(value) => setFieldState({ ...fieldState, unk03: (value ?? defaultDat151Fields.unk03) })}
+          value={fieldState.reverbSmall}
+          setValue={(value) => setFieldState({ ...fieldState, reverbSmall: (value ?? defaultDat151Fields.reverbSmall) })}
           precision={6}
           min={0.0}
           max={1.0}
@@ -113,8 +116,8 @@ const RoomSettings: React.FC = () => {
       <Group position="apart" grow>
         <MemoNumberInput
           label={locale("ui_room_dat_reverb")}
-          value={fieldState.reverb}
-          setValue={(value) => setFieldState({ ...fieldState, reverb: (value ?? defaultDat151Fields.reverb) })}
+          value={fieldState.reverbMedium}
+          setValue={(value) => setFieldState({ ...fieldState, reverbMedium: (value ?? defaultDat151Fields.reverbMedium) })}
           precision={6}
           min={0.0}
           max={1.0}
@@ -124,8 +127,8 @@ const RoomSettings: React.FC = () => {
         />
         <MemoNumberInput
           label={locale("ui_room_dat_echo")}
-          value={fieldState.echo}
-          setValue={(value) => setFieldState({ ...fieldState, echo: (value ?? defaultDat151Fields.echo) })}
+          value={fieldState.reverbLarge}
+          setValue={(value) => setFieldState({ ...fieldState, reverbLarge: (value ?? defaultDat151Fields.reverbLarge) })}
           precision={6}
           min={0.0}
           max={1.0}
@@ -135,15 +138,15 @@ const RoomSettings: React.FC = () => {
         />
         <MemoStringInput
           label={locale("ui_room_dat_sound")}
-          value={fieldState.sound}
-          setValue={(value) => setFieldState({ ...fieldState, sound: value })}
+          value={fieldState.roomToneSound}
+          setValue={(value) => setFieldState({ ...fieldState, roomToneSound: value })}
           infoCircle={locale("ui_room_dat_sound_info")}
           disabled={disabled}
         />
         <MemoNumberInput
           label={locale("ui_room_dat_unk07")}
-          value={fieldState.unk07}
-          setValue={(value) => setFieldState({ ...fieldState, unk07: (value ?? defaultDat151Fields.unk07) })}
+          value={fieldState.rainType}
+          setValue={(value) => setFieldState({ ...fieldState, rainType: (value ?? defaultDat151Fields.rainType) })}
           min={0}
           max={255}
           infoCircle={locale("ui_room_dat_unk07_info")}
@@ -155,24 +158,24 @@ const RoomSettings: React.FC = () => {
       <Group position="apart" grow>
         <MemoNumberInput
           label={locale("ui_room_dat_unk08")}
-          value={fieldState.unk08}
-          setValue={(value) => setFieldState({ ...fieldState, unk08: (value ?? defaultDat151Fields.unk08) })}
+          value={fieldState.exteriorAudibility}
+          setValue={(value) => setFieldState({ ...fieldState, exteriorAudibility: (value ?? defaultDat151Fields.exteriorAudibility) })}
           infoCircle={locale("ui_room_dat_unk08_info")}
           icWidth={100}
           disabled={disabled}
         />
         <MemoNumberInput
           label={locale("ui_room_dat_unk09")}
-          value={fieldState.unk09}
-          setValue={(value) => setFieldState({ ...fieldState, unk09: (value ?? defaultDat151Fields.unk09) })}
+          value={fieldState.roomOcclusionDamping}
+          setValue={(value) => setFieldState({ ...fieldState, roomOcclusionDamping: (value ?? defaultDat151Fields.roomOcclusionDamping) })}
           infoCircle={locale("ui_room_dat_unk09_info")}
           icWidth={100}
           disabled={disabled}
         />
         <MemoNumberInput
           label={locale("ui_room_dat_unk10")}
-          value={fieldState.unk10}
-          setValue={(value) => setFieldState({ ...fieldState, unk10: (value ?? defaultDat151Fields.unk10) })}
+          value={fieldState.nonMarkedPortalOcclusion}
+          setValue={(value) => setFieldState({ ...fieldState, nonMarkedPortalOcclusion: (value ?? defaultDat151Fields.nonMarkedPortalOcclusion) })}
           precision={6}
           infoCircle={locale("ui_room_dat_unk10_info")}
           icWidth={125}
@@ -180,8 +183,8 @@ const RoomSettings: React.FC = () => {
         />
         <MemoNumberInput
           label={locale("ui_room_dat_unk11")}
-          value={fieldState.unk11}
-          setValue={(value) => setFieldState({ ...fieldState, unk11: (value ?? defaultDat151Fields.unk11) })}
+          value={fieldState.distanceFromPortalForOcclusion}
+          setValue={(value) => setFieldState({ ...fieldState, distanceFromPortalForOcclusion: (value ?? defaultDat151Fields.distanceFromPortalForOcclusion) })}
           infoCircle={locale("ui_room_dat_unk11_info")}
           icWidth={100}
           disabled={disabled}
@@ -191,8 +194,8 @@ const RoomSettings: React.FC = () => {
       <Group position="center" grow>
         <MemoNumberInput
           label={locale("ui_room_dat_unk12")}
-          value={fieldState.unk12}
-          setValue={(value) => setFieldState({ ...fieldState, unk12: (value ?? defaultDat151Fields.unk12) })}
+          value={fieldState.distanceFromPortalFadeDistance}
+          setValue={(value) => setFieldState({ ...fieldState, distanceFromPortalFadeDistance: (value ?? defaultDat151Fields.distanceFromPortalFadeDistance) })}
           infoCircle={locale("ui_room_dat_unk12_info")}
           icWidth={125}
           disabled={disabled}
@@ -200,15 +203,15 @@ const RoomSettings: React.FC = () => {
         <MemoStringInput
           label={locale("ui_room_dat_unk13")}
           placeholder={locale("ui_blank")}
-          value={fieldState.unk13}
-          setValue={(value) => setFieldState({ ...fieldState, unk13: value })}
+          value={fieldState.weaponMetrics}
+          setValue={(value) => setFieldState({ ...fieldState, weaponMetrics: value })}
           infoCircle={locale("ui_room_dat_unk13_info")}
           disabled={disabled}
         />
         <MemoStringInput
           label={locale("ui_room_dat_soundset")}
-          value={fieldState.soundSet}
-          setValue={(value) => setFieldState({ ...fieldState, soundSet: value })}
+          value={fieldState.interiorWallaSoundSet}
+          setValue={(value) => setFieldState({ ...fieldState, interiorWallaSoundSet: value })}
           infoCircle={locale("ui_room_dat_soundset_info")}
           disabled={disabled}
         />

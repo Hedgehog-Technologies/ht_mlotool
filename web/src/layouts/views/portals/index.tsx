@@ -2,19 +2,19 @@ import { Alert, Box, Group, ScrollArea, Title } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import DebugMenu from "./components/DebugMenu";
 import PortalInfo from "./components/PortalInfo";
-import { MemoRoomSelect } from "../../shared/RoomSelect";
-import { useLocale } from "../../../providers/LocaleProvider";
-import { useGeneralStore } from "../../../store/general";
-import { usePortalsStore } from "../../../store/portals";
-import { useRoomsStore } from "../../../store/rooms";
-import { PortalDef } from "../../../types/PortalDef";
+import { MemoRoomSelect } from "@/layouts/shared/RoomSelect";
+import { useLocale } from "@/providers/LocaleProvider";
+import { useGeneralStore } from "@/store/general";
+import { usePortalsStore } from "@/store/portals";
+import { useRoomsStore } from "@/store/rooms";
+import { InteriorPortal } from "@/types";
 
 const Portals: React.FC = () => {
   const locale = useLocale((state) => state.locale);
-  const mlo = useGeneralStore((state) => state.mlo);
+  const interior = useGeneralStore((state) => state.interior);
   const activeRoom = useRoomsStore((state) => state.activeRoom);
   const [scrollPosition, setScrollPosition] = usePortalsStore((state) => [state.scrollPosition, state.setScrollPosition]);
-  const [filteredRooms, setFilteredRooms] = useState<Array<PortalDef>>();
+  const [filteredRooms, setFilteredRooms] = useState<Array<InteriorPortal>>();
   const [shouldScroll, setShouldScroll]  = useState<boolean>(false);
   const viewport = useRef<HTMLDivElement>(null);
   
@@ -36,10 +36,10 @@ const Portals: React.FC = () => {
   useEffect(() => { scrollTo(scrollPosition); }, []);
 
   useEffect(() => {
-    let rooms: Array<PortalDef> | undefined = undefined;
+    let rooms: Array<InteriorPortal> | undefined = undefined;
 
-    if (mlo) {
-      rooms = mlo.portals.filter((portal) => (!portal.isMirror && (portal.fromRoomIndex === activeRoom?.index || portal.toRoomIndex == activeRoom?.index)));
+    if (interior) {
+      rooms = interior.portals.filter((portal) => (!portal.isMirror && (portal.fromRoomIndex === activeRoom?.index || portal.toRoomIndex == activeRoom?.index)));
     }
 
     setFilteredRooms(rooms);
@@ -61,7 +61,7 @@ const Portals: React.FC = () => {
 
       <ScrollArea style={{ height: 650 }} pt={5} onScrollPositionChange={setScrollState} viewportRef={viewport}>
         {activeRoom?.portalCount
-          && filteredRooms?.map((portal) => <PortalInfo key={portal.mloPortalIndex} portal={portal} portalIndex={portal.mloPortalIndex} />)
+          && filteredRooms?.map((portal) => <PortalInfo key={portal.interiorPortalIndex} portal={portal} portalIndex={portal.interiorPortalIndex} />)
           || <Alert>{locale("ui_portal_alert")}</Alert>}
       </ScrollArea>
     </Box>

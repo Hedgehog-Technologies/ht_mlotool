@@ -1,7 +1,7 @@
 import { Box, Group, Title } from "@mantine/core";
-import { MemoNumberInput, MemoStringInput } from "../../../shared/Inputs";
-import { useLocale } from "../../../../providers/LocaleProvider";
-import { useRoomsStore } from "../../../../store/rooms";
+import { MemoNumberInput, MemoStringInput } from "@/layouts/shared/Inputs";
+import { useLocale } from "@/providers/LocaleProvider";
+import { useRoomsStore } from "@/store/rooms";
 
 const RoomInfo: React.FC = () => {
   const locale = useLocale((state) => state.locale);
@@ -21,7 +21,7 @@ const RoomInfo: React.FC = () => {
           />
           <MemoStringInput
             label={locale("ui_occl_name")}
-            value={activeRoom?.occlRoomName ?? ""}
+            value={activeRoom?.dat151.occlRoomName ?? ""}
             infoCircle={locale("ui_occl_name_info")}
             ttOpenDelay={300}
             disabled

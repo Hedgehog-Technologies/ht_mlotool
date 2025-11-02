@@ -1,11 +1,11 @@
 import { Center, Checkbox, Switch, Text, Tooltip } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { useEffect, useState } from "react";
-import { MemoNumberInput } from "../../../shared/Inputs";
-import { useVisibility } from "../../../../providers/VisibilityProvider";
-import { useGeneralStore } from "../../../../store/general";
-import { usePortalsStore } from "../../../../store/portals";
-import { fetchNui } from "../../../../utils/fetchNui";
+import { MemoNumberInput } from "@/layouts/shared/Inputs";
+import { useVisibility } from "@/providers/VisibilityProvider";
+import { useGeneralStore } from "@/store/general";
+import { usePortalsStore } from "@/store/portals";
+import { fetchNui } from "@/utils/fetchNui";
 
 interface Props {
   portalIndex: number;
@@ -14,19 +14,20 @@ interface Props {
 
 const EntitySettings: React.FC<Props> = (props) => {
   const exitUi = useVisibility((state) => state.exitUI);
-  const mlo = useGeneralStore((state) => state.mlo);
+  const interior = useGeneralStore((state) => state.interior);
+  const setPortalEntity = useGeneralStore((state) => state.setPortalEntity);
   const [debugEntities, addDebugEntity] = usePortalsStore((state) => [state.debugEntities, state.addDebugEntity])
-  const [activeEntity, setActiveEntity] = useState(mlo?.portals[props.portalIndex].entities[props.entityIndex]);
+  const [activeEntity, setActiveEntity] = useState(interior?.portals[props.portalIndex].entities[props.entityIndex]);
   let key = `${props.portalIndex}:${props.entityIndex}`;
 
   let timer: NodeJS.Timeout;
   useEffect(() => {
     clearTimeout(timer);
-    if (mlo === null) return;
+    if (interior === null) return;
 
     timer = setTimeout(() => {
       if (activeEntity !== undefined) {
-        mlo.SetPortalEntity(props.portalIndex, props.entityIndex, activeEntity);
+        setPortalEntity(props.portalIndex, props.entityIndex, activeEntity);
       }
     }, 500);
 

@@ -1,10 +1,10 @@
 import { ActionIcon, Menu } from "@mantine/core";
 import { useEffect } from "react";
 import { FaGear } from "react-icons/fa6";
-import { MemoTooltipSwitch } from "../../../shared/Inputs";
-import { useLocale } from "../../../../providers/LocaleProvider";
-import { usePortalsStore } from "../../../../store/portals";
-import { fetchNui } from "../../../../utils/fetchNui";
+import { MemoTooltipSwitch } from "@/layouts/shared/Inputs";
+import { useLocale } from "@/providers/LocaleProvider";
+import { usePortalsStore } from "@/store/portals";
+import { fetchNui } from "@/utils/fetchNui";
 
 const DebugMenu: React.FC = () => {
   const locale = useLocale((state) => state.locale);
