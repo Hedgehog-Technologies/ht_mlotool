@@ -15,27 +15,27 @@ repository 'https://github.com/Hedgehog-Technologies/ht_mlotool'
 --[[ Manifest ]]--
 shared_scripts {
     '@ox_lib/init.lua',
-    'utils.lua' -- TODO - remove
+    -- 'utils.lua' -- TODO - remove
 }
 
 -- TODO - remove
+-- client_scripts {
+--     'client/**/*.lua',
+-- }
+
+-- TODO - rename
 client_scripts {
-    'client/**/*.lua',
-}
-
--- TODO - rename
-new_client_scripts {
-    'client/*.lua'
+    'new_client/*.lua'
 }
 
 -- TODO - remove
-server_scripts {
-    'server/**/*.lua'
-}
+-- server_scripts {
+--     'server/**/*.lua'
+-- }
 
 -- TODO - rename
-new_server_scripts {
-    'server/*.lua'
+server_scripts {
+    'new_server/*.lua'
 }
 
 ox_libs {
