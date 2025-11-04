@@ -38,7 +38,7 @@ const GeneralMlo: React.FC = () => {
 
   const handleSaveClick = () => {
     let combinedMLO = { ...interior, rooms: roomList };
-    fetchNui("ht_mlotool:nui:saveMlo", combinedMLO, "1");
+    fetchNui("ht_mlotool:nui:saveInterior", combinedMLO, "1");
   }
 
   return(

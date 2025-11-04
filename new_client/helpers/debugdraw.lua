@@ -255,26 +255,26 @@ local function drawDebug()
                 DrawPoly(corners[3].x, corners[3].y, corners[3].z, corners[2].x, corners[2].y, corners[2].z, corners[1].x, corners[1].y, corners[1].z, 100, 65, 217, 150)
                 DrawPoly(corners[3].x, corners[3].y, corners[3].z, corners[1].x, corners[1].y, corners[1].z, corners[0].x, corners[0].y, corners[0].z, 100, 65, 217, 150)
             end
+        end
 
-            if drawNavigate == portalId then
-                if not interiorPortalNavEnabled then
-                    interiorPortalNavEnabled = interiorId
-                end
-
-                local dirX = pedCoords.x - crossVector.x
-                local dirY = pedCoords.y - crossVector.y
-                local dirZ = pedCoords.z - crossVector.z + 0.75
-
-                DrawMarker(
-                    26, -- MarkerTypeHorizontalCircleSkinny_Arrow
-                    pedCoords.x, pedCoords.y, pedCoords.z + 0.75,
-                    dirX, dirY, dirZ,
-                    0.0, 0.0, 0.0,
-                    1.0, 1.0, 1.0,
-                    100, 65, 217, 200,
-                    false, false, 0, false, nil, nil, false
-                )
+        if drawNavigate == portalId then
+            if not interiorPortalNavEnabled then
+                interiorPortalNavEnabled = interiorId
             end
+
+            local dirX = pedCoords.x - crossVector.x
+            local dirY = pedCoords.y - crossVector.y
+            local dirZ = pedCoords.z - crossVector.z + 0.75
+
+            DrawMarker(
+                26, -- MarkerTypeHorizontalCircleSkinny_Arrow
+                pedCoords.x, pedCoords.y, pedCoords.z + 0.75,
+                dirX, dirY, dirZ,
+                0.0, 0.0, 0.0,
+                1.0, 1.0, 1.0,
+                100, 65, 217, 200,
+                false, false, 0, false, nil, nil, false
+            )
         end
     end
 end
