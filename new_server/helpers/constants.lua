@@ -2,6 +2,8 @@ local Constants = {}
 
 Constants.systemIsWindows = (os.getenv('OS') or ''):lower():match('windows')
 Constants.resourcePath = GetResourcePath(cache.resource):gsub('//', '/')
+Constants.savedMloDir = 'saved_mlos'
+Constants.savedMloDirPath = ('%s/%s'):format(Constants.resourcePath, Constants.savedMloDir)
 Constants.savedInteriorDir = 'saved_interiors'
 Constants.savedInteriorDirPath = ('%s/%s'):format(Constants.resourcePath, Constants.savedInteriorDir)
 Constants.generatedFilesDir = 'generated_files'

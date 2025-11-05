@@ -40,6 +40,8 @@
 ---@class ServerConstants
 ---@field systemIsWindows boolean
 ---@field resourcePath string
+---@field savedMloDir string
+---@field savedMloDirPath string
 ---@field savedInteriorDir string
 ---@field savedInteriorDirPath string
 ---@field generatedFilesDir string

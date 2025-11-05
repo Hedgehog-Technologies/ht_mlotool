@@ -15,10 +15,41 @@ local _interiorFilenameLookup = {}
 local InteriorFileCacheApi = {}
 
 function InteriorFileCacheApi.initializeCache()
-    local files, fileCount = HTFile.getFilesInDirectory(Constants.savedInteriorDirPath, '%.json')
+    -- Check for old schema files
+
+    local files, fileCount = HTFile.getFilesInDirectory(Constants.savedMloDirPath, '%.json')
 
     if fileCount > 0 then
-        lib.print.info(locale('found_mlo_json_files', fileCount))
+        lib.print.info(locale('found_mlo_json_files', fileCount, Constants.savedMloDirPath))
+        lib.print.warn('It is safe to delete the files in the "saved_mlos" directory. Saved files are now located in the "saved_interiors" directory.')
+    end
+
+    for i = 1, fileCount do
+        local filename = files[i]
+        local interiorDataString = HTFile.readFile(nil, Constants.savedMloDirPath, filename, 'json')
+
+        if interiorDataString ~= nil then
+            ---@type TInteriorData
+            local interiorData = json.decode(interiorDataString)
+
+            if interiorData and interiorData.nameHash then
+                local nameHashString = tostring(interiorData.nameHash)
+                _interiorFilenameLookup[nameHashString] = filename
+                _interiorDataCache[nameHashString] = interiorData
+
+                if not HTFile.readFile(nil, Constants.savedInteriorDirPath, filename, 'json') then
+                    HTFile.writeFile(nil, Constants.savedInteriorDirPath, filename, 'json', interiorDataString)
+                end
+            end
+        end
+    end
+
+    -- Read new schema files
+
+    files, fileCount = HTFile.getFilesInDirectory(Constants.savedInteriorDirPath, '%.json')
+
+    if fileCount > 0 then
+        lib.print.info(locale('found_mlo_json_files', fileCount, Constants.savedInteriorDirPath))
     end
 
     for i = 1, fileCount do
