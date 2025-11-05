@@ -3,6 +3,7 @@
 *.xml
 
 /generated_files
+/saved_interiors
 /saved_mlos
 /web/node_modules
 /web/build
