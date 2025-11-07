@@ -60,12 +60,21 @@ lib.addCommand('loadmlo', {
     local filename = args and args.name
 
     if not filename then
+        lib.print.info(locale('cmd_loadmlo_no_filename'))
+
         local nameHash = lib.callback.await('ht_mlotool:getInteriorNameHash', source)
 
         if nameHash ~= nil then
             filename = FileCache.getFilenameForInterior(nameHash)
         else
-            -- TODO Warning about no name and not in an mlo
+            local msg = locale('cmd_loadmlo_not_in_mlo')
+
+            lib.print.warn(msg)
+            TriggerClientEvent('ox_lib:notify', source, {
+                type = 'error',
+                title = locale('error'),
+                description = msg
+            })
         end
     end
 
@@ -75,7 +84,14 @@ lib.addCommand('loadmlo', {
         if data then
             TriggerLatentClientEvent('ht_mlotool:loadInteriorData', source, Config.serverToClientBPS, data, false)
         else
-            -- TODO Warning about failure to load data
+            local msg = locale('cmd_loadmlo_cannot_load_data')
+
+            lib.print.error(msg)
+            TriggerClientEvent('ox_lib:notify', source, {
+                type = 'error',
+                title = msg,
+                description = locale('check_server_logs')
+            })
         end
     end
 end)

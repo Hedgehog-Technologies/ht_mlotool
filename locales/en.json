@@ -1,7 +1,10 @@
 {
     "check_server_logs": "Check server logs for more info",
+    "cmd_loadmlo_cannot_load_data": "Failed to load MLO data from file",
     "cmd_loadmlo_help": "[Admin] Load current MLO data from saved file, if it exists",
     "cmd_loadmlo_name_help": "[Optional] Name of the saved file",
+    "cmd_loadmlo_no_filename": "No filename specified, attempting to load based on current MLO interior",
+    "cmd_loadmlo_not_in_mlo": "Cannot load MLO data - not currently in a recognized MLO interior",
     "cmd_openmlo_help": "[Admin] Open MLO Tool UI for current MLO",
     "cmd_openmlo_force_help": "[Optional] (1) Reload from file, (2) Rebuild from scratch, or <leave blank> Use cached value if available",
     "cmd_savemlo_help": "[Admin] Save current MLO object to file",
@@ -9,6 +12,7 @@
     "data_generation_fail": "Failed to generate MLO data",
     "debug_text_portal_id": "~b~Portal ~w~%s",
     "debug_text_conn_rooms": "~b~From ~w~%s~b~ To ~w~%s",
+    "error": "ERROR",
     "fail_create_directory": "Failed to create directory [%s] - [%s] %s",
     "file_save_fail": "Failed to save file",
     "file_save_success": "File finished saving",
@@ -29,6 +33,7 @@
     "update_proxy_hash": "Updating interior proxy hash: %s -> %s",
     "update_room_key": "Updated room key for [%s]: %s (%s) -> %s (%s)",
     "user_not_in_mlo": "User is not currently standing in an MLO",
+    "warning": "WARNING",
     "write_output_fail": "Failed to write to output file",
 
     "ui_blank": "<Blank>",
