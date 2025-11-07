@@ -34,7 +34,7 @@ end)
 RegisterNetEvent('ht_mlotool:outputResultFile', function(outputDirName, filename, filetype, data, debug)
     local source = source
     if not Utils.canUseOpenMloCmd(source) then
-        lib.print.warn(locale('incorrect_perms', source, GetPlayerName(source)))
+        lib.print.warn(locale('incorrect_perms', source, GetPlayerName(source), 'ht_mlotool:outputResultFile'))
         return
     end
 
@@ -66,7 +66,7 @@ end)
 RegisterNetEvent('ht_mlotool:saveInteriorData', function(interiorData)
     local source = source
     if not Utils.canUseOpenMloCmd(source) and not Utils.canUseSaveMloCmd(source) then
-        lib.print.warn(locale('incorrect_perms', source, GetPlayerName(source)))
+        lib.print.warn(locale('incorrect_perms', source, GetPlayerName(source), 'ht_mlotool:saveInteriorData'))
         return
     end
 

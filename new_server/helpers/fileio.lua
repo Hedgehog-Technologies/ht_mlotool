@@ -35,7 +35,7 @@ function HTFileApi.createDirectory(path)
     local success, err, code = pcall(os.createdir, path)
 
     if not success and not err:match(dirExists) then
-        lib.print.error(locale('fail_create_directory', code, err))
+        lib.print.error(locale('fail_create_directory', path, code, err))
     end
 
     return success or (err:match(dirExists) and code == 1)

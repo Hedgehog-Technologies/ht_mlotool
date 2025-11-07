@@ -135,19 +135,25 @@ end
 function CInteriorRoom:updateRoomKey(newHash)
     if self.name == 'limbo' then return end
 
+    local oldRoomKey = self.roomKey
+    local oldUintRoomKey = self.uintRoomKey
+
     self.roomKey = newHash ~ self.nameHash
     self.uintRoomKey = ToUInt32(self.roomKey)
 
-    lib.print.info(('Updated Room [%s] key: %s (%s)'):format(self.name, self.roomKey, self.uintRoomKey))
+    lib.print.info(locale('update_room_key', self.name, oldRoomKey, oldUintRoomKey, self.roomKey, self.uintRoomKey))
 end
 
 function CInteriorRoom:resetRoomKey()
     if self.name == 'limbo' then return end
 
+    local oldRoomKey = self.roomKey
+    local oldUintRoomKey = self.uintRoomKey
+
     self.roomKey = self.private.roomKey
     self.uintRoomKey = ToUInt32(self.roomKey)
 
-    lib.print.info(('Reset Room [%s] key: %s (%s)'):format(self.name, self.roomKey, self.uintRoomKey))
+    lib.print.info(locale('reset_room_key', self.name, oldRoomKey, oldUintRoomKey, self.roomKey, self.uintRoomKey))
 end
 
 ---@return TInteriorRoomData

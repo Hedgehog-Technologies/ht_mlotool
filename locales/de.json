@@ -6,7 +6,6 @@
     "cmd_openmlo_force_help": "[Optional] (1) Aus Datei neu laden, (2) Komplett neu erstellen oder <leer lassen> um zwischengespeicherten Wert zu nutzen, falls vorhanden",
     "cmd_savemlo_help": "[Admin] Speichere aktuelle MLO Daten als Datei",
     "cmd_savemlo_name_help": "[Optional] Wenn ein Name hier eingeben wird, wird dieser als Dateiname verwendet",
-    "create_output_dir_fail": "^1FEHLER: Ausgabeverzeichnis ['%s'] konnte nicht erstellt werden: %s [%s]^7",
     "data_generation_fail": "Fehler bei der Erstellung der MLO Daten",
     "debug_text_portal_id": "~b~Portal ~w~%s",
     "debug_text_conn_rooms": "~b~von ~w~%s~b~ zu ~w~%s",

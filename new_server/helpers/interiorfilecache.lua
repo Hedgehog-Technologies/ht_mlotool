@@ -21,7 +21,7 @@ function InteriorFileCacheApi.initializeCache()
 
     if fileCount > 0 then
         lib.print.info(locale('found_mlo_json_files', fileCount, Constants.savedMloDirPath))
-        lib.print.warn('It is safe to delete the files in the "saved_mlos" directory. Saved files are now located in the "saved_interiors" directory.')
+        lib.print.warn(locale('safe_to_delete_old_dir', Constants.savedMloDir, Constants.savedInteriorDir))
     end
 
     for i = 1, fileCount do

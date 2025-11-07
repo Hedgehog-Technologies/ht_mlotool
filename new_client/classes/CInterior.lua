@@ -168,7 +168,7 @@ function CInterior:update(interiorData)
 end
 
 function CInterior:overrideProxyHash(newHash)
-    lib.print.info(('Updating interior proxy hash to: %s'):format(newHash))
+    lib.print.info(locale('update_proxy_hash', self.proxyHash, newHash))
 
     self.proxyHash = newHash
 
@@ -178,7 +178,7 @@ function CInterior:overrideProxyHash(newHash)
 end
 
 function CInterior:resetProxyHash()
-    lib.print.info(('Resetting interior proxy hash to: %s'):format(self.private.proxyHash))
+    lib.print.info(locale('reset_proxy_hash', self.proxyHash, self.private.proxyHash))
 
     self.proxyHash = self.private.proxyHash
 
