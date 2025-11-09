@@ -9,22 +9,23 @@ import { debugData } from "./utils/debugData";
 import { fetchNui } from "./utils/fetchNui";
 import { isEnvBrowser } from "./utils/misc";
 
-// TODO - Update with new interior values
 debugData([
   {
-    action: "ht_mlotool:openMLO",
+    action: "ht_mlotool:openTool",
     data: {
-      mloData: {
+      interiorData: {
         interiorId: 9001,
-        name: "debugtest",
-        saveName: "debug_test",
         location: { x: 900.1, y: 90.01, z: 9.001 },
         nameHash: -263775399,
         uintNameHash: 4031191897,
+        saveName: "debug_test",
+        name: "debugtest",
         proxyHash: -263874531,
         uintProxyHash: 4031092765,
+        roomCount: 3,
         rooms: [
           {
+            interiorId: 9001,
             index: 0,
             name: "limbo",
             displayName: "Limbo",
@@ -33,24 +34,27 @@ debugData([
             roomKey: -1208110635,
             uintRoomKey: 3086856661,
             portalCount: 1,
-            occlRoomName: "DEADBEEF_limbo",
-            flags: "0xAAAAAAAA",
-            zone: "",
-            unk02: 0,
-            unk03: "",
-            reverb: 0,
-            echo: 0,
-            sound: "null_sound",
-            unk07: 0,
-            unk08: 0,
-            unk09: 0,
-            unk10: 0.7,
-            unk11: 0,
-            unk12: 50,
-            unk13: "",
-            soundSet: "hash_D4855127"
+            dat151: {
+              occlRoomName: "DEADBEEF_limbo",
+              flags: "0xAAAAAAAA",
+              ambientZone: "",
+              interiorType: 0,
+              reverbSmall: 0.35,
+              reverbMedium: 0.0,
+              reverbLarge: 0.0,
+              roomToneSound: "null_sound",
+              rainType: 0,
+              exteriorAudibility: 0,
+              roomOcclusionDamping: 0,
+              nonMarkedPortalOcclusion: 0.7,
+              distanceFromPortalForOcclusion: 0,
+              distanceFromPortalFadeDistance: 50,
+              weaponMetrics: "",
+              interiorWallaSoundSet: "hash_D4855127"
+            }
           },
           {
+            interiorId: 9001,
             index: 1,
             name: "lobby",
             displayName: "Lobby",
@@ -59,24 +63,27 @@ debugData([
             roomKey: -1429655892,
             uintRoomKey: 2865311404,
             portalCount: 2,
-            occlRoomName: "DEADBEEF_lobby",
-            flags: "0xAAAAAAAA",
-            zone: "",
-            unk02: 0,
-            unk03: "",
-            reverb: 0,
-            echo: 0,
-            sound: "null_sound",
-            unk07: 0,
-            unk08: 0,
-            unk09: 0,
-            unk10: 0.7,
-            unk11: 0,
-            unk12: 50,
-            unk13: "",
-            soundSet: "hash_D4855127"
+            dat151: {
+              occlRoomName: "DEADBEEF_lobby",
+              flags: "0xAAAAAAAA",
+              ambientZone: "",
+              interiorType: 0,
+              reverbSmall: "",
+              reverbMedium: 0,
+              reverbLarge: 0,
+              roomToneSound: "null_sound",
+              rainType: 0,
+              exteriorAudibility: 0,
+              roomOcclusionDamping: 0,
+              nonMarkedPortalOcclusion: 0.7,
+              distanceFromPortalForOcclusion: 0,
+              distanceFromPortalFadeDistance: 50,
+              weaponMetrics: "",
+              interiorWallaSoundSet: "hash_D4855127"
+            }
           },
           {
+            interiorId: 9001,
             index: 2,
             name: "office",
             displayName: "Office",
@@ -85,33 +92,43 @@ debugData([
             roomKey: -12341234,
             uintRoomKey: 123412341234,
             portalCount: 1,
-            occlRoomName: "DEADBEEF_office",
-            flags: "0xAAAAAAAA",
-            zone: "",
-            unk02: 0,
-            unk03: "",
-            reverb: 0,
-            echo: 0,
-            sound: "null_sound",
-            unk07: 0,
-            unk08: 0,
-            unk09: 0,
-            unk10: 0.7,
-            unk11: 0,
-            unk12: 50,
-            unk13: "",
-            soundSet: "hash_D4855127"
+            dat151: {
+              occlRoomName: "DEADBEEF_office",
+              flags: "0xAAAAAAAA",
+              ambientZone: "",
+              interiorType: 0,
+              reverbSmall: "",
+              reverbMedium: 0,
+              reverbLarge: 0,
+              roomToneSound: "null_sound",
+              rainType: 0,
+              exteriorAudibility: 0,
+              roomOcclusionDamping: 0,
+              nonMarkedPortalOcclusion: 0.7,
+              distanceFromPortalForOcclusion: 0,
+              distanceFromPortalFadeDistance: 50,
+              weaponMetrics: "",
+              interiorWallaSoundSet: "hash_D4855127"
+            }
           }
         ],
+        portalCount: 5,
         portals: [
           {
+            interiorId: 9001,
+            isEnabled: [true, true],
+            interiorPortalIndex: 0,
+            globalPortalIndices: [-1, -1],
             fromRoomIndex: 1,
             toRoomIndex: 0,
-            mloPortalIndex: 0,
             flags: 0,
-            isEnabled: [true, true],
+            isMirror: false,
+            entityCount: 1,
             entities: [
               {
+                interiorId: 9001,
+                index: 0,
+                linkType: 1,
                 maxOcclusion: 0.0,
                 modelHashKey: 130864445,
                 modelName: "limbo1",
@@ -121,13 +138,20 @@ debugData([
             ]
           },
           {
+            interiorId: 9001,
+            isEnabled: [false, false],
+            interiorPortalIndex: 1,
+            globalPortalIndices: [-1, -1],
             fromRoomIndex: 2,
             toRoomIndex: 1,
-            mloPortalIndex: 1,
             flags: 0,
-            isEnabled: [false, false],
+            isMirror: false,
+            entityCount: 1,
             entities: [
               {
+                interiorId: 9001,
+                index: 0,
+                linkType: 1,
                 maxOcclusion: 1.0,
                 modelHashKey: 83737373,
                 modelName: "office1",
@@ -137,13 +161,20 @@ debugData([
             ]
           },
           {
+            interiorId: 9001,
+            isEnabled: [false, false],
+            interiorPortalIndex: 2,
+            globalPortalIndices: [-1, -1],
             fromRoomIndex: 2,
             toRoomIndex: 1,
-            mloPortalIndex: 2,
             flags: 0,
-            isEnabled: [false, false],
+            isMirror: false,
+            entityCount: 1,
             entities: [
               {
+                interiorId: 9001,
+                index: 0,
+                linkType: 1,
                 maxOcclusion: 1.0,
                 modelHashKey: 83737373,
                 modelName: "office1",
@@ -153,20 +184,32 @@ debugData([
             ]
           },
           {
+            interiorId: 9001,
+            isEnabled: [false, false],
+            interiorPortalIndex: 3,
+            globalPortalIndices: [-1, -1],
             fromRoomIndex: 2,
             toRoomIndex: 1,
-            mloPortalIndex: 3,
             flags: 0,
-            isEnabled: [false, false],
+            isMirror: false,
+            entityCount: 0,
             entities: []
-          },{
+          },
+          {
+            interiorId: 9001,
+            isEnabled: [false, false],
+            interiorPortalIndex: 4,
+            globalPortalIndices: [-1, -1],
             fromRoomIndex: 2,
             toRoomIndex: 1,
-            mloPortalIndex: 4,
             flags: 0,
-            isEnabled: [false, false],
+            isMirror: false,
+            entityCount: 1,
             entities: [
               {
+                interiorId: 9001,
+                index: 0,
+                linkType: 1,
                 maxOcclusion: 0.7,
                 modelHashKey: 87290120,
                 modelName: "window1",

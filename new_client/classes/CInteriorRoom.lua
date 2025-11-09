@@ -10,7 +10,7 @@ local Utils = require 'new_client.helpers.utils'
 ---@field index number
 ---@field name string
 ---@field displayName string
----@field namehash number
+---@field nameHash number
 ---@field uintNameHash number
 ---@field roomKey number
 ---@field uintRoomKey number
