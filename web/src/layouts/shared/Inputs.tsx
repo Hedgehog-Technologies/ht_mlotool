@@ -137,7 +137,7 @@ const StringInput: React.FC<StringInputProps> = (props) => {
         value={props.value ?? `[${locale("ui_missing_value")}]`}
         // $TECH_DEBT - Revisit for debouncing?
         onChange={(e) => { if (props.setValue !== undefined) props.setValue(e.target.value)}}
-        label={<TooltipLabel label={props.label} />}
+        label={props.label && <TooltipLabel label={props.label} />}
         placeholder={props.placeholder}
         disabled={props.disabled}
         variant={variant}
