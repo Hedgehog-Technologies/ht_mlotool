@@ -12,8 +12,9 @@ local CEntity = require 'new_client.classes.CInteriorPortalEntity'
 ---@field globalPortalIndices [number, number]
 ---@field fromRoomIndex number
 ---@field toRoomIndex number
----@field flags number
+---@field flags PortalFlags|integer
 ---@field isMirror boolean
+---@field isInteriorConnector boolean
 ---@field entityCount number
 ---@field entities CInteriorPortalEntity[]
 ---@field new fun(self: CInteriorPortal, interiorId: number, fromRoomIndex: number, toRoomIndex: number, interiorPortalIndex: number, interiorLocation: vector3, portalData: TInteriorPortalData|table|nil): CInteriorPortal
@@ -43,7 +44,8 @@ function CInteriorPortal:constructor(interiorId, fromRoomIndex, toRoomIndex, int
     self.toRoomIndex = toRoomIndex
 
     self.flags = GetInteriorPortalFlag(interiorId, interiorPortalIndex)
-    self.isMirror = (self.flags & 4) == 4
+    self.isMirror = (self.flags & 4) ~= 0
+    self.isInteriorConnector = (self.flags & 2) ~= 0
 
     -- Entities
     self.entityCount = GetInteriorPortalEntityCount(interiorId, interiorPortalIndex)

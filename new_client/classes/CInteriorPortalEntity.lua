@@ -30,6 +30,7 @@ function CInteriorPortalEntity:constructor(interiorId, interiorPortalIndex, enti
 
     self.index = entityIndex
     -- This is what we need to work with to handle Interior <-> Interior portals
+    -- I disagree with my past self. We should only need a flag on the portal (PortalFlags#2)
     self.linkType = 1
     self.maxOcclusion = 0.7
     self.modelHashKey = GetInteriorPortalEntityArchetype(interiorId, interiorPortalIndex, entityIndex)

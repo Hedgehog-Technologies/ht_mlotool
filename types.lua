@@ -101,8 +101,9 @@
 ---@field interiorPortalIndex number
 ---@field fromRoomIndex number
 ---@field toRoomIndex number
----@field flags number
+---@field flags PortalFlags|integer
 ---@field isMirror boolean
+---@field isInteriorConnector boolean
 ---@field entityCount number
 ---@field entities TInteriorPortalEntityData[]
 
@@ -170,3 +171,20 @@
 ---@class ServerUtilsApi : UtilsApi
 ---@field canUseOpenMloCmd fun(playerId: number|string): boolean
 ---@field canUseSaveMloCmd fun(playerId: number|string): boolean
+
+---@alias PortalFlags
+---| 0 # null
+---| 1 # One-Way
+---| 2 # Link Interiors Together
+---| 4 # Mirror
+---| 8 # Disable Timecycle Modifier
+---| 16 # Mirror Using Expensive Shaders
+---| 32 # Low LOD Only
+---| 64 # Hide When Door Closed
+---| 128 # Mirror Can See Directional
+---| 256 # Mirror Using Portal Traversal
+---| 512 # Mirror Floor
+---| 1024 # Mirror Can See Exterior View
+---| 2048 # Water Surface
+---| 4096 # Water Surface Extend To Horizon
+---| 8192 # Use Light Bleed

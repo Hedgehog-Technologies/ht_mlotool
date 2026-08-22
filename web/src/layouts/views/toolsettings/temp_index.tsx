@@ -103,9 +103,9 @@ const VersionChecker: React.FC = () => {
 
   const status = () => {
     if (!current || !latest) return "unknown";
-    const cmp = semverCompare(current, latest);
-    if (cmp < 0) return "outdated";
-    if (cmp === 0) return "current";
+    // const cmp = semverCompare(current, latest);
+    // if (cmp < 0) return "outdated";
+    // if (cmp === 0) return "current";
     return "ahead";
   };
 
@@ -125,7 +125,7 @@ const VersionChecker: React.FC = () => {
 
       <div style={{ display: "flex", gap: 8 }}>
         <button onClick={load} disabled={loading} style={{ padding: "6px 10px" }}>Refresh</button>
-        {status() === "outdated" && (
+        {status() === "unknown" && (
           <button onClick={() => { /* Could trigger update flow in the runtime */ }} style={{ padding: "6px 10px" }}>
             Update
           </button>
