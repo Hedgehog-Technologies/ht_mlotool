@@ -95,29 +95,6 @@ local function draw3dText(coords, text)
     end
 end
 
---- Quaternion Multiplication
----@param a quat|{ w: number, x: number, y: number, z: number }
----@param b vector3
----@return vector3
-local function qMult(a, b)
-    local axx = a.x * 2
-    local ayy = a.y * 2
-    local azz = a.z * 2
-    local awxx = a.w * axx
-    local awyy = a.w * ayy
-    local awzz = a.w * azz
-    local axxx = a.x * axx
-    local axyy = a.x * ayy
-    local axzz = a.x * azz
-    local ayyy = a.y * ayy
-    local ayzz = a.y * azz
-    local azzz = a.z * azz
-
-    return vec3(((b.x * ((1.0 - ayyy) - azzz)) + (b.y * (axyy - awzz))) + (b.z * (axzz + awyy)),
-        ((b.x * (axyy + awzz)) + (b.y * ((1.0 - axxx) - azzz))) + (b.z * (ayzz - awxx)),
-        ((b.x * (axzz - awyy)) + (b.y * (ayzz + awxx))) + (b.z * ((1.0 - axxx) - ayyy)))
-end
-
 local function resetInteriorDebugData()
     lib.print.verbose('Resetting interior debug data...')
 
@@ -173,12 +150,12 @@ local function updateDebugInteriorInfo()
             table.wipe(interiorPortalConnections)
 
             for portalId = 0, interiorPortalCount - 1 do
-                ---@type table<number, vector3>
+                ---@type TPortalCornerCoordinates
                 local pCorners = {}
 
                 for cornerIndex = 0, 3 do
                     local cX, cY, cZ = GetInteriorPortalCornerPosition(interiorId, portalId, cornerIndex)
-                    local cPosition = interiorPosition + qMult(interiorRotation, vec3(cX, cY, cZ))
+                    local cPosition = interiorPosition + Utils.quatMult(interiorRotation, vec3(cX, cY, cZ))
 
                     pCorners[cornerIndex] = cPosition
                 end

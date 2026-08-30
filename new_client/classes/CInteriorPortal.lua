@@ -4,6 +4,9 @@ local Constants = require 'new_client.helpers.constants'
 ---@type CInteriorPortalEntity
 local CEntity = require 'new_client.classes.CInteriorPortalEntity'
 
+---@type ClientUtilsApi
+local Utils = require 'new_client.helpers.utils'
+
 ---@class CInteriorPortal : OxClass
 ---@field version number
 ---@field interiorId number
@@ -12,9 +15,13 @@ local CEntity = require 'new_client.classes.CInteriorPortalEntity'
 ---@field globalPortalIndices [number, number]
 ---@field fromRoomIndex number
 ---@field toRoomIndex number
+---@field connectedInteriorId number|nil
 ---@field flags PortalFlags|integer
 ---@field isMirror boolean
 ---@field isInteriorConnector boolean
+---@field cornerPositions TPortalCornerCoordinates
+---@field centroid vector3
+---@field normal vector3
 ---@field entityCount number
 ---@field entities CInteriorPortalEntity[]
 ---@field new fun(self: CInteriorPortal, interiorId: number, fromRoomIndex: number, toRoomIndex: number, interiorPortalIndex: number, interiorLocation: vector3, portalData: TInteriorPortalData|table|nil): CInteriorPortal
@@ -32,7 +39,7 @@ function CInteriorPortal:constructor(interiorId, fromRoomIndex, toRoomIndex, int
     self.interiorId = interiorId
 
     if portalData then
-        return self:parsePortalData(interiorLocation, portalData)
+        return self:parsePortalData(portalData)
     end
 
     -- This direction relates to the listener path to sound origin, ***not*** the path from the sound origin to the listener
@@ -42,10 +49,9 @@ function CInteriorPortal:constructor(interiorId, fromRoomIndex, toRoomIndex, int
     self.globalPortalIndices = { -1, -1 } -- [1] = fromRoomIndex -> toRoomIndex; [2] = toRoomIndex -> fromRoomIndex
     self.fromRoomIndex = fromRoomIndex
     self.toRoomIndex = toRoomIndex
+    self.cornerPositions = {}
 
-    self.flags = GetInteriorPortalFlag(interiorId, interiorPortalIndex)
-    self.isMirror = (self.flags & 4) ~= 0
-    self.isInteriorConnector = (self.flags & 2) ~= 0
+    self:calculatePortalFields()
 
     -- Entities
     self.entityCount = GetInteriorPortalEntityCount(interiorId, interiorPortalIndex)
@@ -58,13 +64,14 @@ end
 ---@package
 ---@param portalData TInteriorPortalData|table
 function CInteriorPortal:parsePortalData(portalData)
-    if portalData.version then
+    if portalData.version == 2 then
         self:parsePortalDataV2(portalData)
     else
         self:parsePortalDataV1(portalData)
     end
 
     self.globalPortalIndices = { -1, -1 }
+    self:calculatePortalFields()
 end
 
 ---@package
@@ -117,8 +124,6 @@ function CInteriorPortal:getSaveData()
     data.interiorPortalIndex = self.interiorPortalIndex
     data.fromRoomIndex = self.fromRoomIndex
     data.toRoomIndex = self.toRoomIndex
-    data.flags = self.flags
-    data.isMirror = self.isMirror
     data.entityCount = self.entityCount
     data.entities = {}
 
@@ -128,6 +133,62 @@ function CInteriorPortal:getSaveData()
     end
 
     return data --[[@as TInteriorPortalData]]
+end
+
+--- Calculates and sets various fields for the current portal
+--- NOTE: This is a potentially destructive action
+---@package
+function CInteriorPortal:calculatePortalFields()
+    -- Corners
+    if self.cornerPositions == nil then
+        self.cornerPositions = {}
+    else
+        table.wipe(self.cornerPositions)
+    end
+
+    local mloPos = vec3(GetInteriorPosition(self.interiorId))
+    local mloRotX, mloRotY, mloRotZ, mloRotW = GetInteriorRotation(self.interiorId)
+    local mloRot = quat(mloRotW, mloRotX, mloRotY, mloRotZ)
+
+    for cornerIndex = 0, 3 do
+        local cornerLocalPos = vec3(GetInteriorPortalCornerPosition(self.interiorId, self.interiorPortalIndex, cornerIndex))
+        local cornerPos = mloPos + Utils.quatMult(mloRot, cornerLocalPos)
+        self.cornerPositions[cornerIndex] = cornerPos
+    end
+
+    -- Centroid
+    self.centroid = lib.math.interp(self.cornerPositions[0], self.cornerPositions[2], 0.5)
+
+    -- Normal
+    local v0 = self.cornerPositions[0]
+    local v1 = self.cornerPositions[1]
+    local v2 = self.cornerPositions[2]
+    local edge1 = v1 - v0
+    local edge2 = v2 - v0
+    local normal = vec3(
+        edge1.y * edge2.z - edge1.z * edge2.y,
+        edge1.z * edge2.x - edge1.x * edge2.z,
+        edge1.x * edge2.y - edge1.y * edge2.x
+    )
+
+    local normalLen = #normal
+    if normalLen > 0.0001 then
+        self.normal = normal / normalLen
+    else
+        self.normal = vec3(0.0, 1.0, 0.0)
+    end
+
+    -- Flags
+    self.flags = GetInteriorPortalFlag(self.interiorId, self.interiorPortalIndex)
+    self.isMirror = (self.flags & 4) ~= 0
+    self.isInteriorConnector = (self.flags & 2) ~= 0
+
+    -- Connected Interior
+    if self.isInteriorConnector then
+        local worldNormal = mloRot * self.normal
+        local offsetCoords = self.centroid + (worldNormal * 0.8)
+        self.connectedInteriorId = GetInteriorAtCoords(offsetCoords.x, offsetCoords.y, offsetCoords.z)
+    end
 end
 
 return CInteriorPortal

@@ -23,7 +23,9 @@
 
 ---@alias DDrawEntityTracking { [string]: TDrawEntityData }
 
----@alias TPortalCorners table<number, table<number, vector3>>
+---@alias PortalCornerIndex 0|1|2|3
+---@alias TPortalCornerCoordinates table<PortalCornerIndex, vector3>
+---@alias TPortalCorners table<number, TPortalCornerCoordinates>
 ---@alias TPortalCrossVectors table<number, vector3>
 ---@alias TPortalConnections table<number, [ number, number ]>
 
@@ -101,9 +103,6 @@
 ---@field interiorPortalIndex number
 ---@field fromRoomIndex number
 ---@field toRoomIndex number
----@field flags PortalFlags|integer
----@field isMirror boolean
----@field isInteriorConnector boolean
 ---@field entityCount number
 ---@field entities TInteriorPortalEntityData[]
 
@@ -164,6 +163,7 @@
 ---@field toInt32 fun(value: number): number
 ---@field toUInt32 fun(value: number): number
 ---@field toXml fun(tbl: [ TXmlTag ], debug: boolean): string[]
+---@field quatMult fun(a: quat|{ w: number, x: number, y: number, z: number }, b: vector3|{ x: number, y: number, z: number }): vector3
 
 ---@class ClientUtilsApi : UtilsApi
 ---@field sendReactMessage fun(action: string, data: any)
@@ -171,6 +171,8 @@
 ---@class ServerUtilsApi : UtilsApi
 ---@field canUseOpenMloCmd fun(playerId: number|string): boolean
 ---@field canUseSaveMloCmd fun(playerId: number|string): boolean
+
+-- ##### Other Custom Types ##### --
 
 ---@alias PortalFlags
 ---| 0 # null

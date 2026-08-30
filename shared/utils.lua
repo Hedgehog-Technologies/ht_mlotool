@@ -73,4 +73,27 @@ function UtilsApi.toXml(tbl, debug)
     return table.concat(xml, '\n')
 end
 
+--- Quaternion Multiplication
+---@param a quat|{ w: number, x: number, y: number, z: number }
+---@param b vector3|{ x: number, y: number, z: number }
+---@return vector3
+function UtilsApi.quatMult(a, b)
+    local axx = a.x * 2
+    local ayy = a.y * 2
+    local azz = a.z * 2
+    local awxx = a.w * axx
+    local awyy = a.w * ayy
+    local awzz = a.w * azz
+    local axxx = a.x * axx
+    local axyy = a.x * ayy
+    local axzz = a.x * azz
+    local ayyy = a.y * ayy
+    local ayzz = a.y * azz
+    local azzz = a.z * azz
+
+    return vec3(((b.x * ((1.0 - ayyy) - azzz)) + (b.y * (axyy - awzz))) + (b.z * (axzz + awyy)),
+        ((b.x * (axyy + awzz)) + (b.y * ((1.0 - axxx) - azzz))) + (b.z * (ayzz - awxx)),
+        ((b.x * (axzz - awyy)) + (b.y * (ayzz + awxx))) + (b.z * ((1.0 - axxx) - ayyy)))
+end
+
 return UtilsApi --[[@as UtilsApi]]
